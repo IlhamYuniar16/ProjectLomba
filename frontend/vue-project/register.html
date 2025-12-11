@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue Register</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <h2>Register</h2>
+
+  <input v-model="email" type="email" placeholder="Email" /><br>
+  <input v-model="password" type="password" placeholder="Password" /><br>
+  <input v-model="password_confirmation" type="password" placeholder="Re-type Password" /><br>
+
+  <button @click="register">Daftar</button>
+
+  <p>{{ message }}</p>
+</div>
+
+<script>
+const app = Vue.createApp({
+  data() {
+    return {
+      email: "",
+      password: "",
+      password_confirmation: "",
+      message: ""
+    }
+  },
+  methods: {
+    async register() {
+
+      // VALIDASI
+      if (!this.email || !this.password || !this.password_confirmation) {
+        this.message = "Semua field wajib diisi!";
+        return;
+      }
+
+      if (this.password !== this.password_confirmation) {
+        this.message = "Password tidak sama!";
+        return;
+      }
+
+      try {
+        // KIRIM DATA KE BACKEND
+        axios.post(
+  "http://localhost/ProjectLomba/backend/register.php",
+  { email: this.email, password: this.password },
+  { headers: { "Content-Type": "application/json" } }
+);
+
+        this.message = response.data.message;
+
+      } catch (error) {
+        this.message = "Terjadi kesalahan saat menghubungi server";
+      }
+    }
+  }
+});
+
+app.mount("#app");
+</script>
+
+</body>
+</html>
