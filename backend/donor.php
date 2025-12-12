@@ -1,33 +1,42 @@
 <?php
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 session_start();
+
 include 'db/db.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
-$tanggal_lahir = $data['tanggal_lahir'] ?? '';
-$jenis_kelamin = $data['jenis_kelamin'] ?? '';
-$tipe_darah = $data['tipe_darah'] ?? '';
-$rhesus = $data['rhesus'] ?? '';
-$catatan_kesehatan = $data['catatan_kesehatan'] ?? '';
-$jenis_donor = $data['jenis_donor'] ?? '';
-$rumah_sakit = $data['rumah_sakit'] ?? '';
+$id_user = $_SESSION['user']['id'] ?? null;
+$nama_pendonor = $_POST['nama_pendonor'] ?? '';
+$tanggal_lahir = $_POST['tanggal_lahir'] ?? '';
+$jenis_kelamin = $_POST['jenis_kelamin'] ?? '';
+$tipe_darah = $_POST['tipe_darah'] ?? '';
+$rhesus = $_POST['rhesus'] ?? '';
+$catatan_kesehatan = $_POST['catatan_kesehatan'] ?? '';
+$jenis_donor = $_POST['jenis_donor'] ?? '';
+$rumah_sakit = $_POST['rumah_sakit'] ?? '';
 
-if(!$tanggal_lahir || !$jenis_kelamin || !$tipe_darah || !$rhesus || !$catatan_kesehatan || !$jenis_donor || !$rumah_sakit){
-    echo json_encode(["status"=>"error","message"=>"Semua field wajib diisi!"]);
+if (!$nama_pendonor || !$tanggal_lahir || !$jenis_kelamin || !$tipe_darah || 
+    !$rhesus || !$catatan_kesehatan || !$jenis_donor || !$rumah_sakit) {
+    echo json_encode(["status" => "error", "message" => "Semua field wajib diisi!"]);
     exit;
 }
 
 mysqli_begin_transaction($db);
-mysqli_query($db, "INSERT INTO data_pendonor (id_user, tanggal_lahir, jenis_kelamin, tipe_darah, rhesus, catatan_kesehatan)
-                   VALUES ('$id_user', '$tanggal_lahir', '$jenis_kelamin', '$tipe_darah', '$rhesus', '$catatan_kesehatan')");
+
+mysqli_query($db, "INSERT INTO data_pendonor 
+    (id_user, nama_pendonor, tanggal_lahir, jenis_kelamin, tipe_darah, rhesus, catatan_kesehatan)
+    VALUES ('$id_user', '$nama_pendonor', '$tanggal_lahir', '$jenis_kelamin', '$tipe_darah', '$rhesus', '$catatan_kesehatan')");
+
 $pendonor_id = mysqli_insert_id($db);
-mysqli_query($db, "INSERT INTO pengajuan_donor (id_pendonor, jenis_donor, rumah_sakit)
-                   VALUES ($pendonor_id, '$jenis_donor', '$rumah_sakit')");
+
+mysqli_query($db, "INSERT INTO pengajuan_donor 
+    (id_pendonor, jenis_donor, rumah_sakit)
+    VALUES ($pendonor_id, '$jenis_donor', '$rumah_sakit')");
+
 mysqli_commit($db);
 
-
-
+echo json_encode(["status" => "success", "message" => "Pendaftaran berhasil dikirim! Silahkan tunggu proses pengecekan data dari kami"]);
 ?>

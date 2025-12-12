@@ -8,9 +8,6 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 session_start();
 
 include 'db/db.php';
-if (!$db) {
-    die(json_encode(["status" => "error", "message" => "Koneksi gagal: " . mysqli_connect_error()]));
-}
 
 //INSERT PROCESS
 $uploadDir = "uploads/";

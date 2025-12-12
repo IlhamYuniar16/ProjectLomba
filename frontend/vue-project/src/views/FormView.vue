@@ -38,10 +38,7 @@ const getKab = async () => {
     }
     
 }
-onMounted(() => {
-    getRS()
-    getKab()
-})
+
 
 const nama_pasien = ref('')
 const nama_rumah_sakit = ref('')
@@ -89,7 +86,56 @@ const submitForm = async () => {
             }
         );
 
-        console.log("Response:", res.data);
+        if(res.data.status === "success"){
+            alert(res.data.message);
+        } else {
+            alert(res.data.message);
+        }
+    } catch (err) {
+        console.error("AXIOS ERROR:", err);
+    }
+};
+
+onMounted(() => {
+    getRS()
+    getKab()
+});
+const nama_pendonor = ref('');
+const tanggal_lahir = ref('')
+const jenis_kelamin = ref('')
+const tipe_darah = ref('')
+const rhesus_donor = ref('')
+const jenis_donor = ref('')
+const catatan_kesehatan = ref('')
+const rumah_sakit = ref('') // rumah sakit donor
+
+const submitDonor = async () => {
+    const formDonor = new FormData(); // <- BENAR
+
+    formDonor.append("nama_pendonor", nama_pendonor.value);
+    formDonor.append("tanggal_lahir", tanggal_lahir.value);
+    formDonor.append("jenis_kelamin", jenis_kelamin.value);
+    formDonor.append("tipe_darah", tipe_darah.value);
+    formDonor.append("rhesus", rhesus_donor.value);
+    formDonor.append("rumah_sakit", rumah_sakit.value);
+    formDonor.append("jenis_donor", jenis_donor.value);
+    formDonor.append("catatan_kesehatan", catatan_kesehatan.value);
+
+    try {
+        const res = await axios.post(
+            "http://localhost/ProjectLomba/backend/donor.php",
+            formDonor,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+                withCredentials: true
+            }
+        );
+        if(res.data.status === "success"){
+            alert(res.data.message);
+        } else {
+            alert(res.data.message);
+        }
+
     } catch (err) {
         console.error("AXIOS ERROR:", err);
     }
@@ -250,11 +296,11 @@ const submitForm = async () => {
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-7">
     
                         <div class="flex">
-                            <label for="" class="mr-1">Nama Pasien</label>
+                            <label for="" class="mr-1">Nama Pendonor</label>
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <input type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Nama Lengkap">
+                            <input v-model="nama_pendonor" type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Nama Lengkap">
                         </div>
 
                         <div class="flex">
@@ -262,7 +308,7 @@ const submitForm = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <input type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Nama Lengkap">
+                            <input v-model="tanggal_lahir" type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Nama Lengkap">
                         </div>
 
                         <div class="flex">
@@ -270,7 +316,7 @@ const submitForm = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                            <select v-model="jenis_kelamin" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
                                 <option value="">--Pilih Jenis Kelamin--</option>
                                 <option value="laki-laki">Laki-Laki</option>
                                 <option value="perempuan">Perempuan</option>
@@ -282,9 +328,13 @@ const submitForm = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                                <option value="">--Pilih Tipe Darah--</option>
-                            </select>
+                            <select  v-model="tipe_darah" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                                    <option value="">--Pilih ABO--</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
                         </div>
 
                         <div class="flex">
@@ -292,8 +342,10 @@ const submitForm = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                                <option value="">--Pilih Rhesus--</option>
+                            <select  v-model="rhesus_donor" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                                    <option value="">--Pilih Rhesus--</option>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
                             </select>
                         </div>
 
@@ -302,7 +354,23 @@ const submitForm = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <input type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Rumah Sakit Lokasi Donor Darah">
+                            <select v-model="rumah_sakit" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Rumah Sakit Lokasi Donor Darah--</option>
+                                <option v-for="item in rs_list" :key="item.id_rs" :value="item.nama_rs">{{ item.nama_rs }}</option>
+                            </select>
+                        </div>
+
+                        <div class="flex">
+                            <label for="" class="mr-1">Jenis Donor</label>
+                            <span class="text-primary">*</span>
+                        </div>
+                        <div class="col-span-2 mb-5 lg:mb-0">
+                            <select v-model="jenis_donor" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                                <option value="">--Pilih Jenis Donor--</option>
+                                <option value="Darah Penuh">Darah Penuh</option>
+                                <option value="Plasma">Plasma</option>
+                                <option value="Trombosit">Trombosit</option>
+                            </select>
                         </div>
 
                         <div class="flex">
@@ -310,14 +378,14 @@ const submitForm = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <textarea rows="5" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Catatan Kesehatan"></textarea>
+                            <textarea v-model="catatan_kesehatan" rows="5" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Catatan Kesehatan"></textarea>
                         </div>
     
                     </div>
     
                     
                     <div class="flex items-center justify-center mt-8">
-                        <button class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Kirim Sekarang</button>
+                        <button @click="submitDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Kirim Sekarang</button>
                     </div>
                 </form>
             </div>
