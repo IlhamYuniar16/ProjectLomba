@@ -5,6 +5,7 @@ import DashboardView from '@/views/admin/DashboardView.vue'
 import EmergencyBloodView from '@/views/admin/EmergencyBloodView.vue'
 import DonorReportView from '@/views/admin/DonorReportView.vue'
 import SubmissionReportView from '@/views/admin/SubmissionReportView.vue'
+import FormView from '@/views/FormView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +14,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomePage.vue'),
+    },
+    {
+      path: '/permohonan',
+      name: 'permohonan',
+      component: FormView
     },
     {
       path: '/masuk',
