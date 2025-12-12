@@ -71,8 +71,8 @@ const router = createRouter({
           component: DonorReportView
         },
         {
-          path: 'laporan-pengajuan',
-          name: 'laporan-pengajuan',
+          path: 'laporan-permohonan',
+          name: 'laporan-permohonan',
           component: SubmissionReportView
         },
       ]

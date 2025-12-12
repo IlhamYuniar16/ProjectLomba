@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import {ArrowLeftStartOnRectangleIcon, ArrowRightIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon} from '@heroicons/vue/24/solid';
+import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
 import { store } from '../stores/stores'
 
@@ -33,7 +33,7 @@ const toggleSidebar = ()=> {
 </script>
 
 <template>
-    <section class="bg-gray-100 w-full h-screen">
+    <section class="bg-gray-100 w-full min-h-screen">
 
         <!-- SIDEBAR -->
         <div class="fixed top-0 left-0 h-screen bg-white transition-all duration-300 " :class="isOpen ? 'w-16' : 'w-64'">
@@ -53,7 +53,7 @@ const toggleSidebar = ()=> {
                 </div>
 
                 <div @click="toggleSidebar" class="absolute -right-6 top-13 w-10 h-10 rounded-full bg-primary flex items-center justify-center cursor-pointer">
-                    <ArrowRightIcon :class="isOpen ? 'rotate-180' : ''" class="size-5 text-white cursor-pointer transition-all duration-300" />
+                    <ArrowLeftIcon :class="isOpen ? 'rotate-180' : ''" class="size-5 text-white cursor-pointer transition-all duration-300" />
                 </div>
 
                 <ul class="flex flex-col mt-8 overflow-x-hidden">
@@ -86,12 +86,12 @@ const toggleSidebar = ()=> {
                         </div>
                     </RouterLink>
 
-                    <RouterLink to="/admin/laporan-pengajuan" class="flex items-center cursor-pointer group mb-5">
-                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-pengajuan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-pengajuan')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
+                    <RouterLink to="/admin/laporan-permohonan" class="flex items-center cursor-pointer group mb-5">
+                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-permohonan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-permohonan')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
                             <ClipboardDocumentListIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
-                            <p :class="isOpen ? 'hidden' : ''" >Pengajuan</p>
+                            <p :class="isOpen ? 'hidden' : ''" >Permohonan</p>
                         </div>
                     </RouterLink>
                 </ul>
