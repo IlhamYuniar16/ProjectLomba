@@ -6,24 +6,34 @@ import EmergencyBloodView from '@/views/admin/EmergencyBloodView.vue'
 import DonorReportView from '@/views/admin/DonorReportView.vue'
 import SubmissionReportView from '@/views/admin/SubmissionReportView.vue'
 import FormView from '@/views/FormView.vue'
+import UserLayouts from '@/layouts/UserLayouts.vue'
+import HomePage from '../views/HomePage.vue'
+import TentangPage from '@/views/TentangPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('../views/HomePage.vue'),
-    },
-    {
-      path: '/tentang',
-      name: 'tentang',
-      component: () => import('../views/TentangPage.vue'),
-    },
-    {
-      path: '/permohonan',
-      name: 'permohonan',
-      component: FormView
+      name: 'user-layouts',
+      component: UserLayouts,
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: HomePage
+        },
+        {
+          path: 'tentang',
+          name: 'tentang',
+          component: TentangPage
+        },
+        {
+          path: 'permohonan',
+          name: 'permohonan',
+          component: FormView
+        },
+      ]
     },
     {
       path: '/masuk',

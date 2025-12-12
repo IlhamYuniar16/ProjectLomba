@@ -15,33 +15,15 @@ const tabs = [
 
 <template>
     <section class="bg-secondary">
-        <main class="flex justify-around items-center">
-            <div class="flex items-center gap-4">
-                <img class="w-13" src="../assets/img/logoyogyalife.png" alt="">
-                <h1 class="text-3xl text-primary">Yogyalife</h1>
-            </div>
-            <main class="gap-10 flex items-center">
-                <a href="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</a>
-                <a href="/daftarakun" v-if="!store.isLoggedIn" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</a>
-                <a v-if="store.isLoggedIn" class="text-danger">Hi, {{ store.user.name }} </a>
-            </main>
-        </main>
-        <main class="bg-bgColor">
-            <main class="bg-bgColor flex justify-evenly container m-auto">
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Beranda</a>
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Tentang</a>
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Permohonan</a>
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</a>
-            </main>
-        </main>
+        
         
         <div class="py-10 px-6 md:px-16 lg:px-24 xl:px-32">
             <div class="flex justify-center gap-1 bg-red-100 w-fit mx-auto rounded-full">
-                <button @click="activeTab = 'permohonan'" :class="activeTab === 'permohonan' ? 'cursor-pointer font-semibold bg-primary text-white px-12 py-2 rounded-full transition-all duration-200' : 'cursor-pointer font-semibold text-primary px-12 py-2 transition-all duration-200'" >
+                <button @click="activeTab = 'permohonan'" :class="activeTab === 'permohonan' ? 'cursor-pointer font-semibold bg-primary text-white px-9 md:px-12 py-2 rounded-full transition-all duration-200 text-xs md:text-sm' : 'cursor-pointer font-semibold text-primary px-9 md:px-12 py-2 transition-all duration-200 text-xs md:text-sm'" >
                     Permohonan
                 </button>
 
-                <button @click="activeTab = 'donor'" :class="activeTab === 'donor' ? 'cursor-pointer font-semibold bg-primary text-white px-12 py-2 rounded-full transition-all duration-200' : 'cursor-pointer font-semibold text-primary px-12 py-2 transition-all duration-200'">
+                <button @click="activeTab = 'donor'" :class="activeTab === 'donor' ? 'cursor-pointer font-semibold bg-primary text-white px-9 md:px-12 py-2 rounded-full transition-all duration-200 text-xs md:text-sm' : 'cursor-pointer font-semibold text-primary px-9 md:px-12 py-2 transition-all duration-200 text-xs md:text-sm'">
                     Donor
                 </button>
             </div>
