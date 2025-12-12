@@ -36,7 +36,7 @@ const tabs = [
         </main>
         
         <div class="py-10 px-6 md:px-16 lg:px-24 xl:px-32">
-            <div class="hidden lg:flex justify-center gap-1 bg-red-100 w-fit mx-auto rounded-full">
+            <div class=" justify-center gap-1 bg-red-100 w-fit mx-auto rounded-full">
                 <button @click="activeTab = 'permohonan'" :class="activeTab === 'permohonan' ? 'cursor-pointer font-semibold bg-primary text-white px-12 py-2 rounded-full transition-all duration-200' : 'cursor-pointer font-semibold text-primary px-12 py-2 transition-all duration-200'" >
                     Permohonan
                 </button>
