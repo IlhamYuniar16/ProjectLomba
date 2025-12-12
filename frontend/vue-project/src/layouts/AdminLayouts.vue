@@ -77,7 +77,7 @@ const toggleSidebar = ()=> {
                     </RouterLink>
 
                     <RouterLink to="/admin/laporan-pengajuan" class="flex items-center cursor-pointer group mb-5">
-                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-pengajuan')]" class="group-hover:bg-[#DC1921] h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-pengajuan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
                         <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-pengajuan')]" class="w-full flex items-center group-hover:text-[#DC1921] transition-all duration-300">
                             <ClipboardDocumentListIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
