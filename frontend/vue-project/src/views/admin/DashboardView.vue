@@ -1,6 +1,43 @@
 <script setup>
 import { AdjustmentsHorizontalIcon, CheckIcon, XMarkIcon } from '@heroicons/vue/24/solid';
+import { ref, onMounted } from 'vue';
+import axios from 'axios'
 
+const total_permintaan = ref(0)
+const getDarah = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total_darah.php')
+        total_permintaan.value = res.data?.data?.total_permintaan || 0
+    } catch(err) {
+        console.error(err)
+    }
+}
+
+const total_terpenuhi = ref(0)
+const getTerpenuhi = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total_terpenuhi.php')
+        total_terpenuhi.value = res.data?.data?.total_terpenuhi || 0
+    } catch(err) {
+        console.error(err)
+    }
+}
+
+const total_batal = ref(0)
+const getBatal = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total_batal.php')
+        total_batal.value = res.data?.data?.total_batal || 0
+    } catch(err) {
+        console.error(err)
+    }
+}
+
+onMounted(()=>{
+    getDarah()
+    getTerpenuhi()
+    getBatal()
+})
 </script>
 
 <template>
@@ -14,7 +51,7 @@ import { AdjustmentsHorizontalIcon, CheckIcon, XMarkIcon } from '@heroicons/vue/
                 </div>
                 <div class="flex flex-col">
                     <p>Permintaan Darah</p>
-                    <h1 class="text-3xl">30</h1>
+                    <h1 class="text-3xl">{{ total_permintaan }}</h1>
                 </div>
             </div>
             <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
@@ -23,7 +60,7 @@ import { AdjustmentsHorizontalIcon, CheckIcon, XMarkIcon } from '@heroicons/vue/
                 </div>
                 <div class="flex flex-col">
                     <p>Total Terpenuhi</p>
-                    <h1 class="text-3xl">30</h1>
+                    <h1 class="text-3xl">{{ total_terpenuhi }}</h1>
                 </div>
             </div>
             <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
@@ -32,7 +69,7 @@ import { AdjustmentsHorizontalIcon, CheckIcon, XMarkIcon } from '@heroicons/vue/
                 </div>
                 <div class="flex flex-col">
                     <p>Total Batal</p>
-                    <h1 class="text-3xl">30</h1>
+                    <h1 class="text-3xl">{{ total_batal }}</h1>
                 </div>
             </div>
         </div>

@@ -39,7 +39,6 @@ const getKab = async () => {
     
 }
 
-
 const nama_pasien = ref('')
 const nama_rumah_sakit = ref('')
 const golongan_darah = ref('')
@@ -123,7 +122,7 @@ const submitDonor = async () => {
 
     try {
         const res = await axios.post(
-            "http://localhost/ProjectLomba/backend/donor.php",
+            "http://localhost/ProjectLomba/backend/home_donor.php",
             formDonor,
             {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -180,7 +179,7 @@ const submitDonor = async () => {
                         <div class="col-span-2 mb-5 lg:mb-0">
                             <select v-model="nama_rumah_sakit" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Rumah Sakit--</option>
-                                <option v-for="item in rs_list" :key="item.id_rs" :value="item.nama_rs">{{ item.nama_rs }}</option>
+                                <option v-for="item in rs_list" :key="item.id" :value="item.nama_rs">{{ item.nama_rs }}</option>
                             </select>
                         </div>
     

@@ -1,8 +1,29 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
-import { ref } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios'
+import {alertSuccess, alertError, alertConfirm} from "../../services/alert.js"
 
 const showModal = ref(false);
+const darurat = ref([])
+
+const searchQuery = ref('')
+
+const fetchDarahDarurat = async()=> {
+    try{
+        const res = await axios.get(`http://localhost/ProjectLomba/backend/admin_darurat.php?search=${searchQuery.value}`)
+        darurat.value = res.data.data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+const filteredDarurat = computed(() => {
+  if (!searchQuery.value) return darurat.value
+  return darurat.value.filter(item =>
+    item.nama_pasien.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 
 const openModal = () => {
     showModal.value = true;
@@ -10,8 +31,163 @@ const openModal = () => {
 
 const closeModal = () => {
     showModal.value = false;
+    isEdit.value = false
+    editId.value = null
+    resetForm()
 }
 
+const resetForm = ()=> {
+    nama_pasien.value = ""
+    nama_rs.value = ""
+    lokasi_pasien.value = ""
+    golongan_darah.value = ""
+    rhesus.value = ""
+    jumlah_pendonor.value = ""
+    jenis_donor_darah.value = ""
+}
+
+const rs_list = ref([])
+const selectedRS = ref('')
+
+// Ambil data tipe darah dari backend
+const getRS = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/get_rs.php')
+        rs_list.value = res.data
+    } catch(err) {
+        console.error(err)
+    }
+    
+}
+
+const kabupaten_list = ref([])
+const selectedKab = ref('')
+
+// Ambil data tipe darah dari backend
+const getKab = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/get_kabupaten.php')
+        kabupaten_list.value = res.data
+    } catch(err) {
+        console.error(err)
+    }
+    
+}
+
+
+const nama_pasien = ref('')
+const nama_rs = ref('')
+const golongan_darah = ref('')
+const rhesus = ref('')
+const lokasi_pasien = ref('')
+const jumlah_pendonor = ref('')
+const jenis_donor_darah = ref('')
+
+const editId = ref(null)
+const isEdit = ref(false)
+
+const openEdit = (item)=> {
+    isEdit.value = true
+    editId.value = item.id
+    nama_pasien.value = item.nama_pasien
+    nama_rs.value = item.nama_rumah_sakit
+    lokasi_pasien.value = item.lokasi_pasien
+    golongan_darah.value = item.golongan_darah
+    rhesus.value = item.rhesus
+    jumlah_pendonor.value = item.jumlah_pendonor
+    jenis_donor_darah.value = item.jenis_donor_darah
+    openModal()
+}
+
+const submitForm = async () => {
+    if(isEdit.value) {
+        const formData = new FormData();
+        formData.append("nama_pasien", nama_pasien.value);
+        formData.append("nama_rumah_sakit", nama_rs.value);
+        formData.append("lokasi_pasien", lokasi_pasien.value);
+        formData.append("golongan_darah", golongan_darah.value);
+        formData.append("rhesus", rhesus.value);
+        formData.append("jumlah_pendonor", jumlah_pendonor.value);
+        formData.append("jenis_donor_darah", jenis_donor_darah.value);
+        try {
+            const res = await axios.post(
+                `http://localhost/ProjectLomba/backend/donor_urgent_edit.php?id=${editId.value}`,
+                formData,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    withCredentials: true
+                }
+            );
+
+            if(res.data.status === "success"){
+                alert(res.data.message);
+                closeModal()
+                fetchDarahDarurat()
+            } else {
+                alert(res.data.message);
+            }
+        } catch (err) {
+            console.error("AXIOS ERROR:", err);
+        }
+    } else {
+        const formData = new FormData();
+        formData.append("nama_pasien", nama_pasien.value);
+        formData.append("nama_rumah_sakit", nama_rs.value);
+        formData.append("lokasi_pasien", lokasi_pasien.value);
+        formData.append("golongan_darah", golongan_darah.value);
+        formData.append("rhesus", rhesus.value);
+        formData.append("jumlah_pendonor", jumlah_pendonor.value);
+        formData.append("jenis_donor_darah", jenis_donor_darah.value);
+
+        try {
+            const res = await axios.post(
+                "http://localhost/ProjectLomba/backend/donor_urgent_add.php",
+                formData,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    withCredentials: true
+                }
+            );
+
+            if(res.data.status === "success"){
+                alert(res.data.message);
+                closeModal()
+                fetchDarahDarurat()
+            } else {
+                alert(res.data.message);
+            }
+        } catch (err) {
+            console.error("AXIOS ERROR:", err);
+        }
+    }
+    
+};
+
+const handleDelete = async(id)=> {
+    const confirm = await alertConfirm("Apakah anda yakin ingin menghapus data ini?")
+
+    if(confirm) {
+        const res = await axios.delete(`http://localhost/ProjectLomba/backend/donor_urgent_delete.php?id=${id}`)
+        if(res.data.status === "success"){
+                fetchDarahDarurat()
+        }
+        
+    }
+
+}
+
+
+
+
+watch(searchQuery, () => {
+  fetchDarahDarurat()
+})
+
+onMounted(()=>{
+    fetchDarahDarurat()
+    getRS()
+    getKab()
+})
 </script>
 
 <template>
@@ -21,65 +197,68 @@ const closeModal = () => {
         <!-- MODAL -->
         <div v-if="showModal" class="fixed inset-0 bg-black/35 flex items-center justify-center z-50 overflow-y-auto">
             <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-lg ">
-                <h2 class="text-xl font-semibold mb-4">Tambah Data Darah Darurat</h2>
+                <h2 class="text-xl font-semibold mb-4">{{ isEdit ? 'Edit Data Darah Darurat' : 'Tambah Data Darah Darurat' }}</h2>
 
                 <div class="space-y-4">
                     <div>
                         <label class="block mb-1 font-medium">Nama Pasien</label>
-                        <input type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
+                        <input v-model="nama_pasien" type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
                     </div>
 
                     <div>
                         <label class="block mb-1 font-medium">Rumah Sakit</label>
-                        <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                        <select v-model="nama_rs" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
                             <option value="">--Pilih Rumah Sakit--</option>
+                            <option v-for="item in rs_list" :key="item.id" :value="item.nama_rs">{{ item.nama_rs }}</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-1 font-medium">Kabupaten</label>
-                        <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                        <select v-model="lokasi_pasien" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
                             <option value="">--Pilih Kabupaten--</option>
+                            <option v-for="item in kabupaten_list" :key="item.id_kabupaten" :value="item.nama_kabupaten">{{ item.nama_kabupaten }}</option>
                         </select>
                     </div>
 
                     <div class="flex items-center gap-5">
                         <div class="w-full">
                             <label class="block mb-1 font-medium">Golongan Darah</label>
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                            <select v-model="golongan_darah" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
                                 <option value="">--Pilih Gol Darah--</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
                             </select>
                         </div>
     
                         <div class="w-full">
                             <label class="block mb-1 font-medium">Rhesus</label>
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                                <option value="">--Pilih Rhesus--</option>
-                            </select>
+                            <select  v-model="rhesus" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                                    <option value="">--Pilih Rhesus--</option>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
                         </div>
                     </div>
                     
                     <div class="flex items-center gap-5">
                         <div class="w-full">
                             <label class="block mb-1 font-medium">Jumlah Pendonor</label>
-                            <input type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Jumlah Pendonor">
+                            <input v-model="jumlah_pendonor" type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Jumlah Pendonor">
                         </div>
     
                         <div class="w-full">
                             <label class="block mb-1 font-medium">Jenis Donor</label>
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
+                            <select v-model="jenis_donor_darah" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
                                 <option value="">--Pilih Jenis Donor--</option>
+                                <option value="Darah Penuh">Darah Penuh</option>
+                                <option value="Plasma">Plasma</option>
+                                <option value="Trombosit">Trombosit</option>
                             </select>
                         </div>
                     </div>
-
-                    <div class="w-full">
-                        <label class="block mb-1 font-medium">Status Urgent</label>
-                        <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                            <option value="">--Pilih Status--</option>
-                        </select>
-                    </div>
-
                 </div>
 
                 <div class="flex justify-end mt-5 gap-3">
@@ -91,7 +270,7 @@ const closeModal = () => {
                     </button>
 
                     <button 
-                        class="px-4 py-2 bg-primary text-white rounded-lg cursor-pointer hover:bg-red-700"
+                        type="submit" @click="submitForm" class="px-4 py-2 bg-primary text-white rounded-lg cursor-pointer hover:bg-red-700"
                     >
                         Simpan
                     </button>
@@ -101,7 +280,7 @@ const closeModal = () => {
 
         <div class="mt-5">
             <div class="flex items-center justify-between">
-                <input type="search" class="px-4 py-2 rounded-full bg-secondary outline-none max-w-sm w-full" placeholder="Cari...">
+                <input v-model="searchQuery" type="text" class="px-4 py-2 rounded-full bg-secondary outline-none max-w-sm w-full" placeholder="Cari nama pasien">
                 <div class="flex items-center gap-3">
                     <FunnelIcon class="size-6 text-gray-300 cursor-pointer"/>
                     <button @click="openModal" class="px-6 py-2 bg-primary hover:bg-red-700 rounded text-white cursor-pointer">+ Tambah Data</button>
@@ -126,27 +305,27 @@ const closeModal = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                        <tr v-for="(item, index) in filteredDarurat" :key="item.id" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left">
                                 <div class="flex items-center gap-2">
-                                    <div @click="openModal" class="w-6 h-6 bg-blue-50 flex items-center justify-center rounded cursor-pointer">
+                                    <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 flex items-center justify-center rounded cursor-pointer">
                                         <PencilSquareIcon class="size-5 text-blue-500"/>
                                     </div>
-                                    <div class="w-6 h-6 bg-red-50 flex items-center justify-center rounded cursor-pointer">
+                                    <div @click="handleDelete(item.id)" class="w-6 h-6 bg-red-50 flex items-center justify-center rounded cursor-pointer">
                                         <TrashIcon class="size-5 text-red-500"/>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">1</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">Ilham Yuniar</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">Rumah Sakit ABC</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">Sleman</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">A</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">Positif</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">2</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">Plasma</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">Urgent</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 "><p class="bg-green-50 w-fit px-4 rounded-full text-green-500">Selesai</p></td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{index + 1}}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.lokasi_pasien }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.golongan_darah }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.rhesus }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jumlah_pendonor }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jenis_donor_darah }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.status_urgent }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 "><p class="bg-green-50 w-fit px-4 rounded-full text-green-500">{{ item.status_pengajuan }}</p></td>
                         </tr>
                     </tbody>
                 </table>

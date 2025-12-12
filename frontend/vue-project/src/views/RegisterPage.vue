@@ -47,11 +47,14 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
+import {alertSuccess, alertError} from "../services/alert.js"
+import { useRouter } from 'vue-router'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const konfirmasipassword = ref('')
+const router = useRouter()
 
 const register = async () => {
   if(!name.value || !email.value || !password.value || !konfirmasipassword.value){
@@ -76,11 +79,16 @@ const register = async () => {
       { headers: { "Content-Type": "application/json" } }
     )
 
+    name.value = ""
+    email.value = ""
+    password.value = ""
+    konfirmasipassword.value = ""
+
     if(res.data.status === "success"){
-      alert(res.data.message)
-      window.location.href = `http://localhost/ProjectLomba/backend/verify_page.php`
+      await alertSuccess("Berhasil Registrasi")
+      router.push({path: '/masuk'})
     } else {
-      alert(res.data.message)
+      await alertError(res.data.status)
     }
 
   } catch (err) {

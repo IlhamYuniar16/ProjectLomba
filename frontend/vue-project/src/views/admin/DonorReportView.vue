@@ -1,6 +1,20 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } from '@heroicons/vue/24/solid';
+import { ref, onMounted } from 'vue';
+import axios from 'axios'
+const laporan_donor = ref([])
+const fetchLaporanDonor = async()=> {
+    try{
+        const res = await axios.get(`http://localhost/ProjectLomba/backend/laporan_donor.php`)
+        laporan_donor.value = res.data.data
+    }catch(err){
+        console.log(err)
+    }
+}
 
+onMounted(()=>{
+    fetchLaporanDonor()
+})
 </script>
 
 <template>
@@ -33,17 +47,17 @@ import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } fro
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
-                            <td class="px-4 py-3 text-left text-neutral-600">1</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">Rizki Chandra</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">Rizki Chandra</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">2005-01-01</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">Laki-laki</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">A</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">Positif</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">Rumah Sakit ABC</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">Rumah Sakit ABC</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 max-w-md">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto enim sed ut. Facere architecto facilis dolore natus cumque ratione nemo dolorum culpa dolorem necessitatibus expedita excepturi, quos amet asperiores modi?</td>
+                        <tr v-for="(item, index) in laporan_donor" :key="item.id_laporan_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ index + 1 }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.created_at }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.nama_pendonor }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.tanggal_lahir }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.jenis_kelamin }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.tipe_darah }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.rhesus }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.rumah_sakit }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.status_pengajuan }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 max-w-md">{{ item.catatan_kesehatan }}</td>
                         </tr>
                     </tbody>
                 </table>

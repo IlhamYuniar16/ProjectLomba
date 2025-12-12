@@ -1,3 +1,66 @@
+<script setup>
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
+import { store, logout } from '../stores/stores'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+import img1 from '../assets/img/iklan.png'
+import img2 from '../assets/img/iklan2.png'
+import img3 from '../assets/img/iklan3.png'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
+
+const active = ref('Kebutuhan')
+const intervalTime = 3000
+let autoSlide
+const slides = [
+  img1,
+  img2,
+  img3
+]
+
+const currentIndex = ref(0)
+
+function next() {
+  currentIndex.value = (currentIndex.value + 1) % slides.length
+}
+
+function prev() {
+  currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length
+}
+
+onMounted(() => {
+  autoSlide = setInterval(() => {
+    next()
+  }, intervalTime)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(autoSlide)
+})
+
+const urgent = ref([])
+const searchQuery = ref('')
+const fetchUrgent = async()=> {
+    try{
+        const res = await axios.get(`http://localhost/ProjectLomba/backend/home_kebutuhan_urgent.php?search=${searchQuery.value}`)
+        urgent.value = res.data.data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+const filteredUrgent = computed(() => {
+  if (!searchQuery.value) return urgent.value
+  return urgent.value.filter(item =>
+    item.nama_pasien.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
+onMounted(()=>{
+    fetchUrgent()
+})
+
+</script>
+
 <template>
     <section class="bg-secondary">
         <main class="bg-secondary mt-5">
@@ -118,77 +181,49 @@
     </section>
 
     <section class="container mx-auto mt-6 px-4 md:px-0 flex flex-col gap-2">
-        <div v-if="active === 'Kebutuhan'" class="flex flex-col gap-3 w-full max-w-md mx-auto">
-            <div class="bg-bgColor flex justify-between items-center p-4 border rounded">
+        <div v-if="active === 'Kebutuhan'" v-for="(item) in urgent" :key="item.id" class="flex flex-col gap-3 w-full max-w-md mx-auto">
+            <div  class="bg-bgColor flex justify-between items-center p-4 border rounded">
                 <div class="flex items-center gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                     <div class="flex flex-col">
-                        <span class="text-primary font-semibold">#B2HSY_UU111</span>
-                        <span>Steve Alonso - Bantul</span>
+                        <span class="text-primary font-semibold">#YL-U{{ item.id }}</span>
+                        <span>{{ item.nama_pasien }}</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="text-red-500 font-semibold">URGENT</span>
-                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">A</span>
+                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
                 </div>
             </div>
         
-            <div class="bg-bgColor flex justify-between items-center p-4 border rounded">
-                <div class="flex items-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                    <div class="flex flex-col">
-                        <span class="text-primary font-semibold">#B2HSY_UU112</span>
-                        <span>Jane Doe - Sleman</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-red-500 font-semibold">URGENT</span>
-                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">B</span>
-                </div>
-            </div>
+            
         </div>
 
 
-        <div v-if="active === 'Pencarian'" class="flex flex-col gap-3 w-full max-w-md mx-auto">
-          <div class="flex border max-w-md px-3 py-3 rounded-2xl">
-            <input type="text" v-model="search" class="outline-none w-full" placeholder="Cari">
+        <div v-if="active === 'Pencarian'"  class="flex flex-col gap-3 w-full max-w-md mx-auto">
+          <div  class="flex border max-w-md px-3 py-3 rounded-2xl">
+            <input type="text" v-model="searchQuery" class="outline-none w-full" placeholder="Cari nama pasien">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-          </div>
-            <div class="bg-bgColor flex justify-between items-center p-4 border rounded">
+            </div>
+            <div v-for="(item) in filteredUrgent" :key="item.id" class="bg-bgColor flex justify-between items-center p-4 border rounded">
                 <div class="flex items-center gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                     <div class="flex flex-col">
-                        <span class="text-primary font-semibold">#B2HSY_UU111</span>
-                        <span>Steve Alonso - Bantul</span>
+                        <span class="text-primary font-semibold">#YL-U{{ item.id }}</span>
+                        <span>{{ item.nama_pasien }} - {{ item.lokasi_pasien }}</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="text-red-500 font-semibold">URGENT</span>
-                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">A</span>
+                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
                 </div>
             </div>
         
-            <div class="bg-bgColor flex justify-between items-center p-4 border rounded">
-                <div class="flex items-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                    <div class="flex flex-col">
-                        <span class="text-primary font-semibold">#B2HSY_UU112</span>
-                        <span>Jane Doe - Sleman</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-red-500 font-semibold">URGENT</span>
-                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">B</span>
-                </div>
-            </div>
+            
         </div>
 
         <div v-if="active === 'History'" class="text-center">
@@ -200,43 +235,3 @@
     </section>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { store, logout } from '../stores/stores'
-import { useRouter } from 'vue-router'
-import img1 from '../assets/img/iklan.png'
-import img2 from '../assets/img/iklan2.png'
-import img3 from '../assets/img/iklan3.png'
-import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
-
-const active = ref('Kebutuhan')
-const intervalTime = 3000
-let autoSlide
-const slides = [
-  img1,
-  img2,
-  img3
-]
-
-const currentIndex = ref(0)
-
-function next() {
-  currentIndex.value = (currentIndex.value + 1) % slides.length
-}
-
-function prev() {
-  currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length
-}
-
-onMounted(() => {
-  autoSlide = setInterval(() => {
-    next()
-  }, intervalTime)
-})
-
-onBeforeUnmount(() => {
-  clearInterval(autoSlide)
-})
-
-</script>

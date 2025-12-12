@@ -8,7 +8,6 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 session_start();
 
 include 'db/db.php';
-
 //INSERT PROCESS
 $uploadDir = "uploads/";
 if (!is_dir($uploadDir)) {
@@ -48,7 +47,6 @@ if(isset($_FILES['foto_formulir_rs']) && $_FILES['foto_formulir_rs']['error'] ==
     }
 }
 
-var_dump("ID USER:", $id_user);
 // Insert data permohonan
 $query_permohonan = "INSERT INTO permohonan_pasien 
 (id_user, nama_pasien, lokasi_pasien, nama_rumah_sakit, golongan_darah, rhesus, jumlah_pendonor, jenis_donor_darah, foto_formulir_rs, narhub_nama, narhub_notel, narhub_email) 
