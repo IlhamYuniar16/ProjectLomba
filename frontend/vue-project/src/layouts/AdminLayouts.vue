@@ -19,11 +19,11 @@ const logout = () => {
 }
 
 const isActiveMenu = (path)=> {
-    return route.path === path ? 'text-[#DC1921]' : 'group-hover:text-[#DC1921] '
+    return route.path === path ? 'text-primary' : 'group-hover:text-primary '
 }
 
 const isHandleBorder = (path)=> {
-    return route.path === path ? 'bg-[#DC1921]' : ''
+    return route.path === path ? 'bg-primary' : ''
 }
 
 const toggleSidebar = ()=> {
@@ -49,10 +49,10 @@ const toggleSidebar = ()=> {
                         </defs>
                     </svg>
     
-                    <h1 :class="isOpen ? 'hidden' : ''" class="text-[#DC1921] font-semibold text-xl">Yogyalife</h1>
+                    <h1 :class="isOpen ? 'hidden' : ''" class="text-primary font-semibold text-xl">Yogyalife</h1>
                 </div>
 
-                <div @click="toggleSidebar" class="absolute -right-6 top-13 w-10 h-10 rounded-full bg-[#DC1921] flex items-center justify-center">
+                <div @click="toggleSidebar" class="absolute -right-6 top-13 w-10 h-10 rounded-full bg-primary flex items-center justify-center">
                     <ArrowRightIcon :class="isOpen ? 'rotate-180' : ''" class="size-5 text-white cursor-pointer transition-all duration-300" />
                 </div>
 
@@ -79,7 +79,7 @@ const toggleSidebar = ()=> {
 
                     <RouterLink to="/admin/laporan-donor" class="flex items-center cursor-pointer group mb-5">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-donor')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-donor')]" class="w-full flex items-center group-hover:text-[#DC1921] transition-all duration-300">
+                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-donor')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
                             <BeakerIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
                             <p :class="isOpen ? 'hidden' : ''">Donor</p>
@@ -87,8 +87,8 @@ const toggleSidebar = ()=> {
                     </RouterLink>
 
                     <RouterLink to="/admin/laporan-pengajuan" class="flex items-center cursor-pointer group mb-5">
-                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-pengajuan')]" class="group-hover:bg-[#DC1921] h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-pengajuan')]" class="w-full flex items-center group-hover:text-[#DC1921] transition-all duration-300">
+                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-pengajuan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-pengajuan')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
                             <ClipboardDocumentListIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
                             <p :class="isOpen ? 'hidden' : ''" >Pengajuan</p>
@@ -96,10 +96,10 @@ const toggleSidebar = ()=> {
                     </RouterLink>
                 </ul>
 
-                <ul class="mt-auto cursor-pointer text-red-600 font-semibold">
+                <ul class="mt-auto cursor-pointer text-primary font-semibold">
                     <li class="flex items-center cursor-pointer group mb-5">
                         <div :class="isOpen ? 'pl-2' : ''" class="h-10 w-2 "></div>
-                        <div :class="isOpen ? 'justify-center' : 'px-6'" class="w-full flex items-center text-[#DC1921] transition-all duration-300">
+                        <div :class="isOpen ? 'justify-center' : 'px-6'" class="w-full flex items-center text-primary transition-all duration-300">
                             <ArrowLeftStartOnRectangleIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
                             <p @click="logout" :class="isOpen ? 'hidden' : ''">Logout</p>
