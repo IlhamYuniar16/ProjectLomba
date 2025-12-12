@@ -16,6 +16,11 @@ const router = createRouter({
       component: () => import('../views/HomePage.vue'),
     },
     {
+      path: '/tentang',
+      name: 'tentang',
+      component: () => import('../views/TentangPage.vue'),
+    },
+    {
       path: '/permohonan',
       name: 'permohonan',
       component: FormView
