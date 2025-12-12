@@ -9,13 +9,13 @@
                 <a href="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</a>
                 <a href="/daftarakun" v-if="!store.isLoggedIn" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</a>
                 <a v-if="store.isLoggedIn" class="text-danger">Hi, {{ store.user.name }} </a>
-                <button @click="logoutUser" v-if="store.isLoggedIn" class="ml-3 text-red-600">Logout</button>
+                <button @click="logoutUser" v-if="store.isLoggedIn" class="ml-3 px-4 py-2 rounded-md text-red-600 cursor-pointer hover:bg-red-500 hover:text-white transition-all 0.5s">Logout</button>
             </main>
         </main>
         <main class="bg-bgColor">
             <main class="bg-bgColor flex justify-evenly container m-auto">
                 <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Beranda</a>
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Tentang</a>
+                <a href="/about" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Tentang</a>
                 <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Permohonan</a>
                 <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</a>
             </main>

@@ -52,7 +52,7 @@ const toggleSidebar = ()=> {
                     <h1 :class="isOpen ? 'hidden' : ''" class="text-primary font-semibold text-xl">Yogyalife</h1>
                 </div>
 
-                <div @click="toggleSidebar" class="absolute -right-6 top-13 w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                <div @click="toggleSidebar" class="absolute -right-6 top-13 w-10 h-10 rounded-full bg-primary flex items-center justify-center cursor-pointer">
                     <ArrowRightIcon :class="isOpen ? 'rotate-180' : ''" class="size-5 text-white cursor-pointer transition-all duration-300" />
                 </div>
 

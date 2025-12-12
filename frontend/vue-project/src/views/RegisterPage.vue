@@ -22,7 +22,7 @@
         <label class="pt-5 pb-2">Konfirmasi Password</label>
         <input class="outline-none border rounded px-2 py-2 w-full" type="password" v-model="konfirmasipassword" placeholder="Konfirmasi Password">
 
-        <button @click="register" class="my-5 bg-primary rounded-full py-2 text-bgColor">Daftar</button>
+        <button @click="register" class="my-5 bg-primary rounded-full py-2 text-bgColor cursor-pointer hover:bg-red-700 transition-all 0.25s">Daftar</button>
         <div>
           <span class="text-xs">Sudah jadi anggota? <a href="/masuk" class="underline text-primary">Masuk Sekarang</a></span>
         </div>
