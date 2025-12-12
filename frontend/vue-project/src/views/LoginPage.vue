@@ -2,7 +2,9 @@
   <section class="flex items-center justify-center h-screen">
     <main class="flex flex-col min-w-sm">
       <div class="flex items-center gap-3">
-        <img src="../assets/img/logoyogyalife.png" class="w-6" alt="">
+        <router-link to="/">
+          <img src="../assets/img/logoyogyalife.png" class="w-6 cursor-pointer" alt="">
+        </router-link>
         <span class="text-primary">Yogyalife</span>
       </div>
       <div class="pb-3">
@@ -23,7 +25,7 @@
         
           <button @click="login" class="my-5 bg-primary rounded-full py-2 text-bgColor cursor-pointer hover:bg-red-700 transition-all 0.25s">Masuk</button>
         <div>
-          <span class="text-xs">Belum jadi anggota? <a href="/daftarakun" class="underline text-primary">Daftar Sekarang</a></span>
+          <span class="text-xs">Belum jadi anggota? <routerLink to="/daftarakun" class="underline text-primary">Daftar Sekarang</routerLink></span>
         </div>
       </main>
     </main>

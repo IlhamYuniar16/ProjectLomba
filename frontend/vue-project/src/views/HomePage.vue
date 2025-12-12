@@ -1,6 +1,5 @@
 <template>
     <section class="bg-secondary">
-
         <main class="bg-secondary mt-5">
             <main class="flex md:flex-row flex-col justify-center md:gap-20 px-5 md:px-0 items-center ">
                 <div class="">
@@ -8,7 +7,7 @@
                     <span class="text-xs">Silakan kirim informasi kebutuhannya di sini</span>
                 </div>
                 <div class="mt-5 md:mt-0">
-                    <a href="" class="bg-primary md:py-3 py-2 px-6  text-bgColor rounded-full">Isi Formulir</a>
+                    <routerLink to="/permohonan" class="bg-primary md:py-3 py-2 px-6  text-bgColor rounded-full">Isi Formulir</routerLink>
                 </div>
             </main>
             <main class="mt-5 md:mx-0 mx-2">
@@ -57,27 +56,27 @@
     <section class="pt-10 container mx-auto px-4 md:px-0 text-center">
         <h1 class="text-3xl text-primary mb-4">Apa itu Yogyalife?</h1>
         <p class="text-center max-w-2xl mx-auto">
-            Yogyalife Indonesia sejak 2009 menjadi penghubung antara orang yang membutuhkan transfusi darah,
+            Yogyalife Indonesia sejak 2025 menjadi penghubung antara orang yang membutuhkan transfusi darah,
             dengan para pendonor darah sukarela. Kami tidak memungut biaya untuk itu, dan para pendonor darah sukarela juga ikhlas membantu.
         </p>
     </section>
 
     <section class="flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-center mt-20 px-4 md:px-0">
-        <a href="#" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
+        <routerLink to="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icondarah.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Donorkan</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
-        </a>
-        <a href="#" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
+        </routerLink>
+        <routerLink to="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icondarah.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Permohonan</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
-        </a>
-        <a href="#" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
+        </routerLink>
+        <routerLink to="#" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icontelepon.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Hubungi</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
-        </a>
+        </routerLink>
     </section>
 </main>
 
@@ -190,7 +189,6 @@
 </main>
 
     </section>
-   
 </template>
 
 <script setup>
