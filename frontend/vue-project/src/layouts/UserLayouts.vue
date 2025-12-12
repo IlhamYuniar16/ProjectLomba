@@ -29,9 +29,9 @@ const logoutUser = () => {
                 <img class="md:w-13 w-9 md:py-0 py-5" src="../assets/img/logoyogyalife.png" alt="">
                 <h1 class="text-3xl text-primary">Yogyalife</h1>
             </div>
-            <main class="gap-10 hidden md:flex items-center ">
-                <a href="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</a>
-                <a href="/daftarakun" v-if="!store.isLoggedIn" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</a>
+            <main class="gap-3 hidden md:flex items-center ">
+                <router-link to="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</router-link>
+                <router-link to="/daftarakun" v-if="!store.isLoggedIn" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</router-link>
                 <a v-if="store.isLoggedIn" class="text-danger">Hi, {{ store.user.name }} </a>
                 <button @click="logoutUser" v-if="store.isLoggedIn" class="ml-3 text-red-600">Logout</button>
             </main>
@@ -39,21 +39,21 @@ const logoutUser = () => {
         </main>
         <main class="bg-bgColor md:block hidden">
             <main class="bg-bgColor flex justify-evenly container m-auto">
-                <a href="/" :class="isActiveMenu('/') " class=" py-5 px-5  font-light ">Beranda</a>
-                <a href="/tentang" :class="isActiveMenu('/tentang') " class="py-5 px-5 font-light">Tentang</a>
-                <a href="/permohonan" :class="isActiveMenu('/permohonan')" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Permohonan</a>
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</a>
+                <router-link to="/" :class="isActiveMenu('/') " class=" py-5 px-5  font-light ">Beranda</router-link>
+                <router-link to="/tentang" :class="isActiveMenu('/tentang') " class="py-5 px-5 font-light">Tentang</router-link>
+                <router-link to="/permohonan" :class="isActiveMenu('/permohonan')" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Permohonan</router-link>
+                <router-link to="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</router-link>
             </main>
         </main>
         <main v-if="openNavbar" class="bg-bgColor md:hidden">
             <main class="bg-bgColor pb-5 flex-col pr-2 flex items-end justify-end">
-                <a href="/" :class="isActiveMenuMobile('/')" class="py-5 px-5 font-light">Beranda</a>
-                <a href="/tentang" :class="isActiveMenuMobile('/tentang')" class="py-5 px-5 font-light">Tentang</a>
-                <a href="/permohonan" :class="isActiveMenuMobile('/permohonan')" class=" py-5 px-5 font-light">Permohonan</a>
-                <a href="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</a>
+                <router-link to="/" :class="isActiveMenuMobile('/')" class="py-5 px-5 font-light">Beranda</router-link>
+                <router-link to="/tentang" :class="isActiveMenuMobile('/tentang')" class="py-5 px-5 font-light">Tentang</router-link>
+                <router-link to="/permohonan" :class="isActiveMenuMobile('/permohonan')" class=" py-5 px-5 font-light">Permohonan</router-link>
+                <router-link to="" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</router-link>
                 <div class="flex gap-5">
-                  <a href="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</a>
-                  <a href="/daftarakun" v-if="!store.isLoggedIn" class="bg-secondary px-5 py-2 rounded-full text-primary">Daftar</a>
+                  <router-link to="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</router-link>
+                  <router-link to="/daftarakun" v-if="!store.isLoggedIn" class="bg-secondary px-5 py-2 rounded-full text-primary">Daftar</router-link>
                 </div>
             </main>
         </main>
