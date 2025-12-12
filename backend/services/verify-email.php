@@ -19,23 +19,23 @@ if(isset($_GET['token'])) {
 
             if($update_token_status_run) {
                 $_SESSION['status'] = "Your account has been verified!";
-                header("Location: ../../index.php");
+                header("Location: http://localhost:5173/masuk");
             } else {
                 $_SESSION['status'] = "Verification failed!";
-                header("Location: ../../index.php");
+                header("Location: http://localhost:5173/masuk");
             }
         } else {
-            $_SESSION['status'] = "Email Already Verified. Please Login";
-            header("Location: ../../index.php");
+            $_SESSION['status'] = "Email Already Verified. Please masuk";
+            header("Location: http://localhost:5173/masuk");
             exit();
         }
     } else {
         $_SESSION['status'] = "This Token does not exist";
-        header("Location: ../../index.php");
+        header("Location: http://localhost:5173/masuk");
         exit();
     } 
 } else {
         $_SESSION['status'] = "Not Allowed";
-        header("Location: ../../index.php");
+        header("Location: http://localhost:5173/masuk");
     }
 ?>

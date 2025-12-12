@@ -6,8 +6,9 @@
                 <h1 class="text-3xl text-primary">Yogyalife</h1>
             </div>
             <main class="gap-10 flex items-center">
-                <a href="/masuk" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</a>
-                <a href="/daftarakun" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</a>
+                <a href="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</a>
+                <a href="/daftarakun" v-if="!store.isLoggedIn" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</a>
+                <a v-if="store.isLoggedIn" class="text-danger">Hi, {{ store.user.name }} </a>
             </main>
         </main>
         <main class="bg-bgColor">
@@ -33,5 +34,5 @@
 </template>
 
 <script setup>
-
+import { store } from '../stores/stores'
 </script>

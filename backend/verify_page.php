@@ -1,28 +1,5 @@
 <?php
 session_start();
-include 'db/db.php';
-
-$token = $_GET['token'] ?? null;
-$status = 'info';
-$message = 'Token tidak ditemukan';
-
-if ($token) {
-    $query = mysqli_query($db, "SELECT verify_status FROM users WHERE verify_token='$token' LIMIT 1");
-    if (mysqli_num_rows($query) > 0) {
-        $user = mysqli_fetch_assoc($query);
-        if ($user['verify_status'] == 0) {
-            mysqli_query($db, "UPDATE users SET verify_status=1 WHERE verify_token='$token'");
-            $status = 'success';
-            $message = 'Email berhasil diverifikasi! Silakan login.';
-        } else {
-            $status = 'info';
-            $message = 'Email sudah diverifikasi sebelumnya.';
-        }
-    } else {
-        $status = 'error';
-        $message = 'Token tidak valid.';
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +19,6 @@ if ($token) {
 <div class="alert <?php echo htmlspecialchars($status); ?>">
     <?php echo htmlspecialchars($message); ?>
 </div>
-<a href="../../index.php">Kembali ke Beranda</a>
+<a href="http://localhost:5173/masuk">Kembali ke Beranda</a>
 </body>
 </html>
