@@ -33,10 +33,10 @@
 </template>
 
 <script setup>
-import axios from 'axios'
 import { ref } from 'vue'
 import { store } from '../stores/stores'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const email = ref('')
 const password = ref('')
@@ -49,26 +49,24 @@ const login = async () => {
   }
 
   try {
-    const res = await axios.post(
-      "http://localhost/ProjectLomba/backend/login.php",
-      {
-        email: email.value,
-        password: password.value
-      },
-      { headers: { "Content-Type": "application/json" },
-      withCredentials: true
-      }
-     
-    )
+    const res = await axios.post("http://localhost/ProjectLomba/backend/login.php", {
+      email: email.value,
+      password: password.value
+    }, {
+      headers: { "Content-Type": "application/json" }
+    })
 
     if(res.data.status === "success"){
+      // Update store dan localStorage
       store.isLoggedIn = true
       store.user = res.data.user
-      if(res.data.role === "admin"){
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+
+      // Redirect berdasarkan role
+      if(res.data.user.role === "admin"){
         router.push("/admin/dashboard")
       } else {
         router.push("/")
-        console.log(res.data)
       }
     } else {
       alert(res.data.message)

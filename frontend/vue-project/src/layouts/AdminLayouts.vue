@@ -2,11 +2,21 @@
 import { ref } from 'vue';
 import {ArrowLeftStartOnRectangleIcon, ArrowRightIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
+import { store } from '../stores/stores'
 
-    
-const isOpen = ref(false)
+
 const router = useRouter()
+const isOpen = ref(false)
 const route = useRoute()
+
+const logout = () => {
+  // Reset state user
+  store.isLoggedIn = false
+  store.user = null
+
+  // Redirect ke login
+  router.push('/masuk')
+}
 
 const isActiveMenu = (path)=> {
     return route.path === path ? 'text-[#DC1921]' : 'group-hover:text-[#DC1921] '
@@ -92,7 +102,7 @@ const toggleSidebar = ()=> {
                         <div :class="isOpen ? 'justify-center' : 'px-6'" class="w-full flex items-center text-[#DC1921] transition-all duration-300">
                             <ArrowLeftStartOnRectangleIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
-                            <p :class="isOpen ? 'hidden' : ''">Logout</p>
+                            <p @click="logout" :class="isOpen ? 'hidden' : ''">Logout</p>
                         </div>
                     </li>
                 </ul>
