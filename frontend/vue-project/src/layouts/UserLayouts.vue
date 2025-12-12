@@ -1,11 +1,31 @@
 <script setup>
 import Footer from '@/components/Footer.vue';
 import { store, logout } from '@/stores/stores';
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const openNavbar = ref(false)
 const route = useRoute()
+const isVisible = ref(false)
+
+function checkScroll() {
+  isVisible.value = window.scrollY > 1300
+}
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  })
+}
+
+onMounted(() => {
+  window.addEventListener("scroll", checkScroll)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", checkScroll)
+})
 
 const isActiveMenu = (path)=> {
     return route.path === path ? 'bg-primary text-white' : 'hover:bg-primary hover:text-bgColor'
@@ -38,7 +58,7 @@ const logoutUser = () => {
             <button @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
         </main>
         <main class="bg-bgColor md:block hidden">
-            <main class="bg-bgColor flex justify-evenly container m-auto">
+            <main class="bg-bgColor flex gap-20 justify-center container m-auto">
                 <router-link to="/" :class="isActiveMenu('/') " class=" py-5 px-5  font-light ">Beranda</router-link>
                 <router-link to="/tentang" :class="isActiveMenu('/tentang') " class="py-5 px-5 font-light">Tentang</router-link>
                 <router-link to="/permohonan" :class="isActiveMenu('/permohonan')" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Permohonan</router-link>
@@ -58,6 +78,10 @@ const logoutUser = () => {
             </main>
         </main>
         <router-view/>
+        <button v-if="isVisible" @click="scrollToTop" class="fixed bottom-6 animate-bounce right-6 bg-primary text-white px-4 py-4 rounded-full cursor-pointer shadow-xl transition-all duration-300 hover:scale-110"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+</svg>
+</button>
         <Footer/>
     </section>
 </template>

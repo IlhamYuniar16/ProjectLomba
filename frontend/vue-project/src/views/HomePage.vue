@@ -12,7 +12,7 @@
             </main>
             <main class="mt-5 md:mx-0 mx-2">
             <div class="w-full flex justify-center items-center py-8 bg-secondary">
-              <div class="relative w-full max-w-6xl h-100 bg-white rounded-xl shadow overflow-hidden">
+              <div class="relative w-full max-w-7xl h-130 bg-white rounded-xl shadow overflow-hidden">
                 <div class="flex h-full transition-transform duration-500" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
                   <div
                     v-for="(slide, i) in slides"
@@ -27,15 +27,21 @@
                 </div>
                 <button
                   @click="prev"
-                  class="absolute top-1/2 left-3 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
+                  class="absolute cursor-pointer top-1/2 left-3 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
                 >
-                  ‹
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+</svg>
+
                 </button>
                 <button
                   @click="next"
-                  class="absolute top-1/2 right-3 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
+                  class="absolute top-1/2 right-3 cursor-pointer -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
                 >
-                  ›
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+</svg>
+
                 </button>
                 
                 <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
@@ -195,7 +201,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { store, logout } from '../stores/stores'
 import { useRouter } from 'vue-router'
 import img1 from '../assets/img/iklan.png'
@@ -204,7 +210,9 @@ import img3 from '../assets/img/iklan3.png'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 
-const active = ref(0)
+const active = ref('Kebutuhan')
+const intervalTime = 3000
+let autoSlide
 const slides = [
   img1,
   img2,
@@ -220,5 +228,15 @@ function next() {
 function prev() {
   currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length
 }
+
+onMounted(() => {
+  autoSlide = setInterval(() => {
+    next()
+  }, intervalTime)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(autoSlide)
+})
 
 </script>
