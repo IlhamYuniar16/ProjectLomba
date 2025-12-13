@@ -2,7 +2,14 @@
 import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } from '@heroicons/vue/24/solid';
 import { ref, onMounted } from 'vue';
 import axios from 'axios'
+
 const laporan_donor = ref([])
+const showFilter = ref(false)
+
+const openFilter = () => {
+    showFilter.value = !showFilter.value
+}
+
 const fetchLaporanDonor = async()=> {
     try{
         const res = await axios.get(`http://localhost/ProjectLomba/backend/laporan_donor.php`)
@@ -29,10 +36,43 @@ onMounted(()=>{
         <div class="mt-5">
             <div class="flex items-center justify-between">
                 <input type="search" class="px-4 py-2 rounded-full bg-secondary outline-none max-w-sm w-full" placeholder="Cari...">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 relative">
+                    <FunnelIcon @click="openFilter" class="size-6 text-gray-300 cursor-pointer"/>
                     <a @click="exportFile('donor')" class="flex items-center gap-3 px-6 py-2 bg-green-500 rounded text-white cursor-pointer"><CloudArrowDownIcon class="size-5"/>Excel</a>
-                    <FunnelIcon class="size-6 text-gray-300 cursor-pointer"/>
+
+                    <!-- MODAL FILTER -->
+                    <div v-if="showFilter" class="absolute right-30 top-10 bg-white w-72 rounded-xl border-neutral-300 shadow-lg border p-4 z-50">
+                        <div class="flex items-center gap-3 mb-4 border-b border-neutral-300 pb-3">
+                            <FunnelIcon class="size-5 text-gray-300"/>
+                            <h1 class="font-semibold">Filter Data</h1>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">Status</label>
+                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Status--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="">Gol Darah</label>
+                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Gol Darah--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 pb-3">
+                            <label for="">Jenis Donor</label>
+                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Jenis Donor--</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-5 border-t border-neutral-300 pt-4">
+                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
+                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
+                        </div>
+                    </div>
                 </div>
+
             </div>
 
             <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">

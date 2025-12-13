@@ -6,8 +6,12 @@ import {alertSuccess, alertError, alertConfirm} from "../../services/alert.js"
 
 const showModal = ref(false);
 const darurat = ref([])
-
 const searchQuery = ref('')
+const showFilter = ref(false)
+
+const openFilter = () => {
+    showFilter.value = !showFilter.value
+}
 
 const fetchDarahDarurat = async()=> {
     try{
@@ -281,9 +285,41 @@ onMounted(()=>{
         <div class="mt-5">
             <div class="flex items-center justify-between">
                 <input v-model="searchQuery" type="text" class="px-4 py-2 rounded-full bg-secondary outline-none max-w-sm w-full" placeholder="Cari nama pasien">
-                <div class="flex items-center gap-3">
-                    <FunnelIcon class="size-6 text-gray-300 cursor-pointer"/>
+                <div class="flex items-center gap-3 relative">
+                    <FunnelIcon @click="openFilter" class="size-6 text-gray-300 cursor-pointer"/>
                     <button @click="openModal" class="px-6 py-2 bg-primary hover:bg-red-700 rounded text-white cursor-pointer">+ Tambah Data</button>
+
+                    <!-- MODAL FILTER -->
+                    <div v-if="showFilter" class="absolute right-30 top-10 bg-white w-72 rounded-xl border-neutral-300 shadow-lg border p-4 z-50">
+                        <div class="flex items-center gap-3 mb-4 border-b border-neutral-300 pb-3">
+                            <FunnelIcon class="size-5 text-gray-300"/>
+                            <h1 class="font-semibold">Filter Data</h1>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">Status Permohonan</label>
+                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Status Permohonan--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="">Kabupaten</label>
+                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Kabupaten--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 pb-3">
+                            <label for="">Gol Darah</label>
+                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Gol Darah--</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-5 border-t border-neutral-300 pt-4">
+                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
+                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 

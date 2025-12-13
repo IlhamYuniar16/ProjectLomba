@@ -4,7 +4,6 @@ import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocum
 import { useRoute, useRouter } from 'vue-router';
 import { store } from '../stores/stores'
 
-
 const router = useRouter()
 const isOpen = ref(false)
 const route = useRoute()
