@@ -56,7 +56,9 @@ const filteredUrgent = computed(() => {
   )
 })
 onMounted(()=>{
-    fetchUrgent()
+    setInterval(() => {
+        fetchUrgent()
+    }, 1000)
 })
 
 </script>
@@ -141,7 +143,7 @@ onMounted(()=>{
             <span class="text-bgColor text-2xl mb-2">Permohonan</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
         </routerLink>
-        <routerLink to="#" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
+        <routerLink to="/hubungi" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icontelepon.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Hubungi</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
@@ -181,8 +183,8 @@ onMounted(()=>{
     </section>
 
     <section class="container mx-auto mt-6 px-4 md:px-0 flex flex-col gap-2">
-        <div v-if="active === 'Kebutuhan'" v-for="(item) in urgent" :key="item.id" class="flex flex-col gap-3 w-full max-w-md mx-auto">
-            <div  class="bg-bgColor flex justify-between items-center p-4 border rounded">
+        <div  class="flex flex-col gap-3 w-full max-w-md mx-auto overflow-y-scroll h-100 no-scrollbar">
+            <div v-if="active === 'Kebutuhan'" v-for="(item) in urgent" :key="item.id" class="bg-bgColor  flex justify-between items-center p-4 border rounded">
                 <div class="flex items-center gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -197,41 +199,97 @@ onMounted(()=>{
                     <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
                 </div>
             </div>
-        
-            
-        </div>
-
-
-        <div v-if="active === 'Pencarian'"  class="flex flex-col gap-3 w-full max-w-md mx-auto">
-          <div  class="flex border max-w-md px-3 py-3 rounded-2xl">
-            <input type="text" v-model="searchQuery" class="outline-none w-full" placeholder="Cari nama pasien">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-            </div>
-            <div v-for="(item) in filteredUrgent" :key="item.id" class="bg-bgColor flex justify-between items-center p-4 border rounded">
-                <div class="flex items-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                    <div class="flex flex-col">
-                        <span class="text-primary font-semibold">#YL-U{{ item.id }}</span>
-                        <span>{{ item.nama_pasien }} - {{ item.lokasi_pasien }}</span>
+            <div v-if="active === 'Pencarian'"  class="flex flex-col gap-3 w-full max-w-md mx-auto overflow-y-scroll h-100 no-scrollbar">
+                <div  class="flex border max-w-md px-3 py-3 rounded-2xl">
+                <input type="text" v-model="searchQuery" class="outline-none w-full" placeholder="Cari nama pasien">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                </div>
+                <div v-for="(item) in filteredUrgent" :key="item.id" class="bg-bgColor flex justify-between items-center p-4 border rounded">
+                    <div class="flex items-center gap-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                        <div class="flex flex-col">
+                            <span class="text-primary font-semibold">#YL-U{{ item.id }}</span>
+                            <span>{{ item.nama_pasien }} - {{ item.lokasi_pasien }}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-red-500 font-semibold">URGENT</span>
+                        <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-red-500 font-semibold">URGENT</span>
-                    <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
-                </div>
             </div>
-        
+            <div v-if="active === 'History'" class="container max-w-4xl mx-auto grid grid-cols-1 gap-5">
+                <div class="bg-white w-full rounded-2xl mx-auto shadow-md p-6 flex flex-col justify-between">
+              <div class="mb-4">
+                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600">
+                  Diterima
+                </span>
+              </div>
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Nama Pasien</span>
+                  <span class="font-medium">Ilham Yuniar</span>
+                </div>
             
-        </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Rumah Sakit</span>
+                  <span class="font-medium">Rs Kumalasiwi</span>
+                </div>
 
-        <div v-if="active === 'History'" class="text-center">
-            <h1>History</h1>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Golongan Darah</span>
+                  <span class="font-medium">A</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Tanggal</span>
+                  <span class="font-medium">01 Jan 2025</span>
+                </div>
+              </div>
+              <div class="mt-6">
+                <button class="min-w-2xs cursor-pointer border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
+                  Batalkan Permohonan
+                </button>
+              </div>
+            </div>
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
+              <div class="mb-4">
+                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
+                  Not eligibl
+                </span>
+              </div>
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Nama Pendonor</span>
+                  <span class="font-medium">Ilham Yuniar</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Golongan Darah</span>
+                  <span class="font-medium">A</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Tanggal</span>
+                  <span class="font-medium">01 Jan 2025</span>
+                </div>
+
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Jenis Donor</span>
+                  <span class="font-medium">Darah Penuh</span>
+                </div>
+              </div>
+              <!-- <div class="mt-6">
+                <button class="min-w-2xs cursor-pointer border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
+                  Batalkan Permohonan
+                </button>
+              </div> -->
+            </div>
+            </div>
         </div>
     </section>
 </main>
-
-    </section>
+</section>
 </template>
-

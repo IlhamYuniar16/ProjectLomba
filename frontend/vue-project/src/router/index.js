@@ -42,9 +42,9 @@ const router = createRouter({
       ]
     },
     {
-      path: '/',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
+      path: '/hubungi',
+      name: 'hubungi',
+      component: () => import('../views/HubungiPage.vue'),
     },
     {
       path: '/masuk',
