@@ -38,17 +38,20 @@ const prevPage = () => {
 
 const fetchLaporan = async () => {
     try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/laporan_permohonan.php', {
-            params: {
-                search: searchQuery.value,
-                status_pengajuan: filterStatus.value,
-                status_urgent: filterStatusUrgent.value,
-                gol_darah: filterGolDarah.value,
-                jenis_donor: filterJenisDonor.value
+        const res = await axios.get(
+            'http://localhost/ProjectLomba/backend/laporan_permohonan.php',
+            {
+                params: {
+                    search: searchQuery.value,
+                    status_pengajuan: filterStatus.value,
+                    status_urgent: filterStatusUrgent.value,
+                    gol_darah: filterGolDarah.value,
+                    jenis_donor: filterJenisDonor.value
+                }
             }
-        })
+        )
         laporan_permohonan.value = res.data.data
-    } catch(err) {
+    } catch (err) {
         console.log(err)
     }
 }

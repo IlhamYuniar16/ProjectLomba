@@ -3,6 +3,29 @@
 import { store } from '@/stores/stores';
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router';
+const router = useRouter()
+
+const isLogin = ref(false)
+
+const checkLogin = async () => {
+    try {
+        const res = await axios.get(
+            "http://localhost/ProjectLomba/backend/check_login.php",
+            { withCredentials: true }
+        );
+
+        if (!res.data.isLogin) {
+            router.push('/masuk'); // ⬅ redirect
+        }
+
+        isLogin.value = res.data.isLogin;
+
+    } catch (err) {
+        router.push('/masuk'); // jika error juga redirect
+    }
+};
+
 
 const activeTab = ref('permohonan')
 
@@ -14,7 +37,6 @@ const tabs = [
 const rs_list = ref([])
 const selectedRS = ref('')
 
-// Ambil data tipe darah dari backend
 const getRS = async () => {
     try {
         const res = await axios.get('http://localhost/ProjectLomba/backend/get_rs.php')
@@ -28,7 +50,6 @@ const getRS = async () => {
 const kabupaten_list = ref([])
 const lokasi_pasien = ref('')
 
-// Ambil data tipe darah dari backend
 const getKab = async () => {
     try {
         const res = await axios.get('http://localhost/ProjectLomba/backend/get_kabupaten.php')
@@ -81,21 +102,23 @@ const submitForm = async () => {
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },
-                withCredentials: true // WAJIB
+                withCredentials: true
             }
-        );
-
+        )
+        isLogin.value = res.data.isLogin
+        alert(isLogin)
         if(res.data.status === "success"){
             alert(res.data.message);
         } else {
             alert(res.data.message);
         }
-    } catch (err) {
-        console.error("AXIOS ERROR:", err);
+    } catch {
+        isLogin.value = false
     }
 };
 
 onMounted(() => {
+    checkLogin()
     getRS()
     getKab()
 });
@@ -106,11 +129,10 @@ const tipe_darah = ref('')
 const rhesus_donor = ref('')
 const jenis_donor = ref('')
 const catatan_kesehatan = ref('')
-const rumah_sakit = ref('') // rumah sakit donor
+const rumah_sakit = ref('')
 
 const submitDonor = async () => {
-    const formDonor = new FormData(); // <- BENAR
-
+    const formDonor = new FormData();
     formDonor.append("nama_pendonor", nama_pendonor.value);
     formDonor.append("tanggal_lahir", tanggal_lahir.value);
     formDonor.append("jenis_kelamin", jenis_kelamin.value);
@@ -384,7 +406,7 @@ const submitDonor = async () => {
     
                     
                     <div class="flex items-center justify-center mt-8">
-                        <button @click="submitDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Kirim Sekarang</button>
+                        <button type="submit" @click="submitDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Kirim Sekarang</button>
                     </div>
                 </form>
             </div>
