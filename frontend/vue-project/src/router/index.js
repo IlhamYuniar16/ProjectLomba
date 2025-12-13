@@ -9,6 +9,7 @@ import FormView from '@/views/FormView.vue'
 import UserLayouts from '@/layouts/UserLayouts.vue'
 import HomePage from '../views/HomePage.vue'
 import TentangPage from '@/views/TentangPage.vue'
+import HistoryPage from '@/views/HistoryPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
           path: 'permohonan',
           name: 'permohonan',
           component: FormView
+        },
+        {
+          path: 'history',
+          name: 'history',
+          component: HistoryPage
         },
       ]
     },

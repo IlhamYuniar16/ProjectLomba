@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
 import { store } from '../stores/stores'
@@ -29,13 +29,24 @@ const toggleSidebar = ()=> {
     isOpen.value = !isOpen.value
 }
 
+onMounted(() => {
+  const saved = localStorage.getItem("myContentOpen");
+  if (saved !== null) {
+    isOpen.value = saved === "true";
+  }
+});
+
+watch(isOpen, (val) => {
+  localStorage.setItem("myContentOpen", val);
+});
+
 </script>
 
 <template>
-    <section class="bg-gray-100 w-full min-h-screen">
+    <section class="bg-gray-100 w-full min-h-screen ">
 
         <!-- SIDEBAR -->
-        <div class="fixed top-0 left-0 h-screen bg-white transition-all duration-300 " :class="isOpen ? 'w-16' : 'w-64'">
+        <div class="fixed md:block hidden top-0 left-0 h-screen bg-white transition-all duration-300 " :class="isOpen ? 'w-16' : 'w-64'">
             <div class="pt-5 relative flex flex-col h-full">
                 <div class="flex items-center gap-2 px-5 overflow-x-hidden">
                     <svg class="h-10" viewBox="0 0 61 84" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -108,9 +119,61 @@ const toggleSidebar = ()=> {
             </div>
         </div>
 
+        
         <!-- MAIN CONTENT -->
-        <div :class="isOpen ? 'ml-16' : 'ml-64'" class="pl-3 transition-all duration-300">
-            <router-view/>
+        <div :class="isOpen ? 'md:ml-16' : 'md:ml-64'" class="md:pl-3 transition-all duration-300">
+            <!-- Mobile -->
+             <main class="py-3 md:hidden">
+                <main class="flex items-center justify-between px-5">
+                    <div class="flex gap-2 items-center">
+                        <img class="w-6" src="../assets/img/logoyogyalife.png" alt="">
+                        <h1 class="text-primary font-semibold text-xl">Yogyalife</h1>
+                    </div>
+                    <div class="" @click="isOpen = !isOpen">
+                        <svg v-if="isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                    </div>
+                </main>
+                 <main v-if="isOpen" class="flex flex-col pt-5 items-start">
+                    <RouterLink to="/admin/dashboard" class="flex items-center cursor-pointer gap-3 group mb-5">
+                        <div :class="[ isHandleBorder('/admin/dashboard')]" class="h-10 w-2 rounded-r-2xl"></div>
+                        <div :class="[ isActiveMenu('/admin/dashboard')]" class="w-full flex gap-3 items-center transition-all duration-300">
+                            <FolderOpenIcon  class="size-6"/>
+                            <p class="">Dashboard</p>
+                        </div>
+                    </RouterLink>
+                    <RouterLink to="/admin/darah-darurat" class="flex items-center cursor-pointer gap-3 group mb-5">
+                        <div :class="[ isHandleBorder('/admin/darah-darurat')]" class="h-10 w-2 rounded-r-2xl"></div>
+                        <div :class="[ isActiveMenu('/admin/darah-darurat')]" class="w-full gap-3 flex items-center transition-all duration-300">
+                            <HeartIcon  class="size-6"/>
+                            <p class="">Darah Darurat</p>
+                        </div>
+                    </RouterLink>
+                    <span class="opacity-65 pl-2">Laporan</span>
+                    <RouterLink to="/admin/laporan-donor" class="flex items-center cursor-pointer gap-3 group mb-5">
+                        <div :class="[ isHandleBorder('/admin/laporan-donor')]" class="h-10 w-2 rounded-r-2xl"></div>
+                        <div :class="[ isActiveMenu('/admin/laporan-donor')]" class="w-full gap-3 flex items-center transition-all duration-300">
+                            <BeakerIcon class="size-6"/>
+                            <p class="">Donor</p>
+                        </div>
+                    </RouterLink>
+                    <RouterLink to="/admin/laporan-permohonan" class="flex items-center cursor-pointer gap-3 group mb-5">
+                        <div :class="[ isHandleBorder('/admin/laporan-permohonan')]" class="h-10 w-2 rounded-r-2xl"></div>
+                        <div :class="[ isActiveMenu('/admin/laporan-permohonan')]" class="w-full gap-3 flex items-center transition-all duration-300">
+                            <ClipboardDocumentListIcon  class="size-6"/>
+                            <p class="">Permohonan</p>
+                        </div>
+                    </RouterLink>
+                    <li class="flex gap-3 items-center cursor-pointer group mb-2">
+                        <div  class="h-10 w-2 "></div>
+                        <div  class="w-full flex items-center gap-3 text-primary transition-all duration-300">
+                            <ArrowLeftStartOnRectangleIcon class="size-6 "/>
+                            <p >Logout</p>
+                        </div>
+                    </li>
+                 </main>
+             </main>
+             <router-view/>
         </div>
     </section>
 </template>

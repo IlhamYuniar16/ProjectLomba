@@ -19,8 +19,8 @@
                     <ul class="space-y-2">
                     <li><a href="/" class="hover:text-red-500">Beranda</a></li>
                     <li><a href="/tentang" class="hover:text-red-500">Tentang</a></li>
-                    <li><a href="#" class="hover:text-red-500">Permohonan</a></li>
-                    <li><a href="#" class="hover:text-red-500">History</a></li>
+                    <li><a href="/permohonan" class="hover:text-red-500">Permohonan</a></li>
+                    <li><a href="/history" class="hover:text-red-500">History</a></li>
                     </ul>
                 </div>
                 <div class="text-center md:text-left">

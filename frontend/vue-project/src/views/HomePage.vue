@@ -189,7 +189,7 @@ onMounted(()=>{
                     </svg>
                     <div class="flex flex-col">
                         <span class="text-primary font-semibold">#YL-U{{ item.id }}</span>
-                        <span>{{ item.nama_pasien }}</span>
+                        <span>{{ item.nama_pasien }}- {{ item.lokasi_pasien }}</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">

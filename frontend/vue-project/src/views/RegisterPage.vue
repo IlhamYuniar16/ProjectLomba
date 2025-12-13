@@ -35,7 +35,10 @@
           <input class="outline-none  w-full" type="password" v-model="konfirmasipassword" placeholder="Password">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
         </div>
-        <button @click="register" class="my-5 bg-primary rounded-full py-2 text-bgColor cursor-pointer">Daftar</button>
+        <div class="my-5 bg-primary flex items-center justify-center rounded-full py-2 text-bgColor cursor-pointer" @click="register">
+          <svg v-if="loading" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="animate-spin size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+          <button v-else="loading" class="">Daftar</button>
+        </div>
         <div>
           <span class="text-xs">Sudah jadi anggota? <routerLink to="/masuk" class="underline text-primary">Masuk Sekarang</routerLink></span>
         </div>
@@ -55,6 +58,7 @@ const email = ref('')
 const password = ref('')
 const konfirmasipassword = ref('')
 const router = useRouter()
+const loading = ref(false)
 
 const register = async () => {
   if(!name.value || !email.value || !password.value || !konfirmasipassword.value){
@@ -66,6 +70,9 @@ const register = async () => {
     alert("Password tidak sama!")
     return
   }
+  if (loading.value) return
+  
+  loading.value = true 
 
   try {
     const res = await axios.post(
@@ -85,7 +92,8 @@ const register = async () => {
     konfirmasipassword.value = ""
 
     if(res.data.status === "success"){
-      await alertSuccess("Berhasil Registrasi")
+      await alertSuccess("Berhasil Registrasi, Cek email untuk verifikasi")
+      loading.value = false
       router.push({path: '/masuk'})
     } else {
       await alertError(res.data.status)
@@ -94,6 +102,8 @@ const register = async () => {
   } catch (err) {
     console.error(err)
     alert("Gagal terhubung server!")
+  } finally {
+    loading.value = false
   }
 }
 </script>
