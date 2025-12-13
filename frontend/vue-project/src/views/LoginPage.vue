@@ -76,9 +76,9 @@ const login = async () => {
 
       // Redirect berdasarkan role
       if(res.data.user.role === "admin"){
-        router.push("/admin/dashboard")
+        router.push({path: '/admin/dashboard'})
       } else {
-        router.push("/")
+        router.push({path: '/'})
       }
     } else {
       alert(res.data.message)
