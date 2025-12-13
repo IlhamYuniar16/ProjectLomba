@@ -318,7 +318,7 @@ onMounted(()=>{
             </div>
         </div>
 
-        <div class="mt-5">
+        <div class="mt-5 ">
             <div class="xl:flex xl:flex-row  flex-col items-center justify-between">
                 <input v-model="searchQuery" type="text" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari nama pasien">
                 <div class="flex xl:flex-row flex-row-reverse items-center mt-5 lg:mt-0 gap-3 relative">
