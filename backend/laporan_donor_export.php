@@ -21,7 +21,7 @@ if($laporan == "donor") {
             ORDER BY pd.id_pengajuan_donor DESC";
     $result = mysqli_query($db, $query);
 
-echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhesus\tStatus Pengajuan\tCatatan Kesehatan\n";
+echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhesus\tRumah Sakit\tStatus Pengajuan\tCatatan Kesehatan\n";
 
     $no = 1;
     while($row = mysqli_fetch_assoc($result)) {
@@ -29,6 +29,7 @@ echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhes
          $row['created_at']."\t".
          $row['nama_pendonor']."\t".
          $row['tanggal_lahir']."\t".
+         $row['rumah_sakit']."\t".
          $row['jenis_kelamin']."\t".
          $row['tipe_darah']."\t".
          $row['rhesus']."\t".
@@ -42,16 +43,17 @@ echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhes
     $query = "SELECT * FROM permohonan_pasien ORDER BY status_urgent";
     $result = mysqli_query($db, $query);
 
-    echo "No\tTanggal\tNama Pasien\tGolongan Darah\tRhesus\tRumah Sakit\tJumlah Pendonor\tJenis Donor\tStatus Urgent\tStatus\n";
+    echo "No\tTanggal\tNama Pasien\tRumah Sakit\tLokasi Pasien\tGolongan Darah\tRhesus\tJumlah Pendonor\tJenis Donor\tStatus Urgent\tStatus\n";
 
     $no = 1;
     while($row = mysqli_fetch_assoc($result)) {
         echo $no."\t".
             $row['created_at']."\t".
             $row['nama_pasien']."\t".
+            $row['nama_rumah_sakit']."\t".
+            $row['lokasi_pasien']."\t".
             $row['golongan_darah']."\t".
             $row['rhesus']."\t".
-            $row['nama_rumah_sakit']."\t".
             $row['jumlah_pendonor']."\t".
             $row['jenis_donor_darah']."\t".
             $row['status_urgent']."\t".

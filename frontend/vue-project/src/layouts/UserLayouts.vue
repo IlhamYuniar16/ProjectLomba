@@ -53,7 +53,7 @@ const logoutUser = () => {
                 <router-link to="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</router-link>
                 <router-link to="/daftarakun" v-if="!store.isLoggedIn" class="bg-bgColor px-5 py-2 rounded-full text-primary">Daftar</router-link>
                 <a v-if="store.isLoggedIn" class="text-danger">Hi, {{ store.user.name }} </a>
-                <button @click="logoutUser" v-if="store.isLoggedIn" class="ml-3 text-red-600">Logout</button>
+                <button @click="logoutUser" v-if="store.isLoggedIn" class="ml-3 text-red-600 rounded-lg px-5 py-2 hover:bg-red-600 hover:text-white transition-all 0.25s cursor-pointer">Logout</button>
             </main>
             <button @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
         </main>

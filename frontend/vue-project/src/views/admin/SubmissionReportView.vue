@@ -56,12 +56,14 @@ onMounted(()=>{
                         <tr class="border-b border-neutral-300">
                             <th class="px-4 py-3 text-left">No</th>
                             <th class="px-4 py-3 text-left ">Tanggal</th>
+                            <th class="px-4 py-3 text-left ">Lokasi Pasien</th>
                             <th class="px-4 py-3 text-left ">Nama Pasien</th>
+                            <th class="px-4 py-3 text-left ">Rumah Sakit</th>
                             <th class="px-4 py-3 text-left ">Tipe Darah</th>
                             <th class="px-4 py-3 text-left ">Rhesus</th>
-                            <th class="px-4 py-3 text-left ">Rumah Sakit</th>
                             <th class="px-4 py-3 text-left ">Jumlah Pendonor</th>
                             <th class="px-4 py-3 text-left ">Jenis Donor</th>
+                            <th class="px-4 py-3 text-left ">Foto Formulir</th>
                             <th class="px-4 py-3 text-left ">Status</th>
                             <th class="px-4 py-3 text-left ">Status Urgent</th>
                         </tr>
@@ -71,9 +73,10 @@ onMounted(()=>{
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ index+1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.lokasi_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.golongan_darah }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.rhesus }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jumlah_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jenis_donor_darah }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 "  v-if="item.foto_formulir_rs && item.foto_formulir_rs !== ''"><a :href="`http://localhost/ProjectLomba/backend/${item.foto_formulir_rs}`" Download class="px-3 py-1 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600">Lihat</a></td>
