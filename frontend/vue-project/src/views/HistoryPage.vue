@@ -21,8 +21,8 @@
             </div>
         </main>
         <main v-if="historyTab === 'permohonan'" class="my-20 md:mx-0 mx-5">
-          <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white w-full rounded-2xl max-w-xl mx-auto shadow-md p-6 flex flex-col justify-between">
+          <div class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600">
                   Diterima
@@ -55,7 +55,42 @@
                 </button>
               </div>
             </div>
-            <div class="bg-white w-full rounded-2xl max-w-xl mx-auto shadow-md p-6 flex flex-col justify-between">
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
+              <div class="mb-4">
+                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
+                 Batal
+                </span>
+              </div>
+          
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Nama Pasien</span>
+                  <span class="font-medium">Siti Aisyah</span>
+                </div>
+
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Rumah Sakit</span>
+                  <span class="font-medium">Rs Kumalasiwi</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Golongan Darah</span>
+                  <span class="font-medium">O</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Tanggal</span>
+                  <span class="font-medium">05 Jan 2025</span>
+                </div>
+                
+              </div>
+              <div class="mt-6">
+                <button class="min-w-2xs border cursor-pointer border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
+                  Batalkan Permohonan
+                </button>
+              </div>
+            </div>
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
                  Batal
@@ -93,8 +128,8 @@
           </div>
         </main>
         <main v-if="historyTab === 'donor'" class="my-20 md:mx-0 mx-5">
-          <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white w-full rounded-2xl max-w-xl mx-auto shadow-md p-6 flex flex-col justify-between">
+          <div class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
                   Not eligibl
@@ -127,7 +162,40 @@
                 </button>
               </div> -->
             </div>
-            <div class="bg-white w-full rounded-2xl max-w-xl mx-auto shadow-md p-6 flex flex-col justify-between">
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
+              <div class="mb-4">
+                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600">
+                  eligible
+                </span>
+              </div>
+          
+              <div class="space-y-2 text-sm text-gray-700">
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Nama Pasien</span>
+                  <span class="font-medium">Siti Aisyah</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Golongan Darah</span>
+                  <span class="font-medium">O</span>
+                </div>
+            
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Tanggal</span>
+                  <span class="font-medium">05 Jan 2025</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Jenis Donor</span>
+                  <span class="font-medium">Darah Penuh</span>
+                </div>
+              </div>
+              <!-- <div class="mt-6">
+                <button class="min-w-2xs border cursor-pointer border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
+                  Batalkan Permohonan
+                </button>
+              </div> -->
+            </div>
+            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600">
                   eligible
