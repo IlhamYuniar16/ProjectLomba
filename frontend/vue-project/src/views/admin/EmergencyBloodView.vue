@@ -12,10 +12,32 @@ const filterStatus = ref('')
 const filterGolDarah = ref('')
 const filterLokasiPasien = ref('')
 
-const openFilter = () => {
-    showFilter.value = !showFilter.value
+// PAGGINATION
+const currentPage = ref(1)       
+const perPage = ref(8)            
+const totalPages = computed(() => Math.ceil(darurat.value.length / perPage.value))
+
+const paginatedData = computed(() => {
+    const start = (currentPage.value - 1) * perPage.value
+    const end = start + perPage.value
+    return darurat.value.slice(start, end)
+})
+
+const goToPage = (page) => {
+    if(page >= 1 && page <= totalPages.value) {
+        currentPage.value = page
+    }
 }
 
+const nextPage = () => {
+    if(currentPage.value < totalPages.value) currentPage.value++
+}
+
+const prevPage = () => {
+    if(currentPage.value > 1) currentPage.value--
+}
+
+// READ DATA
 const fetchDarahDarurat = async () => {
     try {
         const res = await axios.get('http://localhost/ProjectLomba/backend/admin_darurat.php', {
@@ -32,6 +54,9 @@ const fetchDarahDarurat = async () => {
     }
 }
 
+const openFilter = () => {
+    showFilter.value = !showFilter.value
+}
 const applyFilter = () => {
     fetchDarahDarurat()
     showFilter.value = false
@@ -65,6 +90,7 @@ const resetForm = ()=> {
     jenis_donor_darah.value = ""
 }
 
+// GET NAMA RS
 const rs_list = ref([])
 const selectedRS = ref('')
 const getRS = async () => {
@@ -77,6 +103,7 @@ const getRS = async () => {
     
 }
 
+// GET NAMA KABUPATEN
 const kabupaten_list = ref([])
 const selectedKab = ref('')
 const getKab = async () => {
@@ -89,7 +116,7 @@ const getKab = async () => {
     
 }
 
-
+// EDIT
 const nama_pasien = ref('')
 const nama_rs = ref('')
 const golongan_darah = ref('')
@@ -178,6 +205,7 @@ const submitForm = async () => {
     
 };
 
+// DELETE
 const handleDelete = async(id)=> {
     const confirm = await alertConfirm("Apakah anda yakin ingin menghapus data ini?")
 
@@ -358,7 +386,7 @@ onMounted(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in darurat" :key="item.id" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                        <tr v-for="(item, index) in paginatedData" :key="item.id" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left">
                                 <div class="flex items-center gap-2">
                                     <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 flex items-center justify-center rounded cursor-pointer">
@@ -369,7 +397,7 @@ onMounted(()=>{
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">{{index + 1}}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.lokasi_pasien }}</td>
@@ -381,26 +409,30 @@ onMounted(()=>{
                             <td class="px-4 py-3 text-left text-neutral-600 "><p class=" w-fit px-4 rounded-full" :class="{
                                                                                 'text-green-500 bg-green-50': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
                                                                                 'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
-                                                                                'text-red-500 bg-red-50': item.status_pengajuan === 'batal'
-                                                                            }">{{ item.status_pengajuan }}</p></td>
+                                                                                'text-red-500 bg-red-50': item.status_pengajuan === 'batal'}">{{ item.status_pengajuan }}</p></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="flex items-center justify-center gap-2 mt-5">
-                <button class="p-2 bg-black rounded text-white cursor-pointer"><ChevronLeftIcon class="size-5"/></button>
-                <div class="mx-5 flex items-center gap-2">
-                    <div class="cursor-pointer">
-                        <p class="px-4 py-2  text-black rounded ">1</p>
-                        <div class="h-[2px] bg-black"></div>
-                    </div>
-                    <div class="cursor-pointer">
-                        <p class="px-4 py-2  text-gray-400 rounded ">2</p>
-                        <div class="h-[2px] bg-gray-300"></div>
-                    </div>
+                <button @click="prevPage" class="p-2 bg-black rounded text-white cursor-pointer">
+                    <ChevronLeftIcon class="size-5"/>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    <button 
+                    v-for="page in totalPages" :key="page"
+                    @click="goToPage(page)"
+                    :class="{'bg-black text-white px-3 py-1 rounded': currentPage === page, 'px-3 py-1 rounded bg-gray-200': currentPage !== page}"
+                    >
+                    {{ page }}
+                    </button>
                 </div>
-                <button class="p-2 bg-black rounded text-white cursor-pointer"><ChevronRightIcon class="size-5"/></button>
+
+                <button @click="nextPage" class="p-2 bg-black rounded text-white cursor-pointer">
+                    <ChevronRightIcon class="size-5"/>
+                </button>
             </div>
         </div>
     </section>

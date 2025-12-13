@@ -1,6 +1,6 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } from '@heroicons/vue/24/solid';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios'
 
 const laporan_permohonan = ref([])
@@ -11,8 +11,29 @@ const filterStatusUrgent = ref('')
 const filterGolDarah = ref('')
 const filterJenisDonor = ref('')
 
-const openFilter = () => {
-    showFilter.value = !showFilter.value
+// PAGGINATION
+const currentPage = ref(1)       
+const perPage = ref(8)            
+const totalPages = computed(() => Math.ceil(laporan_permohonan.value.length / perPage.value))
+
+const paginatedData = computed(() => {
+    const start = (currentPage.value - 1) * perPage.value
+    const end = start + perPage.value
+    return laporan_permohonan.value.slice(start, end)
+})
+
+const goToPage = (page) => {
+    if(page >= 1 && page <= totalPages.value) {
+        currentPage.value = page
+    }
+}
+
+const nextPage = () => {
+    if(currentPage.value < totalPages.value) currentPage.value++
+}
+
+const prevPage = () => {
+    if(currentPage.value > 1) currentPage.value--
 }
 
 const fetchLaporan = async () => {
@@ -33,6 +54,9 @@ const fetchLaporan = async () => {
 }
 
 
+const openFilter = () => {
+    showFilter.value = !showFilter.value
+}
 const applyFilter = () => {
     fetchLaporan()
     showFilter.value = false
@@ -143,8 +167,8 @@ onMounted(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in laporan_permohonan" :key="item.id"  class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
-                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ index+1 }}</td>
+                        <tr v-for="(item, index) in paginatedData" :key="item.id"  class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
@@ -168,18 +192,17 @@ onMounted(()=>{
             </div>
 
             <div class="flex items-center justify-center gap-2 mt-5">
-                <button class="p-2 bg-black rounded text-white cursor-pointer"><ChevronLeftIcon class="size-5"/></button>
-                <div class="mx-5 flex items-center gap-2">
-                    <div class="cursor-pointer">
-                        <p class="px-4 py-2  text-black rounded ">1</p>
-                        <div class="h-[2px] bg-black"></div>
-                    </div>
-                    <div class="cursor-pointer">
-                        <p class="px-4 py-2  text-gray-400 rounded ">2</p>
-                        <div class="h-[2px] bg-gray-300"></div>
-                    </div>
+                <button @click="prevPage" class="p-2 bg-black rounded text-white cursor-pointer">
+                    <ChevronLeftIcon class="size-5"/>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    <button 
+                    v-for="page in totalPages" :key="page" @click="goToPage(page)" :class="{'bg-black text-white px-3 py-1 rounded': currentPage === page, 'px-3 py-1 rounded bg-gray-200': currentPage !== page}">{{ page }}</button>
                 </div>
-                <button class="p-2 bg-black rounded text-white cursor-pointer"><ChevronRightIcon class="size-5"/></button>
+                <button @click="nextPage" class="p-2 bg-black rounded text-white cursor-pointer">
+                    <ChevronRightIcon class="size-5"/>
+                </button>
             </div>
         </div>
     </section>
