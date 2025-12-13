@@ -1,43 +1,62 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } from '@heroicons/vue/24/solid';
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios'
 
-const permohonan = ref([])
-const searchQuery = ref('')
+const laporan_permohonan = ref([])
 const showFilter = ref(false)
+const searchQuery = ref('')
+const filterStatus = ref('')
+const filterStatusUrgent = ref('')
+const filterGolDarah = ref('')
+const filterJenisDonor = ref('')
 
 const openFilter = () => {
     showFilter.value = !showFilter.value
 }
 
-const fetchLaporanPermohonan = async()=> {
-    try{
-        const res = await axios.get(`http://localhost/ProjectLomba/backend/laporan_permohonan.php?search=${searchQuery.value}`)
-        permohonan.value = res.data.data
-    }catch(err){
+const fetchLaporan = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/laporan_permohonan.php', {
+            params: {
+                search: searchQuery.value,
+                status_pengajuan: filterStatus.value,
+                status_urgent: filterStatusUrgent.value,
+                gol_darah: filterGolDarah.value,
+                jenis_donor: filterJenisDonor.value
+            }
+        })
+        laporan_permohonan.value = res.data.data
+    } catch(err) {
         console.log(err)
     }
 }
 
-const filteredPermohonan = computed(() => {
-  if (!searchQuery.value) return permohonan.value
-  return permohonan.value.filter(item =>
-    item.nama_pasien.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
-})
+
+const applyFilter = () => {
+    fetchLaporan()
+    showFilter.value = false
+}
+
+const resetFilter = () => {
+    filterStatus.value = ''
+    filterStatusUrgent.value = ''
+    filterGolDarah.value = ''
+    filterJenisDonor.value = ''
+    fetchLaporan()
+}
+
 
 const exportFile = (type) => {
-  // Gunakan window.open agar browser langsung request ke PHP
   window.open(`http://localhost/ProjectLomba/backend/laporan_donor_export.php?laporan=${type}`, '_blank');
 }
 
 watch(searchQuery, () => {
-  fetchLaporanPermohonan()
+  fetchLaporan()
 })
 
 onMounted(()=>{
-    fetchLaporanPermohonan()
+    fetchLaporan()
 })
 </script>
 
@@ -48,7 +67,7 @@ onMounted(()=>{
         <div class="mt-5">
             <div class="xl:flex xl:flex-row flex-col items-center justify-between">
                 <input v-model="searchQuery" type="text" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari...">
-                <div class="flex xl:flex-row flex-row-reverse items-center mt-5 gap-3 relative">
+                <div class="flex xl:flex-row flex-row-reverse items-center mt-5 lg:mt-0 gap-3 relative">
                     <FunnelIcon @click="openFilter" class="size-6 text-gray-300 cursor-pointer"/>
                     <button @click="exportFile('permohonan')" class="flex items-center gap-3 px-6 py-2 bg-green-500 rounded text-white cursor-pointer"><CloudArrowDownIcon class="size-5"/>Excel</button>
 
@@ -61,32 +80,45 @@ onMounted(()=>{
 
                         <div class="mb-3">
                             <label for="">Status</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterStatus" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Status--</option>
+                                <option value="diterima">Diterima</option>
+                                <option value="pending">Pending</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="batal">Dibatalkan</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="">Status Urgent</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterStatusUrgent" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Status Urgent--</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Not Urgent">Not Urgent</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="">Gol Darah</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterGolDarah" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Gol Darah--</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
                             </select>
                         </div>
                         <div class="mb-3 pb-3">
                             <label for="">Jenis Donor</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterJenisDonor" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Jenis Donor--</option>
+                                <option value="Darah Penuh">Darah Penuh</option>
+                                <option value="Plasma">Plasma</option>
+                                <option value="Trombosit">Trombosit</option>
                             </select>
                         </div>
 
                         <div class="flex items-center gap-5 border-t border-neutral-300 pt-4">
-                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
-                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
+                            <button @click="resetFilter" class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
+                            <button @click="applyFilter" class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -111,7 +143,7 @@ onMounted(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in filteredPermohonan" :key="item.id"  class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                        <tr v-for="(item, index) in laporan_permohonan" :key="item.id"  class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ index+1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>

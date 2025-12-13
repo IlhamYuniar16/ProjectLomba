@@ -1,28 +1,59 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } from '@heroicons/vue/24/solid';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios'
 
 const laporan_donor = ref([])
 const showFilter = ref(false)
+const searchQuery = ref('')
+const filterStatus = ref('')
+const filterGolDarah = ref('')
+const filterJenisDonor = ref('')
 
 const openFilter = () => {
     showFilter.value = !showFilter.value
 }
 
-const fetchLaporanDonor = async()=> {
-    try{
-        const res = await axios.get(`http://localhost/ProjectLomba/backend/laporan_donor.php`)
+const fetchLaporanDonor = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/laporan_donor.php', {
+            params: {
+                search: searchQuery.value,
+                status: filterStatus.value,
+                gol_darah: filterGolDarah.value,
+                jenis_donor: filterJenisDonor.value
+            }
+        })
         laporan_donor.value = res.data.data
     }catch(err){
         console.log(err)
     }
 }
 
+
+const applyFilter = () => {
+    fetchLaporanDonor()
+    showFilter.value = false
+}
+
+const resetFilter = () => {
+    filterStatus.value = ''
+    filterGolDarah.value = ''
+    filterJenisDonor.value = ''
+    fetchLaporanDonor()
+}
+
+
+
+
 const exportFile = (type) => {
   // Gunakan window.open agar browser langsung request ke PHP
   window.open(`http://localhost/ProjectLomba/backend/laporan_donor_export.php?laporan=${type}`, '_blank');
 }
+
+watch(searchQuery, () => {
+  fetchLaporanDonor()
+})
 
 onMounted(()=>{
     fetchLaporanDonor()
@@ -35,8 +66,8 @@ onMounted(()=>{
 
         <div class="mt-5">
             <div class="xl:flex xl:flex-row flex-col items-center justify-between">
-                <input type="search" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari...">
-                <div class="flex xl:flex-row flex-row-reverse items-center mt-5 gap-3 relative">
+                <input type="text" v-model="searchQuery" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari...">
+                <div class="flex xl:flex-row flex-row-reverse items-center mt-5 lg:mt-0 gap-3 relative">
                     <FunnelIcon @click="openFilter" class="size-6 text-gray-300 cursor-pointer"/>
                     <a @click="exportFile('donor')" class="flex items-center gap-3 px-6 py-2 bg-green-500 rounded text-white cursor-pointer"><CloudArrowDownIcon class="size-5"/>Excel</a>
 
@@ -49,26 +80,35 @@ onMounted(()=>{
 
                         <div class="mb-3">
                             <label for="">Status</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterStatus" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Status--</option>
+                                <option value="Eligible">Eligible</option>
+                                <option value="Not Eligible">Not Eligible</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="">Gol Darah</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterGolDarah" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Gol Darah--</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
                             </select>
                         </div>
                         <div class="mb-3 pb-3">
                             <label for="">Jenis Donor</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterJenisDonor" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Jenis Donor--</option>
+                                <option value="Darah Penuh">Darah Penuh</option>
+                                <option value="Plasma">Plasma</option>
+                                <option value="Trombosit">Trombosit</option>
                             </select>
                         </div>
 
                         <div class="flex items-center gap-5 border-t border-neutral-300 pt-4">
-                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
-                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
+                            <button @click="resetFilter" class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
+                            <button @click="applyFilter" class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
                         </div>
                     </div>
                 </div>

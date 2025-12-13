@@ -7,21 +7,43 @@ header("Access-Control-Allow-Credentials: true");
 
 session_start();
 include 'db/db.php';
+$search = $_GET['search'] ?? '';
+$status = $_GET['status'] ?? '';
+$gol_darah = $_GET['gol_darah'] ?? '';
+$jenis_donor = $_GET['jenis_donor'] ?? '';
 
+$query_donor = "SELECT * FROM pengajuan_donor pd 
+                LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id_user 
+                WHERE 1=1";
 
+if($search != '') {
+    $search = mysqli_real_escape_string($db, $search);
+    $query_donor .= " AND dp.nama_pendonor LIKE '%$search%'";
+}
+if($status != '') {
+    $status = mysqli_real_escape_string($db, $status);
+    $query_donor .= " AND pd.status_pengajuan = '$status'";
+}
+if($gol_darah != '') {
+    $gol_darah = mysqli_real_escape_string($db, $gol_darah);
+    $query_donor .= " AND dp.tipe_darah = '$gol_darah'";
+}
+if($jenis_donor != '') {
+    $jenis_donor = mysqli_real_escape_string($db, $jenis_donor);
+    $query_donor .= " AND pd.jenis_donor = '$jenis_donor'";
+}
 
-$query_laporan_donor = "SELECT pd.*, dp.nama_pendonor, dp.tanggal_lahir, dp.jenis_kelamin, dp.tipe_darah, dp.rhesus, dp.catatan_kesehatan 
-                         FROM pengajuan_donor pd LEFT JOIN data_pendonor dp 
-                         ON pd.id_pendonor = dp.id_user ORDER BY pd.id_pengajuan_donor DESC";
-$run_laporan_donor = mysqli_query($db, $query_laporan_donor);
+$query_donor .= " ORDER BY pd.id_pengajuan_donor DESC";
 
-$result = [];
-while($row = mysqli_fetch_assoc($run_laporan_donor)) {
-    $result[] = $row;
+$result = mysqli_query($db, $query_donor);
+$data = [];
+while($row = mysqli_fetch_assoc($result)) {
+    $data[] = $row;
 }
 
 echo json_encode([
     "status" => "success",
-    "data" => $result
+    "data" => $data
 ]);
+
 ?>

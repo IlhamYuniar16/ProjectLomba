@@ -107,12 +107,12 @@ watch(isOpen, (val) => {
                 </ul>
 
                 <ul class="mt-auto cursor-pointer text-primary font-semibold">
-                    <li class="flex items-center cursor-pointer group mb-5">
+                    <li @click="logout" class="flex items-center cursor-pointer group mb-5">
                         <div :class="isOpen ? 'pl-2' : ''" class="h-10 w-2 "></div>
                         <div :class="isOpen ? 'justify-center' : 'px-6'" class="w-full flex items-center text-primary transition-all duration-300">
                             <ArrowLeftStartOnRectangleIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
-                            <p @click="logout" :class="isOpen ? 'hidden' : ''">Logout</p>
+                            <p  :class="isOpen ? 'hidden' : ''">Logout</p>
                         </div>
                     </li>
                 </ul>

@@ -8,26 +8,41 @@ const showModal = ref(false);
 const darurat = ref([])
 const searchQuery = ref('')
 const showFilter = ref(false)
+const filterStatus = ref('')
+const filterGolDarah = ref('')
+const filterLokasiPasien = ref('')
 
 const openFilter = () => {
     showFilter.value = !showFilter.value
 }
 
-const fetchDarahDarurat = async()=> {
-    try{
-        const res = await axios.get(`http://localhost/ProjectLomba/backend/admin_darurat.php?search=${searchQuery.value}`)
+const fetchDarahDarurat = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/admin_darurat.php', {
+            params: {
+                search: searchQuery.value,
+                status_pengajuan: filterStatus.value,
+                gol_darah: filterGolDarah.value,
+                lokasi_pasien: filterLokasiPasien.value
+            }
+        })
         darurat.value = res.data.data
-    }catch(err){
+    } catch(err) {
         console.log(err)
     }
 }
 
-const filteredDarurat = computed(() => {
-  if (!searchQuery.value) return darurat.value
-  return darurat.value.filter(item =>
-    item.nama_pasien.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
-})
+const applyFilter = () => {
+    fetchDarahDarurat()
+    showFilter.value = false
+}
+
+const resetFilter = () => {
+    filterStatus.value = ''
+    filterGolDarah.value = ''
+    filterLokasiPasien.value = ''
+    fetchDarahDarurat()
+}
 
 const openModal = () => {
     showModal.value = true;
@@ -52,8 +67,6 @@ const resetForm = ()=> {
 
 const rs_list = ref([])
 const selectedRS = ref('')
-
-// Ambil data tipe darah dari backend
 const getRS = async () => {
     try {
         const res = await axios.get('http://localhost/ProjectLomba/backend/get_rs.php')
@@ -66,8 +79,6 @@ const getRS = async () => {
 
 const kabupaten_list = ref([])
 const selectedKab = ref('')
-
-// Ambil data tipe darah dari backend
 const getKab = async () => {
     try {
         const res = await axios.get('http://localhost/ProjectLomba/backend/get_kabupaten.php')
@@ -180,9 +191,6 @@ const handleDelete = async(id)=> {
 
 }
 
-
-
-
 watch(searchQuery, () => {
   fetchDarahDarurat()
 })
@@ -285,7 +293,7 @@ onMounted(()=>{
         <div class="mt-5">
             <div class="xl:flex xl:flex-row  flex-col items-center justify-between">
                 <input v-model="searchQuery" type="text" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari nama pasien">
-                <div class="flex xl:flex-row flex-row-reverse items-center mt-5 gap-3 relative">
+                <div class="flex xl:flex-row flex-row-reverse items-center mt-5 lg:mt-0 gap-3 relative">
                     <FunnelIcon @click="openFilter" class="size-6 text-gray-300 cursor-pointer"/>
                     <button @click="openModal" class="px-6 py-2 bg-primary hover:bg-red-700 rounded text-white cursor-pointer">+ Tambah Data</button>
 
@@ -298,26 +306,35 @@ onMounted(()=>{
 
                         <div class="mb-3">
                             <label for="">Status Permohonan</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
-                                <option value="">--Pilih Status Permohonan--</option>
+                            <select v-model="filterStatus" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Pilih Status--</option>
+                                <option value="diterima">Diterima</option>
+                                <option value="pending">Pending</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="batal">Dibatalkan</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="">Kabupaten</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterLokasiPasien" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Kabupaten--</option>
+                                <option v-for="item in kabupaten_list" :key="item.id_kabupaten" :value="item.nama_kabupaten">{{ item.nama_kabupaten }}</option>
                             </select>
                         </div>
                         <div class="mb-3 pb-3">
                             <label for="">Gol Darah</label>
-                            <select class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                            <select v-model="filterGolDarah" class="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg outline-none">
                                 <option value="">--Pilih Gol Darah--</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
                             </select>
                         </div>
 
                         <div class="flex items-center gap-5 border-t border-neutral-300 pt-4">
-                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
-                            <button class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
+                            <button @click="resetFilter" class="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 transition cursor-pointer">Reset</button>
+                            <button @click="applyFilter" class="w-full px-3 py-2 text-sm rounded-lg bg-primary hover:bg-red-700 text-white transition cursor-pointer">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -341,7 +358,7 @@ onMounted(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in filteredDarurat" :key="item.id" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                        <tr v-for="(item, index) in darurat" :key="item.id" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left">
                                 <div class="flex items-center gap-2">
                                     <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 flex items-center justify-center rounded cursor-pointer">
@@ -361,7 +378,11 @@ onMounted(()=>{
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jumlah_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jenis_donor_darah }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.status_urgent }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 "><p class="bg-green-50 w-fit px-4 rounded-full text-green-500">{{ item.status_pengajuan }}</p></td>
+                            <td class="px-4 py-3 text-left text-neutral-600 "><p class=" w-fit px-4 rounded-full" :class="{
+                                                                                'text-green-500 bg-green-50': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
+                                                                                'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
+                                                                                'text-red-500 bg-red-50': item.status_pengajuan === 'batal'
+                                                                            }">{{ item.status_pengajuan }}</p></td>
                         </tr>
                     </tbody>
                 </table>

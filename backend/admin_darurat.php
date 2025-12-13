@@ -8,23 +8,41 @@ header("Access-Control-Allow-Credentials: true");
 session_start();
 include 'db/db.php';
 $search = $_GET['search'] ?? '';
+$status_pengajuan = $_GET['status_pengajuan'] ?? '';
+$status_urgent = $_GET['status_urgent'] ?? '';
+$gol_darah = $_GET['gol_darah'] ?? '';
+$lokasi_pasien = $_GET['lokasi_pasien'] ?? '';
 
-$query_darurat = "SELECT * FROM permohonan_pasien WHERE status_urgent = 'Urgent'";
-if($search) {
+$query = "SELECT * FROM permohonan_pasien WHERE 1=1";
+
+if($search != '') {
     $search = mysqli_real_escape_string($db, $search);
-    $query_darurat .= " AND nama_pasien LIKE '%$search%'";
+    $query .= " AND nama_pasien LIKE '%$search%'";
 }
-$query_darurat .= " ORDER BY id DESC";
 
-$run_darurat = mysqli_query($db, $query_darurat);
+if($status_pengajuan != '') {
+    $status_pengajuan = mysqli_real_escape_string($db, $status_pengajuan);
+    $query .= " AND status_pengajuan = '$status_pengajuan'";
+}
+if($gol_darah != '') {
+    $gol_darah = mysqli_real_escape_string($db, $gol_darah);
+    $query .= " AND golongan_darah = '$gol_darah'";
+}
+if($lokasi_pasien != '') {
+    $lokasi_pasien = mysqli_real_escape_string($db, $lokasi_pasien);
+    $query .= " AND lokasi_pasien = '$lokasi_pasien'";
+}
 
-$result = [];
-while($row = mysqli_fetch_assoc($run_darurat)) {
-    $result[] = $row;
+$query .= " ORDER BY id DESC";
+
+$result = mysqli_query($db, $query);
+$data = [];
+while($row = mysqli_fetch_assoc($result)) {
+    $data[] = $row;
 }
 
 echo json_encode([
     "status" => "success",
-    "data" => $result
+    "data" => $data
 ]);
 ?>
