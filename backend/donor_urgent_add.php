@@ -26,9 +26,9 @@ if(!$nama_pasien || !$nama_rumah_sakit || !$lokasi_pasien|| !$golongan_darah || 
 
 // Insert data permohonan
 $query_permohonan = "INSERT INTO permohonan_pasien 
-(id_user, nama_pasien, lokasi_pasien, nama_rumah_sakit, golongan_darah, rhesus, jumlah_pendonor, jenis_donor_darah, status_urgent) 
+(id_user, nama_pasien, lokasi_pasien, nama_rumah_sakit, golongan_darah, rhesus, jumlah_pendonor, jenis_donor_darah, status_urgent, status_pengajuan) 
 VALUES 
-('$id_user','$nama_pasien','$lokasi_pasien','$nama_rumah_sakit','$golongan_darah','$rhesus','$jumlah_pendonor','$jenis_donor_darah', 'Urgent')";
+('$id_user','$nama_pasien','$lokasi_pasien','$nama_rumah_sakit','$golongan_darah','$rhesus','$jumlah_pendonor','$jenis_donor_darah', 'Urgent', 'diterima')";
 
 $run_query_permohonan = mysqli_query($db, $query_permohonan);
 

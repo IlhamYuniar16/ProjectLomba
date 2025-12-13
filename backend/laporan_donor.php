@@ -13,7 +13,7 @@ $gol_darah = $_GET['gol_darah'] ?? '';
 $jenis_donor = $_GET['jenis_donor'] ?? '';
 
 $query_donor = "SELECT * FROM pengajuan_donor pd 
-                LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id_user 
+                LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id 
                 WHERE 1=1";
 
 if($search != '') {

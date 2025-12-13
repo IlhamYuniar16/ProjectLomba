@@ -1,12 +1,11 @@
 <script setup>
-
 import { store } from '@/stores/stores';
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 const router = useRouter()
 
-const isLogin = ref(false)
+const isLogin = ref(true)
 
 const checkLogin = async () => {
     try {
@@ -16,13 +15,13 @@ const checkLogin = async () => {
         );
 
         if (!res.data.isLogin) {
-            router.push('/masuk'); // ⬅ redirect
+            router.push('/masuk');
         }
 
         isLogin.value = res.data.isLogin;
 
     } catch (err) {
-        router.push('/masuk'); // jika error juga redirect
+        router.push('/masuk');
     }
 };
 
@@ -105,16 +104,14 @@ const submitForm = async () => {
                 withCredentials: true
             }
         )
-        isLogin.value = res.data.isLogin
-        alert(isLogin)
         if(res.data.status === "success"){
-            alert(res.data.message);
-        } else {
-            alert(res.data.message);
+                alert(res.data.message);
+            } else {
+                alert(res.data.message);
+            }
+        } catch (err) {
+            console.error("AXIOS ERROR:", err);
         }
-    } catch {
-        isLogin.value = false
-    }
 };
 
 onMounted(() => {

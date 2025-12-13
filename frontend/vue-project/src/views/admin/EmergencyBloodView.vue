@@ -180,6 +180,7 @@ const submitForm = async () => {
         formData.append("rhesus", rhesus.value);
         formData.append("jumlah_pendonor", jumlah_pendonor.value);
         formData.append("jenis_donor_darah", jenis_donor_darah.value);
+        formData.append("status_pengajuan", "diterima");
 
         try {
             const res = await axios.post(

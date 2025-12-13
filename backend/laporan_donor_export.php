@@ -17,7 +17,7 @@ if($laporan == "donor") {
 
     $query = "SELECT pd.*, dp.nama_pendonor, dp.tanggal_lahir, dp.jenis_kelamin, dp.tipe_darah, dp.rhesus, dp.catatan_kesehatan 
             FROM pengajuan_donor pd 
-            LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id_user
+            LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id
             ORDER BY pd.id_pengajuan_donor DESC";
     $result = mysqli_query($db, $query);
 
