@@ -62,7 +62,7 @@ const logoutUser = () => {
                 <router-link to="/" :class="isActiveMenu('/') " class=" py-5 px-5  font-light ">Beranda</router-link>
                 <router-link to="/tentang" :class="isActiveMenu('/tentang') " class="py-5 px-5 font-light">Tentang</router-link>
                 <router-link to="/permohonan" :class="isActiveMenu('/permohonan')" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">Permohonan</router-link>
-                <router-link to="/history" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</router-link>
+                <router-link to="/history" :class="isActiveMenu('/history')" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</router-link>
             </main>
         </main>
         <main v-if="openNavbar" class="bg-bgColor md:hidden">
@@ -70,7 +70,7 @@ const logoutUser = () => {
                 <router-link to="/" :class="isActiveMenuMobile('/')" class="py-5 px-5 font-light">Beranda</router-link>
                 <router-link to="/tentang" :class="isActiveMenuMobile('/tentang')" class="py-5 px-5 font-light">Tentang</router-link>
                 <router-link to="/permohonan" :class="isActiveMenuMobile('/permohonan')" class=" py-5 px-5 font-light">Permohonan</router-link>
-                <router-link to="/history" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</router-link>
+                <router-link to="/history" :class="isActiveMenuMobile('/history')" class="hover:bg-primary py-5 px-5 hover:text-bgColor font-light">History</router-link>
                 <div class="flex gap-5">
                   <router-link to="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</router-link>
                   <router-link to="/daftarakun" v-if="!store.isLoggedIn" class="bg-secondary px-5 py-2 rounded-full text-primary">Daftar</router-link>
