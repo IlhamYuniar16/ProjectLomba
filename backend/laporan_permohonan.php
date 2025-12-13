@@ -7,16 +7,19 @@ header("Access-Control-Allow-Credentials: true");
 
 session_start();
 include 'db/db.php';
+$search = $_GET['search'] ?? '';
 
+$query_laporan_permohonan = "SELECT * FROM permohonan_pasien";
+if($search) {
+    $search = mysqli_real_escape_string($db, $search);
+    $query_laporan_permohonan .= " WHERE nama_pasien LIKE '%$search%'";
+}
+$query_laporan_permohonan .= " ORDER BY status_urgent DESC";
 
-
-$query_laporan_donor = "SELECT pd.*, dp.nama_pendonor, dp.tanggal_lahir, dp.jenis_kelamin, dp.tipe_darah, dp.rhesus, dp.catatan_kesehatan 
-                         FROM pengajuan_donor pd LEFT JOIN data_pendonor dp 
-                         ON pd.id_pendonor = dp.id_user ORDER BY pd.id_pengajuan_donor DESC";
-$run_laporan_donor = mysqli_query($db, $query_laporan_donor);
+$run_laporan_permohonan = mysqli_query($db, $query_laporan_permohonan);
 
 $result = [];
-while($row = mysqli_fetch_assoc($run_laporan_donor)) {
+while($row = mysqli_fetch_assoc($run_laporan_permohonan)) {
     $result[] = $row;
 }
 

@@ -12,6 +12,11 @@ const fetchLaporanDonor = async()=> {
     }
 }
 
+const exportFile = (type) => {
+  // Gunakan window.open agar browser langsung request ke PHP
+  window.open(`http://localhost/ProjectLomba/backend/laporan_donor_export.php?laporan=${type}`, '_blank');
+}
+
 onMounted(()=>{
     fetchLaporanDonor()
 })
@@ -25,7 +30,7 @@ onMounted(()=>{
             <div class="flex items-center justify-between">
                 <input type="search" class="px-4 py-2 rounded-full bg-secondary outline-none max-w-sm w-full" placeholder="Cari...">
                 <div class="flex items-center gap-3">
-                    <button class="flex items-center gap-3 px-6 py-2 bg-green-500 rounded text-white cursor-pointer"><CloudArrowDownIcon class="size-5"/>Excel</button>
+                    <a @click="exportFile('donor')" class="flex items-center gap-3 px-6 py-2 bg-green-500 rounded text-white cursor-pointer"><CloudArrowDownIcon class="size-5"/>Excel</a>
                     <FunnelIcon class="size-6 text-gray-300 cursor-pointer"/>
                 </div>
             </div>
