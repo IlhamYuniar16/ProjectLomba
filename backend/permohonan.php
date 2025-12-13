@@ -8,15 +8,22 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 session_start();
 
 include 'db/db.php';
+
+if (!isset($_SESSION['user'])) {
+    echo json_encode([
+        "status" => "error",
+        "isLogin" => false,
+        "message" => "Silakan login terlebih dahulu"
+    ]);
+    exit;
+}
 //INSERT PROCESS
 $uploadDir = "uploads/";
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0777, true);
 }
 
-// $data = json_decode(file_get_contents("php://input"), true);
-$id_user = $_SESSION['user']['id'] ?? null;
-
+$id_user = $_SESSION['user']['id'];
 $nama_pasien = $_POST['nama_pasien'] ?? '';
 $nama_rumah_sakit = $_POST['nama_rumah_sakit'] ?? '';
 $lokasi_pasien = $_POST['lokasi_pasien'] ?? '';

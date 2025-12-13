@@ -55,7 +55,8 @@ const login = async () => {
       email: email.value,
       password: password.value
     }, {
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true
     })
 
     if(res.data.status === "success"){
