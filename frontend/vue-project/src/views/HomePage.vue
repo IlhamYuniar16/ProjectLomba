@@ -332,7 +332,7 @@ onMounted(()=>{
             </button>
               </div>
             </div>
-            <div v-for="(item, index) in donorData.slice(0, 5)" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
+            <!-- <div v-for="(item, index) in donorData.slice(0, 5)" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span
                 class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
@@ -343,35 +343,36 @@ onMounted(()=>{
                 }">
                 {{ item.status_pengajuan }}
               </span>
+            </div> -->
+            <!-- <div class="space-y-2 text-sm text-gray-700">
+              <div class="flex justify-between">
+                <span class="text-gray-500">Nama Pendonor</span>
+                <span class="font-medium">{{ item.nama_pendonor}}</span>
               </div>
-              <div class="space-y-2 text-sm text-gray-700">
-                <div class="flex justify-between">
-                  <span class="text-gray-500">Nama Pendonor</span>
-                  <span class="font-medium">{{ item.nama_pendonor}}</span>
-                </div>
-            
-                <div class="flex justify-between">
-                  <span class="text-gray-500">Golongan Darah</span>
-                  <span class="font-medium">{{ item.tipe_darah }}</span>
-                </div>
-            
-                <div class="flex justify-between">
-                  <span class="text-gray-500">Tanggal</span>
-                  <span class="font-medium">{{ item.tanggal }}</span>
-                </div>
-
-                <div class="flex justify-between">
-                  <span class="text-gray-500">Jenis Donor</span>
-                  <span class="font-medium">{{ item.jenis_donor }}</span>
-                </div>
+              
+              <div class="flex justify-between">
+                <span class="text-gray-500">Golongan Darah</span>
+                <span class="font-medium">{{ item.tipe_darah }}</span>
               </div>
-              <!-- <div class="mt-6">
-                <button class="min-w-2xs cursor-pointer border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
-                  Batalkan Permohonan
-                </button>
-              </div> -->
-            </div>
-            </div>
+              
+              <div class="flex justify-between">
+                <span class="text-gray-500">Tanggal</span>
+                <span class="font-medium">{{ item.tanggal }}</span>
+              </div>
+              
+              <div class="flex justify-between">
+                <span class="text-gray-500">Jenis Donor</span>
+                <span class="font-medium">{{ item.jenis_donor }}</span>
+              </div>
+            </div> -->
+            <!-- <div class="mt-6">
+              <button class="min-w-2xs cursor-pointer border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
+                Batalkan Permohonan
+              </button>
+            </div> -->
+          <!-- </div> -->
+          <router-link to="/history" class="text-primary underline">Lihat Semua</router-link>
+        </div>
         </div>
     </section>
 </main>

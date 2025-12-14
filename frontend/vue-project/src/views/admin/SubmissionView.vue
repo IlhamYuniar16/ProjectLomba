@@ -5,7 +5,7 @@ import axios from 'axios'
 import {alertSuccess, alertError, alertConfirm} from "../../services/alert.js"
 
 const permohonan = ref([])
-
+const pilihStatus = ref('pending')
 // PAGGINATION
 const currentPage = ref(1)       
 const perPage = ref(12)            
@@ -146,6 +146,7 @@ onMounted(()=>{
                         <tr class="border-b border-neutral-300">
                             <!-- <th class="px-4 py-3 text-left ">Aksi</th> -->
                             <th class="px-4 py-3 text-left ">No</th>
+                            <th class="px-4 py-3 text-left ">Status Urgent</th>
                             <th class="px-4 py-3 text-left ">Nama Pasien</th>
                             <th class="px-4 py-3 text-left ">Rumah Sakit</th>
                             <th class="px-4 py-3 text-left ">Kabupaten</th>
@@ -153,7 +154,6 @@ onMounted(()=>{
                             <th class="px-4 py-3 text-left ">Rhesus</th>
                             <th class="px-4 py-3 text-left ">Jumlah Pendonor</th>
                             <th class="px-4 py-3 text-left ">Jenis Pendonor</th>
-                            <th class="px-4 py-3 text-left ">Status Urgent</th>
                             <th class="px-4 py-3 text-left ">Status Permohonan</th>
                         </tr>
                     </thead>
@@ -170,6 +170,21 @@ onMounted(()=>{
                                 </div>
                             </td> -->
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ (currentPage - 1) * perPage + index + 1 }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">
+                                <select name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-blue-500 bg-blue-50': pilihStatus === 'diterima', 'text-green-500 bg-green-50' : pilihStatus === 'selesai',
+                                'text-yellow-500 bg-yellow-50': pilihStatus === 'pending',
+                                 'text-red-500 bg-red-50': pilihStatus === 'batal'}" v-model="pilihStatus">
+                                    <!-- <option value="" disabled selected>Status</option> -->
+                                    <option value="pending" class="">pending</option>
+                                    <option value="diterima">diterima</option>
+                                    <option value="selesai">selesai</option>
+                                </select>
+                                <!-- <p class=" w-fit px-4 rounded-full" :class="{
+                                'text-green-500 bg-green-50': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
+                                'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
+                                 'text-red-500 bg-red-50': item.status_pengajuan === 'batal'}">{{ item.status_pengajuan }}
+                                </p> -->
+                            </td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.lokasi_pasien }}</td>
@@ -178,13 +193,7 @@ onMounted(()=>{
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jumlah_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jenis_donor_darah }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.status_urgent }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">
-                                <p class=" w-fit px-4 rounded-full" :class="{
-                                'text-green-500 bg-green-50': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
-                                'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
-                                 'text-red-500 bg-red-50': item.status_pengajuan === 'batal'}">{{ item.status_pengajuan }}
-                                </p>
-                            </td>
+                            
                         </tr>
                     </tbody>
                 </table>

@@ -4,7 +4,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios'
 
 const donor = ref([])
-
+const pilihStatus = ref('pending')
 // PAGGINATION
 const currentPage = ref(1)       
 const perPage = ref(12)            
@@ -135,6 +135,7 @@ onMounted(()=>{
                     <thead>
                         <tr class="border-b border-neutral-300">
                             <th class="px-4 py-3 text-left ">No</th>
+                            <th class="px-4 py-3 text-left ">Status</th>
                             <th class="px-4 py-3 text-left ">Tanggal</th>
                             <th class="px-4 py-3 text-left ">Nama Pendonor</th>
                             <th class="px-4 py-3 text-left ">Tanggal Lahir</th>
@@ -143,13 +144,19 @@ onMounted(()=>{
                             <th class="px-4 py-3 text-left ">Rhesus</th>
                             <th class="px-4 py-3 text-left ">Rumah Sakit</th>
                             <th class="px-4 py-3 text-left ">Jenis Donor</th>
-                            <th class="px-4 py-3 text-left ">Status</th>
                             <th class="px-4 py-3 text-left ">Catatan Kesehatan</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in paginatedData" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left text-neutral-600">{{ (currentPage - 1) * perPage + index + 1 }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600">
+                                <select v-model="pilihStatus" name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-green-500 bg-green-50' : pilihStatus === 'eligible', 'text-yellow-500 bg-yellow-50' : pilihStatus === 'pending', 'text-red-500 bg-red-50' : pilihStatus === 'not_eligible'}">
+                                    <option value="pending">pending</option>
+                                    <option value="eligible">eligible</option>
+                                    <option value="not_eligible">Not eligible</option>
+                                </select>
+                            </td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.nama_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.tanggal_lahir }}</td>
@@ -158,7 +165,7 @@ onMounted(()=>{
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.rhesus }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.rumah_sakit }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.jenis_donor }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">{{ item.status_pengajuan }}</td>
+                            
                             <td class="px-4 py-3 text-left text-neutral-600 max-w-md">{{ item.catatan_kesehatan }}</td>
                         </tr>
                     </tbody>

@@ -3,6 +3,7 @@ import { store } from '@/stores/stores';
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
+import { alertError, alertSuccess } from '@/services/alert';
 const router = useRouter()
 
 const isLogin = ref(true)
@@ -119,9 +120,10 @@ const submitForm = async () => {
                 narhub_email.value = ''
                 narhub_nama.value = ''
                 narhub_notel.value = ''
-                alert(res.data.message);
+                kabupaten_list.value = ''
+                alertSuccess(res.data.message)
             } else {
-                alert(res.data.message);
+                alertError(res.data.message)
             }
         } catch (err) {
             console.error("AXIOS ERROR:", err);
@@ -163,9 +165,17 @@ const submitDonor = async () => {
             }
         );
         if(res.data.status === "success"){
-            alert(res.data.message);
+            nama_pendonor.value = ''
+            tanggal_lahir.value = ''
+            jenis_kelamin.value = ''
+            tipe_darah.value = ''
+            rhesus_donor.value = ''
+            jenis_donor.value = ''
+            catatan_kesehatan.value = ''
+            rumah_sakit.value = ''
+            alertSuccess(res.data.message);
         } else {
-            alert(res.data.message);
+            alertError(res.data.message);
         }
 
     } catch (err) {
