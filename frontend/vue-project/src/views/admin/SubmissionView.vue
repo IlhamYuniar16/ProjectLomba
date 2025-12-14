@@ -175,9 +175,9 @@ onMounted(()=>{
                                 'text-yellow-500 bg-yellow-50': pilihStatus === 'pending',
                                  'text-red-500 bg-red-50': pilihStatus === 'batal'}" v-model="pilihStatus">
                                     <!-- <option value="" disabled selected>Status</option> -->
-                                    <option value="pending" class="">pending</option>
-                                    <option value="diterima">diterima</option>
-                                    <option value="selesai">selesai</option>
+                                    <option value="pending" class="">{{item.status_pengajuan}}</option>
+                                    <option value="diterima">{{item.status_pengajuan}}</option>
+                                    <option value="selesai">{{item.status_pengajuan}}</option>
                                 </select>
                                 <!-- <p class=" w-fit px-4 rounded-full" :class="{
                                 'text-green-500 bg-green-50': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',

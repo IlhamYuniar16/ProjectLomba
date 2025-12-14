@@ -18,7 +18,7 @@ if (!isset($_SESSION['user'])) {
 
 $id_user = (int) $_SESSION['user']['id'];
 
-$query = "SELECT id, nama_pasien, nama_rumah_sakit, golongan_darah, created_at, status_pengajuan FROM permohonan_pasien  WHERE id_user = $id_user";
+$query = "SELECT id, nama_pasien, nama_rumah_sakit, golongan_darah, created_at, status_pengajuan FROM permohonan_pasien  WHERE id_user = $id_user ORDER BY id DESC";
 
 $result = mysqli_query($db, $query);
 

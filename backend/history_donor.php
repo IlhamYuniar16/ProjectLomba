@@ -27,7 +27,7 @@ $query = "SELECT
 FROM data_pendonor dp
 JOIN pengajuan_donor pd 
     ON pd.id_pendonor = dp.id
-WHERE dp.id_user = $id_user;";
+WHERE dp.id_user = $id_user ORDER BY id DESC";
 
 $result = mysqli_query($db, $query);
 
