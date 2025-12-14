@@ -55,32 +55,33 @@ const openEdit = (item)=> {
     openModal()
 }
 
-const submitForm = async () => {
-    if(isEdit.value) {
-        const formData = new FormData();
-        formData.append("status_pengajuan", status_pengajuan.value);
-        try {
-            const res = await axios.post(
-                `http://localhost/ProjectLomba/backend/admin_permohonan_status.php?id=${editId.value}`,
-                formData,
-                {
-                    headers: { "Content-Type": "multipart/form-data" },
-                    withCredentials: true
-                }
-            );
+const pilih = [{id: 1, nama: 'pending'}, {id: 2, nama: 'diterima'}, {id: 3, nama: 'selesai'}]
 
-            if(res.data.status === "success"){
-                alert(res.data.message);
-                fetchAdminPermohonan()
-            } else {
-                alert(res.data.message);
+const submitForm = async (id, status) => {
+    const formData = new FormData();
+    formData.append("status_pengajuan", status);
+
+    try {
+        const res = await axios.post(
+            `http://localhost/ProjectLomba/backend/admin_permohonan_status.php?id=${id}`,
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+                withCredentials: true
             }
-        } catch (err) {
-            console.error("AXIOS ERROR:", err);
+        );
+
+        if (res.data.status === "success") {
+            alert(res.data.message);
+            fetchAdminPermohonan();
+        } else {
+            alert(res.data.message);
         }
+    } catch (err) {
+        console.error("AXIOS ERROR:", err);
     }
-    
 };
+
 
 
 onMounted(()=>{
@@ -171,13 +172,20 @@ onMounted(()=>{
                             </td> -->
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">
-                                <select @change="submitForm()" name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-blue-500 bg-blue-50': pilihStatus === 'diterima', 'text-green-500 bg-green-50' : pilihStatus === 'selesai',
-                                'text-yellow-500 bg-yellow-50': pilihStatus === 'pending',
-                                 'text-red-500 bg-red-50': pilihStatus === 'batal'}" v-model="pilihStatus">
-                                    <option value="pending" class="">{{item.status_pengajuan}}</option>
-                                    <option value="diterima">{{item.status_pengajuan}}</option>
-                                    <option value="selesai">{{item.status_pengajuan}}</option>
+                                <select
+                                    v-model="item.status_pengajuan"
+                                    @change="submitForm(item.id, item.status_pengajuan)"
+                                    class="w-fit px-4 rounded-full outline-none"
+                                    :class="{
+                                        'text-blue-500 bg-blue-50': item.status_pengajuan === 'diterima',
+                                        'text-green-500 bg-green-50': item.status_pengajuan === 'selesai',
+                                        'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
+                                    }">
+                                    <option value="pending">pending</option>
+                                    <option value="diterima">diterima</option>
+                                    <option value="selesai">selesai</option>
                                 </select>
+
                                 <!-- <p class=" w-fit px-4 rounded-full" :class="{
                                 'text-green-500 bg-green-50': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
                                 'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',

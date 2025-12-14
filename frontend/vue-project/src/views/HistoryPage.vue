@@ -62,8 +62,10 @@ const fetchHistoryDonor = async () => {
 }
 
 onMounted(()=>{
+  setInterval(() => {
     fetchHistoryPermohonan()
     fetchHistoryDonor()
+  }, 1000)
 })
 </script>
 
