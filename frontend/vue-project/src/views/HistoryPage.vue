@@ -92,9 +92,9 @@ onMounted(()=>{
             </div>
         </main>
         <main v-if="historyTab === 'permohonanTab'"  class="my-20 md:mx-0 mx-5">
-          <div v-if="isLogin" class="text-center text-gray-500">Silahkan login untuk melihat riwayat permohonan</div>
+          <div v-if="!isLogin" class="text-center text-gray-500">Silahkan login untuk melihat riwayat permohonan</div>
           <div v-else-if="permohonan.length === 0" class="text-center text-gray-500">Belum ada permohonan</div>
-          <div v-else-if="!isLogin" class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div v-else class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             <div v-for="(item, index) in permohonan" :key="index"
             class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
             <span class="hidden">{{ item.id }}</span>
@@ -160,7 +160,7 @@ onMounted(()=>{
           
         </main>
         <main v-if="historyTab === 'donor'" class="my-20 md:mx-0 mx-5">
-          <div v-if="isLogin" class="text-center text-gray-500">Silahkan login untuk melihat riwayat donor darah</div>
+          <div v-if="!isLogin" class="text-center text-gray-500">Silahkan login untuk melihat riwayat donor darah</div>
           <div v-else-if="donorData.length === 0" class="text-center text-gray-500">Belum ada donor</div>
           <div v-else class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             <div v-for="(item, index) in donorData" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
