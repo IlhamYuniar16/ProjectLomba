@@ -171,10 +171,9 @@ onMounted(()=>{
                             </td> -->
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">
-                                <select name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-blue-500 bg-blue-50': pilihStatus === 'diterima', 'text-green-500 bg-green-50' : pilihStatus === 'selesai',
+                                <select @change="submitForm()" name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-blue-500 bg-blue-50': pilihStatus === 'diterima', 'text-green-500 bg-green-50' : pilihStatus === 'selesai',
                                 'text-yellow-500 bg-yellow-50': pilihStatus === 'pending',
                                  'text-red-500 bg-red-50': pilihStatus === 'batal'}" v-model="pilihStatus">
-                                    <!-- <option value="" disabled selected>Status</option> -->
                                     <option value="pending" class="">{{item.status_pengajuan}}</option>
                                     <option value="diterima">{{item.status_pengajuan}}</option>
                                     <option value="selesai">{{item.status_pengajuan}}</option>

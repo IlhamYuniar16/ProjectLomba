@@ -1,5 +1,5 @@
 <script setup>
-import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } from '@heroicons/vue/24/solid';
+import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon, PencilSquareIcon } from '@heroicons/vue/24/solid';
 import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios'
 
@@ -9,6 +9,27 @@ const pilihStatus = ref('pending')
 const currentPage = ref(1)       
 const perPage = ref(12)            
 const totalPages = computed(() => Math.ceil(donor.value.length / perPage.value))
+const showModal = ref(false)
+const editId = ref(null)
+const isEdit = ref(false)
+const eligible = ref(false)
+
+const openEdit = (item)=> {
+    isEdit.value = true
+    editId.value = item.id
+    openModal()
+}
+
+const openModal = () => {
+    showModal.value = true;
+}
+
+const closeModal = () => {
+    showModal.value = false;
+    isEdit.value = false
+    editId.value = null
+    resetForm()
+}
 
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * perPage.value
@@ -40,7 +61,6 @@ const fetchDonor = async () => {
 }
 
 const status_eligible = ref('')
-const editId = ref(null)
 
 
 
@@ -77,7 +97,7 @@ onMounted(()=>{
 
 <template>
     <section class="bg-white p-6 min-h-screen">
-        <h1 class="text-2xl font-semibold">Laporan Donor</h1>
+        <h1 class="text-2xl font-semibold">Pengajuan Donor</h1>
 
         <div class="mt-5">
             <!-- <div class="xl:flex xl:flex-row flex-col items-center justify-between">
@@ -128,6 +148,49 @@ onMounted(()=>{
 
             </div> -->
 
+            <div v-if="showModal" class="fixed inset-0 bg-black/35 flex items-center justify-center z-50 overflow-y-auto">
+                <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-lg ">
+                    <h2 class="text-xl font-semibold mb-4"></h2>
+
+                    <div >
+                        <h1 class="text-xl mb-3">Pengajuan Donor</h1>
+                        <div class="mb-3">
+                            <label for="" class="font-medium mb-1">Status</label>
+                            <div class="flex items-center gap-3">
+                                <button @click="eligible = true" :class="eligible ? 'bg-green-100 text-green-500' : 'bg-gray-100 text-black '" class="w-full px-4 py-2 rounded cursor-pointer">Eligible</button>
+                                <button @click="eligible = false" :class="!eligible ? 'bg-red-100 text-red-500' : 'bg-gray-100 text-black'" class="w-full px-4 py-2 rounded cursor-pointer">Not Eligible</button>
+                            </div>
+                        </div>
+                        <div v-if="eligible">
+                            <div class="mb-3">
+                                <label class="block mb-1 font-medium">Tanggal</label>
+                                <input type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
+                            </div>
+                            <div class="mb-3">
+                                <label class="block mb-1 font-medium">Jam</label>
+                                <input type="time" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="flex justify-end mt-5 gap-3">
+                        <button 
+                            class="px-4 py-2 bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-400"
+                            @click="closeModal"
+                        >
+                            Batal
+                        </button>
+
+                        <button 
+                            type="submit" @click="submitForm" :disabled="!eligible" :class="!eligible ? 'cursor-not-allowed' : 'cursor-pointer'" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-red-700"
+                        >
+                            Simpan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">
                 <table class="w-full mt-5 min-w-max ">
                     <thead>
@@ -148,12 +211,15 @@ onMounted(()=>{
                     <tbody>
                         <tr v-for="(item, index) in paginatedData" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left text-neutral-600">{{ (currentPage - 1) * perPage + index + 1 }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600">
-                                <select v-model="submitForm" name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-green-500 bg-green-50' : pilihStatus === 'eligible', 'text-yellow-500 bg-yellow-50' : pilihStatus === 'pending', 'text-red-500 bg-red-50' : pilihStatus === 'not_eligible'}">
+                            <td class="px-4 py-3 text-center text-neutral-600 flex items-center justify-center ">
+                                <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 rounded flex items-center justify-center  cursor-pointer">
+                                    <PencilSquareIcon class="size-5 text-blue-500"/>
+                                </div>
+                                <!-- <select v-model="submitForm" name="" id="" class="w-fit px-4 rounded-full outline-none" :class="{'text-green-500 bg-green-50' : pilihStatus === 'eligible', 'text-yellow-500 bg-yellow-50' : pilihStatus === 'pending', 'text-red-500 bg-red-50' : pilihStatus === 'not_eligible'}">
                                     <option value="pending">pending</option>
                                     <option value="eligible">eligible</option>
                                     <option value="not_eligible">Not eligible</option>
-                                </select>
+                                </select> -->
                             </td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.nama_pendonor }}</td>

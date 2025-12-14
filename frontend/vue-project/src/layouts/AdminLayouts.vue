@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon, DocumentTextIcon} from '@heroicons/vue/24/solid';
+import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon, DocumentTextIcon, ArrowDownIcon, ArchiveBoxIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
 import { store } from '../stores/stores'
 
@@ -101,7 +101,7 @@ watch(isOpen, (val) => {
                     <RouterLink to="/admin/donor-admin" class="flex items-center cursor-pointer group mb-3">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/donor-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
                         <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/donor-admin')]" class="w-full flex items-center transition-all duration-300">
-                            <DocumentTextIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
+                            <ArchiveBoxArrowDownIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
 
                             <p :class="isOpen ? 'hidden' : ''">Donor</p>
                         </div>
@@ -181,7 +181,7 @@ watch(isOpen, (val) => {
                     <RouterLink @click="closeNavbar" to="/admin/donor-admin" class="flex items-center cursor-pointer gap-3 group mb-3">
                         <div :class="[ isHandleBorder('/admin/donor-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
                         <div :class="[ isActiveMenu('/admin/donor-admin')]" class="w-full gap-3 flex items-center transition-all duration-300">
-                            <HeartIcon class="size-6"/>
+                            <ArchiveBoxArrowDownIcon class="size-6"/>
                             <p>Donor</p>
                         </div>
                     </RouterLink>
