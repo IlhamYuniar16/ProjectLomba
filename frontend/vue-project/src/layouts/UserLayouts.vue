@@ -47,7 +47,7 @@ const logoutUser = () => {
         <main class="flex justify-between px-5 md:px-0 md:justify-around items-center">
             <div class="flex items-center gap-4">
                 <img class="md:w-13 w-9 md:py-0 py-5" src="../assets/img/logoyogyalife.png" alt="">
-                <h1 class="text-3xl text-primary">Yogyalife</h1>
+                <h1 class="md:text-3xl text-2xl text-primary">Yogyalife</h1>
             </div>
             <main class="gap-3 hidden md:flex items-center ">
                 <router-link to="/masuk" v-if="!store.isLoggedIn" class="bg-primary px-5 py-2 rounded-full text-bgColor">Masuk</router-link>
@@ -55,7 +55,10 @@ const logoutUser = () => {
                 <a v-if="store.isLoggedIn" class="text-danger">Hi, {{ store.user.name }} </a>
                 <button @click="logoutUser" v-if="store.isLoggedIn" class="ml-3 text-red-600 rounded-lg px-5 py-2 hover:bg-red-600 hover:text-white transition-all 0.25s cursor-pointer">Logout</button>
             </main>
-            <button @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
+            <div class="flex md:hidden">
+              <button v-if="openNavbar" @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg></button>
+              <button v-else="" @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
+            </div>
         </main>
         <main class="bg-bgColor md:block hidden">
             <main class="bg-bgColor flex gap-20 justify-center container m-auto">

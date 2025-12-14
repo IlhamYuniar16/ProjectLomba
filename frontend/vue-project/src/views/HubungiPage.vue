@@ -60,12 +60,12 @@
             ></textarea>
           </div>
 
-          <button
-            @click="sendToWhatsApp"
-            class="mt-4 bg-primary text-bgColor py-3 rounded-full font-medium hover:opacity-90 transition"
-          >
+          <button @click="sendToWhatsApp" class="mt-4 bg-primary text-bgColor py-3 rounded-full font-medium hover:opacity-90 transition">
             Hubungi via WhatsApp
           </button>
+          <router-link to="/" class="mt-1 bg-gray-400 w-full text-center text-bgColor py-3 rounded-full font-medium hover:opacity-90 transition">
+            Kembali
+          </router-link>           
         </div>
       </main>
     </section>

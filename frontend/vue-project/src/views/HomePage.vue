@@ -38,6 +38,68 @@ onBeforeUnmount(() => {
   clearInterval(autoSlide)
 })
 
+const permohonan = ref([])
+
+const fetchHistoryPermohonan = async () => {
+  try {
+    const res = await axios.get(
+      'http://localhost/ProjectLomba/backend/history_permohonan.php',
+      { withCredentials: true }
+    )
+    permohonan.value = res.data.data
+    isLogin.value = true
+console.log(permohonan.value)
+  } catch (err) {
+    if (err.response?.status === 401) {
+      isLogin.value = false
+      permohonan.value = []
+    }
+  }
+}
+
+const permohonan_batal = async (id) => {
+  try {
+    const formData = new FormData()
+    formData.append('status_pengajuan', 'batal')
+
+    const res = await axios.post(
+      `http://localhost/ProjectLomba/backend/batal_permohonan.php?id=${id}`,
+      formData,
+      { withCredentials: true }
+    )
+    alert(res.data.message)
+    fetchHistoryPermohonan()
+  } catch (err) {
+    console.error(err)
+    alert('Terjadi kesalahan')
+  }
+}
+
+const donorData = ref([])
+const fetchHistoryDonor = async () => {
+  try {
+    const res = await axios.get(
+      'http://localhost/ProjectLomba/backend/history_donor.php',
+      {
+        withCredentials: true
+      }
+    )  
+    donorData.value = res.data.data
+    isLogin.value = true
+
+  } catch (err) {
+    if (err.response?.status === 401) {
+      isLogin.value = false
+      donorData.value = []  
+    }
+  }
+}
+
+onMounted(()=>{
+  fetchHistoryDonor()
+  fetchHistoryPermohonan()
+})
+
 const urgent = ref([])
 const searchQuery = ref('')
 const fetchUrgent = async()=> {
@@ -221,64 +283,86 @@ onMounted(()=>{
                 </div>
             </div>
             <div v-if="active === 'History'" class="container max-w-4xl mx-auto grid grid-cols-1 gap-5">
-                <div class="bg-white w-full rounded-2xl mx-auto shadow-md p-6 flex flex-col justify-between">
+              <div v-for="(item, index) in permohonan" :key="index" class="bg-white w-full rounded-2xl mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
-                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600">
-                  Diterima
-                </span>
+                <span
+                class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
+                :class="{
+                  'bg-green-100 text-green-600': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
+                  'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
+                  'bg-red-100 text-red-600': item.status_pengajuan === 'batal'
+                }">
+                {{ item.status_pengajuan }}
+              </span>
               </div>
               <div class="space-y-2 text-sm text-gray-700">
                 <div class="flex justify-between">
                   <span class="text-gray-500">Nama Pasien</span>
-                  <span class="font-medium">Ilham Yuniar</span>
+                  <span class="font-medium">{{ item.nama_pasien }}</span>
                 </div>
             
                 <div class="flex justify-between">
                   <span class="text-gray-500">Rumah Sakit</span>
-                  <span class="font-medium">Rs Kumalasiwi</span>
+                  <span class="font-medium">{{ item.nama_rumah_sakit }}</span>
                 </div>
 
                 <div class="flex justify-between">
                   <span class="text-gray-500">Golongan Darah</span>
-                  <span class="font-medium">A</span>
+                  <span class="font-medium">{{ item.golongan_darah }}</span>
                 </div>
             
                 <div class="flex justify-between">
                   <span class="text-gray-500">Tanggal</span>
-                  <span class="font-medium">01 Jan 2025</span>
+                  <span class="font-medium">{{ item.created_at }}</span>
                 </div>
               </div>
               <div class="mt-6">
-                <button class="min-w-2xs cursor-pointer border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition text-sm py-2 rounded-xl">
-                  Batalkan Permohonan
-                </button>
+                <button
+              v-if="item.status_pengajuan === 'pending' || item.status_pengajuan === 'batal'"
+              @click="item.status_pengajuan === 'pending' && permohonan_batal(item.id)"
+              :disabled="item.status_pengajuan === 'batal'"
+              :class="[
+                'w-full text-sm py-2 rounded-xl transition',
+                item.status_pengajuan === 'pending'
+                  ? 'border border-red-500 text-red-500 bg-white hover:bg-red-500 hover:text-white cursor-pointer'
+                  : 'bg-red-500 text-white cursor-not-allowed'
+              ]"
+            >
+              {{ item.status_pengajuan === 'pending' ? 'Batalkan Permohonan' : 'Pengajuan Dibatalkan' }}
+            </button>
               </div>
             </div>
-            <div class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
+            <div v-for="(item, index) in donorData" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
-                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">
-                  Not eligibl
-                </span>
+                <span
+                class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
+                :class="{
+                  'bg-green-100 text-green-600': item.status_pengajuan === 'eligible' || item.status_pengajuan === 'selesai',
+                  'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
+                  'bg-red-100 text-red-600': item.status_pengajuan === 'not eligible'
+                }">
+                {{ item.status_pengajuan }}
+              </span>
               </div>
               <div class="space-y-2 text-sm text-gray-700">
                 <div class="flex justify-between">
                   <span class="text-gray-500">Nama Pendonor</span>
-                  <span class="font-medium">Ilham Yuniar</span>
+                  <span class="font-medium">{{ item.nama_pendonor}}</span>
                 </div>
             
                 <div class="flex justify-between">
                   <span class="text-gray-500">Golongan Darah</span>
-                  <span class="font-medium">A</span>
+                  <span class="font-medium">{{ item.tipe_darah }}</span>
                 </div>
             
                 <div class="flex justify-between">
                   <span class="text-gray-500">Tanggal</span>
-                  <span class="font-medium">01 Jan 2025</span>
+                  <span class="font-medium">{{ item.tanggal }}</span>
                 </div>
 
                 <div class="flex justify-between">
                   <span class="text-gray-500">Jenis Donor</span>
-                  <span class="font-medium">Darah Penuh</span>
+                  <span class="font-medium">{{ item.jenis_donor }}</span>
                 </div>
               </div>
               <!-- <div class="mt-6">

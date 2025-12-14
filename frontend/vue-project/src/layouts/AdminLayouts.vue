@@ -85,6 +85,15 @@ watch(isOpen, (val) => {
                         </div>
                     </RouterLink>
 
+                    <RouterLink to="/admin/permohonan-admin" class="flex items-center cursor-pointer group mb-3">
+                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/permohonan-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/permohonan-admin')]" class="w-full flex items-center transition-all duration-300">
+                            <HeartIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
+
+                            <p :class="isOpen ? 'hidden' : ''">Permohonan</p>
+                        </div>
+                    </RouterLink>
+
                     <span :class="isOpen ? 'text-xs pl-1' : 'text-sm pl-3'" class="text-neutral-500 font-semibold mb-2">Laporan</span>
 
                     <RouterLink to="/admin/laporan-donor" class="flex items-center cursor-pointer group mb-5">
@@ -143,10 +152,17 @@ watch(isOpen, (val) => {
                         </div>
                     </RouterLink>
                     <RouterLink to="/admin/darah-darurat" class="flex items-center cursor-pointer gap-3 group mb-5">
-                        <div :class="[ isHandleBorder('/admin/darah-darurat')]" class="h-10 w-2 rounded-r-2xl"></div>
+                        <div :class="[ isHandleBorder('/admin/darah-darurat')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
                         <div :class="[ isActiveMenu('/admin/darah-darurat')]" class="w-full gap-3 flex items-center transition-all duration-300">
                             <HeartIcon  class="size-6"/>
                             <p class="">Darah Darurat</p>
+                        </div>
+                    </RouterLink>
+                    <RouterLink to="/admin/permohonan" class="flex items-center cursor-pointer gap-3 group mb-3">
+                        <div :class="[ isHandleBorder('/admin/permohonan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[ isActiveMenu('/admin/permohonan')]" class="w-full flex items-center transition-all duration-300">
+                            <HeartIcon class="size-6"/>
+                            <p>Permohonan</p>
                         </div>
                     </RouterLink>
                     <span class="opacity-65 pl-2">Laporan</span>
