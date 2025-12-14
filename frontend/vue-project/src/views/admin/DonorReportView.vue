@@ -12,7 +12,7 @@ const filterJenisDonor = ref('')
 
 // PAGGINATION
 const currentPage = ref(1)       
-const perPage = ref(8)            
+const perPage = ref(12)            
 const totalPages = computed(() => Math.ceil(laporan_donor.value.length / perPage.value))
 
 const paginatedData = computed(() => {

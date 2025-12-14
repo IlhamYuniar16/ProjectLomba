@@ -5,7 +5,6 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-// ⬇️ WAJIB
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
@@ -14,10 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 session_start();
 include 'db/db.php';
 
+
 if (!isset($_SESSION['user'])) {
     echo json_encode([
-        "status" => "error",
-        "message" => "Silakan login terlebih dahulu"
+        "status" => "unauthorized",
+        "data" => []
     ]);
     exit;
 }

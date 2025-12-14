@@ -14,15 +14,14 @@ const fetchHistoryPermohonan = async () => {
     )
     permohonan.value = res.data.data
     isLogin.value = true
-
+console.log(permohonan.value)
   } catch (err) {
     if (err.response?.status === 401) {
       isLogin.value = false
-      permohonan.value = []   // 🔥 WAJIB kosongkan
+      permohonan.value = []
     }
   }
 }
-
 
 const permohonan_batal = async (id) => {
   try {
@@ -34,7 +33,6 @@ const permohonan_batal = async (id) => {
       formData,
       { withCredentials: true }
     )
-
     alert(res.data.message)
     fetchHistoryPermohonan()
   } catch (err) {
@@ -147,10 +145,7 @@ onMounted(()=>{
                   : 'bg-red-500 text-white cursor-not-allowed'
               ]"
             >
-              {{ item.status_pengajuan === 'pending'
-                  ? 'Batalkan Permohonan'
-                  : 'Pengajuan Dibatalkan'
-              }}
+              {{ item.status_pengajuan === 'pending' ? 'Batalkan Permohonan' : 'Pengajuan Dibatalkan' }}
             </button>
           </div>
           </div>

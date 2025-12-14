@@ -1,206 +1,33 @@
-<script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+<?php
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
 
-const isLogin = ref(false)
-const historyTab = ref('permohonanTab')
-const permohonan = ref([])
-const donorData = ref([])
+session_start();
+include 'db/db.php';
 
-// 1️⃣ Cek login dulu
-const checkLogin = async () => {
-  try {
-    const res = await axios.get(
-      'http://localhost/ProjectLomba/backend/check_login.php',
-      { withCredentials: true }
-    )
-    isLogin.value = res.data.isLogin
-
-    if (isLogin.value) {
-      fetchHistoryPermohonan()
-      fetchHistoryDonor()
-    }
-  } catch (err) {
-    isLogin.value = false
-  }
+if (!isset($_SESSION['user'])) {
+    echo json_encode([
+        "status" => "unauthorized",
+        "data" => []
+    ]);
+    exit;
 }
 
-const fetchHistoryPermohonan = async () => {
-  try {
-    const res = await axios.get(
-      'http://localhost/ProjectLomba/backend/history_permohonan.php',
-      { withCredentials: true }
-    )
-    permohonan.value = res.data.data
-  } catch (err) {
-    permohonan.value = []
-  }
+$id_user = (int) $_SESSION['user']['id'];
+
+$query = "SELECT id, nama_pasien, nama_rumah_sakit, golongan_darah, created_at, status_pengajuan FROM permohonan_pasien  WHERE id_user = $id_user";
+
+$result = mysqli_query($db, $query);
+
+$data = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $data[] = $row;
 }
 
-const permohonan_batal = async (id) => {
-  try {
-    const formData = new FormData()
-    formData.append('status_pengajuan', 'batal')
-
-    const res = await axios.post(
-      `http://localhost/ProjectLomba/backend/batal_permohonan.php?id=${id}`,
-      formData,
-      { withCredentials: true }
-    )
-
-    alert(res.data.message)
-    fetchHistoryPermohonan()
-  } catch (err) {
-    console.error(err)
-    alert('Terjadi kesalahan')
-  }
-}
-
-const fetchHistoryDonor = async () => {
-  try {
-    const res = await axios.get(
-      'http://localhost/ProjectLomba/backend/history_donor.php',
-      { withCredentials: true }
-    )
-    donorData.value = res.data.data
-  } catch (err) {
-    donorData.value = []
-  }
-}
-
-onMounted(() => {
-  checkLogin()
-})
-</script>
-
-<template>
-<section class="bg-secondary">
-  <!-- Header -->
-  <main class="relative w-full h-[450px] md:h-[550px] bg-primary overflow-hidden">
-    <img src="../assets/img/bgiklan2.png" class="absolute inset-0 w-full h-full object-cover opacity-60" alt="">
-    <div class="absolute inset-0 bg-primary/60"></div>
-    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-5">
-      <h1 class="text-white text-3xl md:text-5xl font-bold leading-tight">HISTORY</h1>
-      <h2 class="text-white text-xl md:text-3xl mt-2 ">
-        Penghubung <span class="font-bold text-bgColor">Donor Darah</span>
-      </h2>
-    </div>
-  </main>
-
-  <!-- Tab -->
-  <main class="mt-10">
-    <div class="flex justify-center gap-1 bg-red-100 w-fit mx-auto rounded-full">
-      <button @click="historyTab = 'permohonanTab'" 
-        :class="historyTab === 'permohonanTab' 
-          ? 'cursor-pointer font-semibold bg-primary text-white px-12 py-2 rounded-full transition-all duration-200' 
-          : 'cursor-pointer font-semibold text-primary px-12 py-2 transition-all duration-200'">
-        Permohonan
-      </button>
-      <button @click="historyTab = 'donor'" 
-        :class="historyTab === 'donor' 
-          ? 'cursor-pointer font-semibold bg-primary text-white px-12 py-2 rounded-full transition-all duration-200' 
-          : 'cursor-pointer font-semibold text-primary px-12 py-2 transition-all duration-200'">
-        Donor
-      </button>
-    </div>
-  </main>
-
-  <!-- Permohonan Tab -->
-  <main v-if="historyTab === 'permohonanTab'" class="my-20 md:mx-0 mx-5">
-    <div v-if="!isLogin" class="text-center text-gray-500">
-      Silahkan login untuk melihat riwayat permohonan
-    </div>
-    <div v-else-if="permohonan.length === 0" class="text-center text-gray-500">
-      Belum ada permohonan
-    </div>
-    <div v-else class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div v-for="(item, index) in permohonan" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
-        <div class="mb-4">
-          <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
-            :class="{
-              'bg-green-100 text-green-600': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
-              'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
-              'bg-red-100 text-red-600': item.status_pengajuan === 'batal'
-            }">
-            {{ item.status_pengajuan }}
-          </span>
-        </div>
-        <div class="space-y-2 text-sm text-gray-700">
-          <div class="flex justify-between">
-            <span class="text-gray-500">Nama Pasien</span>
-            <span class="font-medium">{{ item.nama_pasien }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Rumah Sakit</span>
-            <span class="font-medium">{{ item.nama_rumah_sakit }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Golongan Darah</span>
-            <span class="font-medium">{{ item.golongan_darah }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Tanggal</span>
-            <span class="font-medium">{{ item.created_at }}</span>
-          </div>
-        </div>
-        <div class="mt-6">
-          <button
-            v-if="item.status_pengajuan === 'pending'"
-            @click="permohonan_batal(item.id)"
-            class="w-full text-sm py-2 rounded-xl border border-red-500 text-red-500 bg-white hover:bg-red-500 hover:text-white cursor-pointer transition">
-            Batalkan Permohonan
-          </button>
-          <button
-            v-else
-            disabled
-            class="w-full text-sm py-2 rounded-xl bg-red-500 text-white cursor-not-allowed transition">
-            Pengajuan Dibatalkan
-          </button>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Donor Tab -->
-  <main v-if="historyTab === 'donor'" class="my-20 md:mx-0 mx-5">
-    <div v-if="!isLogin" class="text-center text-gray-500">
-      Silahkan login untuk melihat riwayat donor darah
-    </div>
-    <div v-else-if="donorData.length === 0" class="text-center text-gray-500">
-      Belum ada donor
-    </div>
-    <div v-else class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div v-for="(item, index) in donorData" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
-        <div class="mb-4">
-          <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
-            :class="{
-              'bg-green-100 text-green-600': item.status_pengajuan === 'eligible' || item.status_pengajuan === 'selesai',
-              'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
-              'bg-red-100 text-red-600': item.status_pengajuan === 'not eligible'
-            }">
-            {{ item.status_pengajuan }}
-          </span>
-        </div>
-        <div class="space-y-2 text-sm text-gray-700">
-          <div class="flex justify-between">
-            <span class="text-gray-500">Nama Pendonor</span>
-            <span class="font-medium">{{ item.nama_pendonor}}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Golongan Darah</span>
-            <span class="font-medium">{{ item.tipe_darah }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Tanggal</span>
-            <span class="font-medium">{{ item.tanggal }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-500">Jenis Donor</span>
-            <span class="font-medium">{{ item.jenis_donor }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-</section>
-</template>
+echo json_encode([
+    "status" => "success",
+    "data" => $data
+]);
