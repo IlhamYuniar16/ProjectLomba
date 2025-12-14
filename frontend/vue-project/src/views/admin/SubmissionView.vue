@@ -60,7 +60,6 @@ const pilih = [{id: 1, nama: 'pending'}, {id: 2, nama: 'diterima'}, {id: 3, nama
 const submitForm = async (id, status) => {
     const formData = new FormData();
     formData.append("status_pengajuan", status);
-
     try {
         const res = await axios.post(
             `http://localhost/ProjectLomba/backend/admin_permohonan_status.php?id=${id}`,
