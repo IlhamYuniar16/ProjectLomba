@@ -3,7 +3,7 @@
 <template>
     <section>
            <footer class="bg-[#262B30] text-gray-200 py-28">
-                <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div class="px-6 md:px-16 lg:px-24 xl:px-32 mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
                     <img src="@/assets/img/logoyogyalife.png" alt="Logo" class="w-10 h-10">

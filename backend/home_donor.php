@@ -36,6 +36,10 @@ mysqli_query($db, "INSERT INTO pengajuan_donor
     (id_pendonor, jenis_donor, rumah_sakit)
     VALUES ($pendonor_id, '$jenis_donor', '$rumah_sakit')");
 
+mysqli_query($db, "UPDATE rumah_sakit 
+                           SET stok_darah = stok_darah + 1
+                           WHERE nama_rs = '$rumah_sakit'");
+
 mysqli_commit($db);
 
 echo json_encode(["status" => "success", "message" => "Pendaftaran berhasil dikirim! Silahkan tunggu proses pengecekan data dari kami"]);

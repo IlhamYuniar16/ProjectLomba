@@ -132,7 +132,7 @@ onMounted(()=>{
         </p>
     </section>
 
-    <section class="flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-center mt-20 px-4 md:px-0">
+    <section class="flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-center mt-20 px-6 md:px-16 lg:px-24 xl:px-32">
         <routerLink to="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icondarah.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Donorkan</span>
