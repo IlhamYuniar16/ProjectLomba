@@ -9,11 +9,10 @@ session_start();
 include 'db/db.php';
 $search = $_GET['search'] ?? '';
 $status_pengajuan = $_GET['status_pengajuan'] ?? '';
-$status_urgent = $_GET['status_urgent'] ?? '';
 $gol_darah = $_GET['gol_darah'] ?? '';
 $lokasi_pasien = $_GET['lokasi_pasien'] ?? '';
 
-$query = "SELECT * FROM permohonan_pasien WHERE 1=1";
+$query = "SELECT * FROM permohonan_pasien WHERE status_urgent = 'Urgent'";
 
 if($search != '') {
     $search = mysqli_real_escape_string($db, $search);

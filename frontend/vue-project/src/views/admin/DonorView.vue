@@ -3,22 +3,17 @@ import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon } fro
 import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios'
 
-const laporan_donor = ref([])
-const showFilter = ref(false)
-const searchQuery = ref('')
-const filterStatus = ref('')
-const filterGolDarah = ref('')
-const filterJenisDonor = ref('')
+const donor = ref([])
 
 // PAGGINATION
 const currentPage = ref(1)       
 const perPage = ref(12)            
-const totalPages = computed(() => Math.ceil(laporan_donor.value.length / perPage.value))
+const totalPages = computed(() => Math.ceil(donor.value.length / perPage.value))
 
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * perPage.value
     const end = start + perPage.value
-    return laporan_donor.value.slice(start, end)
+    return donor.value.slice(start, end)
 })
 
 const goToPage = (page) => {
@@ -35,52 +30,50 @@ const prevPage = () => {
     if(currentPage.value > 1) currentPage.value--
 }
 
-const fetchLaporanDonor = async () => {
+const fetchDonor = async () => {
     try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/laporan_donor.php', {
-            params: {
-                search: searchQuery.value,
-                status: filterStatus.value,
-                gol_darah: filterGolDarah.value,
-                jenis_donor: filterJenisDonor.value
-            }
-        })
-        laporan_donor.value = res.data.data
+        const res = await axios.get('http://localhost/ProjectLomba/backend/admin_donor.php')
+        donor.value = res.data.data
     }catch(err){
         console.log(err)
     }
 }
 
-const openFilter = () => {
-    showFilter.value = !showFilter.value
-}
-
-const applyFilter = () => {
-    fetchLaporanDonor()
-    showFilter.value = false
-}
-
-const resetFilter = () => {
-    filterStatus.value = ''
-    filterGolDarah.value = ''
-    filterJenisDonor.value = ''
-    fetchLaporanDonor()
-}
+const status_eligible = ref('')
+const editId = ref(null)
 
 
 
+const submitForm = async () => {
+    if(isEdit.value) {
+        const formData = new FormData();
+        formData.append("status_eligible", status_eligible.value);
+        try {
+            const res = await axios.post(
+                `http://localhost/ProjectLomba/backend/admin_permohonan_status.php?id=${editId.value}`,
+                formData,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    withCredentials: true
+                }
+            );
 
-const exportFile = (type) => {
-  // Gunakan window.open agar browser langsung request ke PHP
-  window.open(`http://localhost/ProjectLomba/backend/laporan_donor_export.php?laporan=${type}`, '_blank');
-}
+            if(res.data.status === "success"){
+                alert(res.data.message);
+                fetchAdminPermohonan()
+            } else {
+                alert(res.data.message);
+            }
+        } catch (err) {
+            console.error("AXIOS ERROR:", err);
+        }
+    }
+    
+};
 
-watch(searchQuery, () => {
-  fetchLaporanDonor()
-})
 
 onMounted(()=>{
-    fetchLaporanDonor()
+    fetchDonor()
 })
 </script>
 
@@ -155,7 +148,7 @@ onMounted(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in paginatedData" :key="item.id_laporan_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                        <tr v-for="(item, index) in paginatedData" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left text-neutral-600">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.nama_pendonor }}</td>

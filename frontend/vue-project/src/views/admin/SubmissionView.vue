@@ -4,23 +4,17 @@ import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios'
 import {alertSuccess, alertError, alertConfirm} from "../../services/alert.js"
 
-const showModal = ref(false);
-const darurat = ref([])
-const searchQuery = ref('')
-const showFilter = ref(false)
-const filterStatus = ref('')
-const filterGolDarah = ref('')
-const filterLokasiPasien = ref('')
+const permohonan = ref([])
 
 // PAGGINATION
 const currentPage = ref(1)       
 const perPage = ref(12)            
-const totalPages = computed(() => Math.ceil(darurat.value.length / perPage.value))
+const totalPages = computed(() => Math.ceil(permohonan.value.length / perPage.value))
 
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * perPage.value
     const end = start + perPage.value
-    return darurat.value.slice(start, end)
+    return permohonan.value.slice(start, end)
 })
 
 const goToPage = (page) => {
@@ -38,122 +32,36 @@ const prevPage = () => {
 }
 
 // READ DATA
-const fetchDarahDarurat = async () => {
+const fetchAdminPermohonan = async () => {
     try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/admin_darurat.php', {
-            params: {
-                search: searchQuery.value,
-                status_pengajuan: filterStatus.value,
-                gol_darah: filterGolDarah.value,
-                lokasi_pasien: filterLokasiPasien.value
-            }
-        })
-        darurat.value = res.data.data
+        const res = await axios.get('http://localhost/ProjectLomba/backend/admin_permohonan.php')
+        permohonan.value = res.data.data
     } catch(err) {
         console.log(err)
     }
 }
 
-const openFilter = () => {
-    showFilter.value = !showFilter.value
-}
-const applyFilter = () => {
-    fetchDarahDarurat()
-    showFilter.value = false
-}
-
-const resetFilter = () => {
-    filterStatus.value = ''
-    filterGolDarah.value = ''
-    filterLokasiPasien.value = ''
-    fetchDarahDarurat()
-}
-
-const openModal = () => {
-    showModal.value = true;
-}
-
-const closeModal = () => {
-    showModal.value = false;
-    isEdit.value = false
-    editId.value = null
-    resetForm()
-}
-
-const resetForm = ()=> {
-    nama_pasien.value = ""
-    nama_rs.value = ""
-    lokasi_pasien.value = ""
-    golongan_darah.value = ""
-    rhesus.value = ""
-    jumlah_pendonor.value = ""
-    jenis_donor_darah.value = ""
-}
-
-// GET NAMA RS
-const rs_list = ref([])
-const selectedRS = ref('')
-const getRS = async () => {
-    try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/get_rs.php')
-        rs_list.value = res.data
-    } catch(err) {
-        console.error(err)
-    }
-    
-}
-
-// GET NAMA KABUPATEN
-const kabupaten_list = ref([])
-const selectedKab = ref('')
-const getKab = async () => {
-    try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/get_kabupaten.php')
-        kabupaten_list.value = res.data
-    } catch(err) {
-        console.error(err)
-    }
-    
-}
 
 // EDIT
-const nama_pasien = ref('')
-const nama_rs = ref('')
-const golongan_darah = ref('')
-const rhesus = ref('')
-const lokasi_pasien = ref('')
-const jumlah_pendonor = ref('')
-const jenis_donor_darah = ref('')
-
+const status_pengajuan = ref('')
 const editId = ref(null)
 const isEdit = ref(false)
 
 const openEdit = (item)=> {
     isEdit.value = true
     editId.value = item.id
-    nama_pasien.value = item.nama_pasien
-    nama_rs.value = item.nama_rumah_sakit
-    lokasi_pasien.value = item.lokasi_pasien
-    golongan_darah.value = item.golongan_darah
-    rhesus.value = item.rhesus
-    jumlah_pendonor.value = item.jumlah_pendonor
-    jenis_donor_darah.value = item.jenis_donor_darah
+
+    status_pengajuan.value = item.status_pengajuan
     openModal()
 }
 
 const submitForm = async () => {
     if(isEdit.value) {
         const formData = new FormData();
-        formData.append("nama_pasien", nama_pasien.value);
-        formData.append("nama_rumah_sakit", nama_rs.value);
-        formData.append("lokasi_pasien", lokasi_pasien.value);
-        formData.append("golongan_darah", golongan_darah.value);
-        formData.append("rhesus", rhesus.value);
-        formData.append("jumlah_pendonor", jumlah_pendonor.value);
-        formData.append("jenis_donor_darah", jenis_donor_darah.value);
+        formData.append("status_pengajuan", status_pengajuan.value);
         try {
             const res = await axios.post(
-                `http://localhost/ProjectLomba/backend/donor_urgent_edit.php?id=${editId.value}`,
+                `http://localhost/ProjectLomba/backend/admin_permohonan_status.php?id=${editId.value}`,
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
@@ -163,39 +71,7 @@ const submitForm = async () => {
 
             if(res.data.status === "success"){
                 alert(res.data.message);
-                closeModal()
-                fetchDarahDarurat()
-            } else {
-                alert(res.data.message);
-            }
-        } catch (err) {
-            console.error("AXIOS ERROR:", err);
-        }
-    } else {
-        const formData = new FormData();
-        formData.append("nama_pasien", nama_pasien.value);
-        formData.append("nama_rumah_sakit", nama_rs.value);
-        formData.append("lokasi_pasien", lokasi_pasien.value);
-        formData.append("golongan_darah", golongan_darah.value);
-        formData.append("rhesus", rhesus.value);
-        formData.append("jumlah_pendonor", jumlah_pendonor.value);
-        formData.append("jenis_donor_darah", jenis_donor_darah.value);
-        formData.append("status_pengajuan", "diterima");
-
-        try {
-            const res = await axios.post(
-                "http://localhost/ProjectLomba/backend/donor_urgent_add.php",
-                formData,
-                {
-                    headers: { "Content-Type": "multipart/form-data" },
-                    withCredentials: true
-                }
-            );
-
-            if(res.data.status === "success"){
-                alert(res.data.message);
-                closeModal()
-                fetchDarahDarurat()
+                fetchAdminPermohonan()
             } else {
                 alert(res.data.message);
             }
@@ -206,120 +82,16 @@ const submitForm = async () => {
     
 };
 
-// DELETE
-const handleDelete = async(id)=> {
-    const confirm = await alertConfirm("Apakah anda yakin ingin menghapus data ini?")
-
-    if(confirm) {
-        const res = await axios.delete(`http://localhost/ProjectLomba/backend/donor_urgent_delete.php?id=${id}`)
-        if(res.data.status === "success"){
-                fetchDarahDarurat()
-        }
-        
-    }
-
-}
-
-watch(searchQuery, () => {
-  fetchDarahDarurat()
-})
 
 onMounted(()=>{
-    fetchDarahDarurat()
-    getRS()
-    getKab()
+    fetchAdminPermohonan()
+
 })
 </script>
 
 <template>
     <section class="bg-white p-6 min-h-screen">
         <h1 class="text-2xl font-semibold">Permohonan</h1>
-
-        <!-- MODAL -->
-        <div v-if="showModal" class="fixed inset-0 bg-black/35 flex items-center justify-center z-50 overflow-y-auto">
-            <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-lg ">
-                <h2 class="text-xl font-semibold mb-4">{{ isEdit ? 'Edit Permohonan Darurat' : 'Tambah Permohonan Darurat' }}</h2>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block mb-1 font-medium">Nama Pasien</label>
-                        <input v-model="nama_pasien" type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
-                    </div>
-
-                    <div>
-                        <label class="block mb-1 font-medium">Rumah Sakit</label>
-                        <select v-model="nama_rs" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                            <option value="">--Pilih Rumah Sakit--</option>
-                            <option v-for="item in rs_list" :key="item.id" :value="item.nama_rs">{{ item.nama_rs }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block mb-1 font-medium">Kabupaten</label>
-                        <select v-model="lokasi_pasien" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                            <option value="">--Pilih Kabupaten--</option>
-                            <option v-for="item in kabupaten_list" :key="item.id_kabupaten" :value="item.nama_kabupaten">{{ item.nama_kabupaten }}</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center gap-5">
-                        <div class="w-full">
-                            <label class="block mb-1 font-medium">Golongan Darah</label>
-                            <select v-model="golongan_darah" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                                <option value="">--Pilih Gol Darah--</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="AB">AB</option>
-                                <option value="O">O</option>
-                            </select>
-                        </div>
-    
-                        <div class="w-full">
-                            <label class="block mb-1 font-medium">Rhesus</label>
-                            <select  v-model="rhesus" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                                    <option value="">--Pilih Rhesus--</option>
-                                    <option value="+">+</option>
-                                    <option value="-">-</option>
-                                </select>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center gap-5">
-                        <div class="w-full">
-                            <label class="block mb-1 font-medium">Jumlah Pendonor</label>
-                            <input v-model="jumlah_pendonor" type="text" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Jumlah Pendonor">
-                        </div>
-    
-                        <div class="w-full">
-                            <label class="block mb-1 font-medium">Jenis Donor</label>
-                            <select class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" >
-                                <option value="">--Pilih Jenis Donor--</option>
-                                <option value="Darah Penuh">Darah Penuh</option>
-                                <option value="Plasma">Plasma</option>
-                                <option value="Trombosit">Trombosit</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="flex justify-end mt-5 gap-3">
-                    <button 
-                        class="px-4 py-2 bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-400"
-                        @click="closeModal"
-                    >
-                        Batal
-                    </button>
-
-                    <button 
-                        type="submit" @click="submitForm" class="px-4 py-2 bg-primary text-white rounded-lg cursor-pointer hover:bg-red-700"
-                    >
-                        Simpan
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <div class="mt-5">
             <!-- <div class="xl:flex xl:flex-row  flex-col items-center justify-between">
                 <input v-model="searchQuery" type="text" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari nama pasien">
