@@ -1,12 +1,11 @@
 <script setup>
 import { store } from '@/stores/stores';
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 const router = useRouter()
 
 const isLogin = ref(true)
-
 const checkLogin = async () => {
     try {
         const res = await axios.get(
@@ -15,14 +14,20 @@ const checkLogin = async () => {
         );
 
         if (!res.data.isLogin) {
+            localStorage.removeItem('user')
+            store.isLoggedIn = false
+            store.user = {}
             router.push('/masuk');
         }
 
         isLogin.value = res.data.isLogin;
-
     } catch (err) {
+        localStorage.removeItem('user')
+        store.isLoggedIn = false
+        store.user = {}
         router.push('/masuk');
     }
+
 };
 
 
@@ -114,8 +119,8 @@ const submitForm = async () => {
         }
 };
 
-onMounted(() => {
-    checkLogin()
+onMounted(async () => {
+    await checkLogin()
     getRS()
     getKab()
 });

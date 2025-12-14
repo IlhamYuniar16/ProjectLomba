@@ -2,7 +2,9 @@ import { reactive } from 'vue'
 
 export const store = reactive({
   isLoggedIn: false,
-  user: null
+  user: {},
+  permohonan: [],
+  donorData: []
 })
 
 // Load user dari localStorage saat app mulai
@@ -12,10 +14,15 @@ if (savedUser) {
   store.user = JSON.parse(savedUser)
 }
 
-// Fungsi logout
+
 export const logout = (router) => {
-  store.isLoggedIn = false
-  store.user = null
-  localStorage.removeItem('user')
-  router.push('/masuk')
+  fetch('http://localhost/ProjectLomba/backend/logout.php', { credentials: 'include' })
+    .then(() => {
+      store.isLoggedIn = false
+      store.user = {}
+      store.permohonan = []
+      store.donorData = []
+      localStorage.removeItem('user')
+      router.push('/masuk')
+    })
 }

@@ -35,9 +35,12 @@ const isActiveMenuMobile = (path)=> {
     return route.path === path ? 'text-primary' : 'hover:text-primary '
 }
 
+
 const router = useRouter()
 const logoutUser = () => {
   logout(router)
+
+  
 }
 
 </script>

@@ -6,7 +6,9 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 session_start();
 
-echo json_encode([
-    "isLogin" => isset($_SESSION['user'])
-]);
+if(isset($_SESSION['user'])){
+    echo json_encode(["isLogin" => true, "user" => $_SESSION['user']]);
+} else {
+    echo json_encode(["isLogin" => false]);
+}
 ?>
