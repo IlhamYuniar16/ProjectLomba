@@ -423,11 +423,11 @@ onMounted(()=>{
                     <ChevronLeftIcon class="size-5"/>
                 </button>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center cursor-pointer gap-2">
                     <button 
                     v-for="page in totalPages" :key="page"
                     @click="goToPage(page)"
-                    :class="{'bg-black text-white px-3 py-1 rounded': currentPage === page, 'px-3 py-1 rounded bg-gray-200': currentPage !== page}"
+                    :class="{'bg-black text-white px-3 cursor-pointer py-1 rounded': currentPage === page, 'px-3 py-1 rounded bg-gray-200 cursor-pointer': currentPage !== page}"
                     >
                     {{ page }}
                     </button>

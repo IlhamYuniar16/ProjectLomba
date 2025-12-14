@@ -327,7 +327,7 @@ onMounted(()=>{
                     <button @click="openModal" class="px-6 py-2 bg-primary hover:bg-red-700 rounded text-white cursor-pointer">+ Tambah Data</button>
 
                     <!-- MODAL FILTER -->
-                    <div v-if="showFilter" class="absolute xl:right-30 top-10 bg-white w-72 rounded-xl border-neutral-300 shadow-lg border p-4 z-50">
+                    <div v-if="showFilter" class="absolute xl:right-46 top-10 bg-white w-72 rounded-xl border-neutral-300 shadow-lg border p-4 z-50">
                         <div class="flex items-center gap-3 mb-4 border-b border-neutral-300 pb-3">
                             <FunnelIcon class="size-5 text-gray-300"/>
                             <h1 class="font-semibold">Filter Data</h1>
@@ -425,7 +425,7 @@ onMounted(()=>{
                     <button 
                     v-for="page in totalPages" :key="page"
                     @click="goToPage(page)"
-                    :class="{'bg-black text-white px-3 py-1 rounded': currentPage === page, 'px-3 py-1 rounded bg-gray-200': currentPage !== page}"
+                    :class="{'bg-black text-white px-3 py-1 rounded cursor-pointer': currentPage === page, 'px-3 py-1 rounded cursor-pointer bg-gray-200': currentPage !== page}"
                     >
                     {{ page }}
                     </button>

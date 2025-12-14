@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon} from '@heroicons/vue/24/solid';
+import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon, DocumentTextIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
 import { store } from '../stores/stores'
 
@@ -27,6 +27,10 @@ const isHandleBorder = (path)=> {
 
 const toggleSidebar = ()=> {
     isOpen.value = !isOpen.value
+}
+
+const closeNavbar = ()=> {
+    isOpen.value = false
 }
 
 onMounted(() => {
@@ -88,9 +92,18 @@ watch(isOpen, (val) => {
                     <RouterLink to="/admin/permohonan-admin" class="flex items-center cursor-pointer group mb-3">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/permohonan-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
                         <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/permohonan-admin')]" class="w-full flex items-center transition-all duration-300">
-                            <HeartIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
+                            <DocumentTextIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
 
                             <p :class="isOpen ? 'hidden' : ''">Permohonan</p>
+                        </div>
+                    </RouterLink>
+
+                    <RouterLink to="/admin/donor-admin" class="flex items-center cursor-pointer group mb-3">
+                        <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/donor-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/donor-admin')]" class="w-full flex items-center transition-all duration-300">
+                            <DocumentTextIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
+
+                            <p :class="isOpen ? 'hidden' : ''">Donor</p>
                         </div>
                     </RouterLink>
 
@@ -144,36 +157,43 @@ watch(isOpen, (val) => {
                     </div>
                 </main>
                  <main v-if="isOpen" class="flex flex-col pt-5 items-start">
-                    <RouterLink to="/admin/dashboard" class="flex items-center cursor-pointer gap-3 group mb-5">
+                    <RouterLink @click="closeNavbar" to="/admin/dashboard" class="flex items-center cursor-pointer gap-3 group mb-5">
                         <div :class="[ isHandleBorder('/admin/dashboard')]" class="h-10 w-2 rounded-r-2xl"></div>
                         <div :class="[ isActiveMenu('/admin/dashboard')]" class="w-full flex gap-3 items-center transition-all duration-300">
                             <FolderOpenIcon  class="size-6"/>
                             <p class="">Dashboard</p>
                         </div>
                     </RouterLink>
-                    <RouterLink to="/admin/darah-darurat" class="flex items-center cursor-pointer gap-3 group mb-5">
+                    <RouterLink @click="closeNavbar" to="/admin/darah-darurat" class="flex items-center cursor-pointer gap-3 group mb-5">
                         <div :class="[ isHandleBorder('/admin/darah-darurat')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
                         <div :class="[ isActiveMenu('/admin/darah-darurat')]" class="w-full gap-3 flex items-center transition-all duration-300">
                             <HeartIcon  class="size-6"/>
                             <p class="">Darah Darurat</p>
                         </div>
                     </RouterLink>
-                    <RouterLink to="/admin/permohonan" class="flex items-center cursor-pointer gap-3 group mb-3">
-                        <div :class="[ isHandleBorder('/admin/permohonan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[ isActiveMenu('/admin/permohonan')]" class="w-full flex items-center transition-all duration-300">
-                            <HeartIcon class="size-6"/>
+                    <RouterLink @click="closeNavbar" to="/admin/permohonan-admin" class="flex items-center cursor-pointer gap-3 group mb-3">
+                        <div :class="[ isHandleBorder('/admin/permohonan-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[ isActiveMenu('/admin/permohonan-admin')]" class="w-full gap-3 flex items-center transition-all duration-300">
+                            <DocumentTextIcon class="size-6"/>
                             <p>Permohonan</p>
                         </div>
                     </RouterLink>
-                    <span class="opacity-65 pl-2">Laporan</span>
-                    <RouterLink to="/admin/laporan-donor" class="flex items-center cursor-pointer gap-3 group mb-5">
+                    <RouterLink @click="closeNavbar" to="/admin/donor-admin" class="flex items-center cursor-pointer gap-3 group mb-3">
+                        <div :class="[ isHandleBorder('/admin/donor-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
+                        <div :class="[ isActiveMenu('/admin/donor-admin')]" class="w-full gap-3 flex items-center transition-all duration-300">
+                            <HeartIcon class="size-6"/>
+                            <p>Donor</p>
+                        </div>
+                    </RouterLink>
+                    <span class="opacity-65 pl-2 ">Laporan</span>
+                    <RouterLink @click="closeNavbar" to="/admin/laporan-donor" class="flex items-center cursor-pointer gap-3 group mb-5">
                         <div :class="[ isHandleBorder('/admin/laporan-donor')]" class="h-10 w-2 rounded-r-2xl"></div>
                         <div :class="[ isActiveMenu('/admin/laporan-donor')]" class="w-full gap-3 flex items-center transition-all duration-300">
                             <BeakerIcon class="size-6"/>
                             <p class="">Donor</p>
                         </div>
                     </RouterLink>
-                    <RouterLink to="/admin/laporan-permohonan" class="flex items-center cursor-pointer gap-3 group mb-5">
+                    <RouterLink @click="closeNavbar" to="/admin/laporan-permohonan" class="flex items-center cursor-pointer gap-3 group mb-5">
                         <div :class="[ isHandleBorder('/admin/laporan-permohonan')]" class="h-10 w-2 rounded-r-2xl"></div>
                         <div :class="[ isActiveMenu('/admin/laporan-permohonan')]" class="w-full gap-3 flex items-center transition-all duration-300">
                             <ClipboardDocumentListIcon  class="size-6"/>

@@ -283,7 +283,7 @@ onMounted(()=>{
                 </div>
             </div>
             <div v-if="active === 'History'" class="container max-w-4xl mx-auto grid grid-cols-1 gap-5">
-              <div v-for="(item, index) in permohonan" :key="index" class="bg-white w-full rounded-2xl mx-auto shadow-md p-6 flex flex-col justify-between">
+              <div v-for="(item, index) in permohonan.slice(0, 5)" :key="index" class="bg-white w-full rounded-2xl mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span
                 class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
@@ -332,7 +332,7 @@ onMounted(()=>{
             </button>
               </div>
             </div>
-            <div v-for="(item, index) in donorData" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
+            <div v-for="(item, index) in donorData.slice(0, 5)" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
               <div class="mb-4">
                 <span
                 class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"

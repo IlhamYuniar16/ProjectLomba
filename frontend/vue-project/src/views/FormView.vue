@@ -110,6 +110,15 @@ const submitForm = async () => {
             }
         )
         if(res.data.status === "success"){
+                nama_pasien.value = ''
+                golongan_darah.value = ''
+                nama_rumah_sakit.value = ''
+                rhesus.value = ''
+                jumlah_pendonor.value = ''
+                jenis_donor_darah.value = ''
+                narhub_email.value = ''
+                narhub_nama.value = ''
+                narhub_notel.value = ''
                 alert(res.data.message);
             } else {
                 alert(res.data.message);

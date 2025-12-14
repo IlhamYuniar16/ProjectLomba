@@ -11,6 +11,7 @@ import HomePage from "../views/HomePage.vue";
 import TentangPage from "@/views/TentangPage.vue";
 import HistoryPage from "@/views/HistoryPage.vue";
 import SubmissionView from "@/views/admin/SubmissionView.vue";
+import DonorView from "@/views/admin/DonorView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,6 +77,11 @@ const router = createRouter({
           path: "permohonan-admin",
           name: "permohonan-admin",
           component: SubmissionView,
+        },
+        {
+          path: "donor-admin",
+          name: "donor-admin",
+          component: DonorView,
         },
         {
           path: "laporan-donor",

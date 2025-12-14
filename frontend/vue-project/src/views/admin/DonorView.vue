@@ -89,13 +89,11 @@ onMounted(()=>{
         <h1 class="text-2xl font-semibold">Laporan Donor</h1>
 
         <div class="mt-5">
-            <div class="xl:flex xl:flex-row flex-col items-center justify-between">
+            <!-- <div class="xl:flex xl:flex-row flex-col items-center justify-between">
                 <input type="text" v-model="searchQuery" class="px-4 py-2 rounded-full bg-secondary outline-none md:max-w-sm w-full" placeholder="Cari...">
                 <div class="flex xl:flex-row flex-row-reverse items-center mt-5 lg:mt-0 gap-3 relative">
                     <FunnelIcon @click="openFilter" class="size-6 text-gray-300 cursor-pointer"/>
                     <a @click="exportFile('donor')" class="flex items-center gap-3 px-6 py-2 bg-green-500 rounded text-white cursor-pointer"><CloudArrowDownIcon class="size-5"/>Excel</a>
-
-                    <!-- MODAL FILTER -->
                     <div v-if="showFilter" class="absolute xl:right-30 top-10 bg-white w-72 rounded-xl border-neutral-300 shadow-lg border p-4 z-50">
                         <div class="flex items-center gap-3 mb-4 border-b border-neutral-300 pb-3">
                             <FunnelIcon class="size-5 text-gray-300"/>
@@ -137,7 +135,7 @@ onMounted(()=>{
                     </div>
                 </div>
 
-            </div>
+            </div> -->
 
             <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">
                 <table class="w-full mt-5 min-w-max ">
