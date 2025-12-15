@@ -162,11 +162,11 @@ const submitForm = async () => {
             );
 
             if(res.data.status === "success"){
-                alert(res.data.message);
+                alertSuccess("Data berhasil diperbarui!");
                 closeModal()
                 fetchDarahDarurat()
             } else {
-                alert(res.data.message);
+                alertError("Terjadi kesalahan!");
             }
         } catch (err) {
             console.error("AXIOS ERROR:", err);
@@ -193,11 +193,11 @@ const submitForm = async () => {
             );
 
             if(res.data.status === "success"){
-                alert(res.data.message);
+                alertSuccess("Berhasil menambahkan data!");
                 closeModal()
                 fetchDarahDarurat()
             } else {
-                alert(res.data.message);
+                alertError("Terjadi kesalahan!");
             }
         } catch (err) {
             console.error("AXIOS ERROR:", err);

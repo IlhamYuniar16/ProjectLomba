@@ -2,6 +2,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, CloudArrowDownIcon, FunnelIcon, PencilSquareIcon } from '@heroicons/vue/24/solid';
 import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios'
+import { alertError, alertSuccess } from '@/services/alert';
 
 const donor = ref([])
 // PAGGINATION
@@ -11,11 +12,15 @@ const totalPages = computed(() => Math.ceil(donor.value.length / perPage.value))
 const showModal = ref(false)
 const editId = ref(null)
 const isEdit = ref(false)
-const eligible = ref('')
-
+const eligible = ref(true)
+const isLoading = ref(false)
 
 const openEdit = (item)=> {
+        console.log('ITEM DARI TABLE:', item)
+    console.log('STATUS:', item.status_pengajuan)
     isEdit.value = true
+    editId.value = item.id_pengajuan_donor
+    console.log('STATUS:', item.id_pengajuan_donor)
     openModal()
 }
 
@@ -68,13 +73,19 @@ const fetchDonor = async () => {
 
 const tanggal = ref('')
 const jam = ref('')
-
+const setEligible = (status) => {
+    eligible.value = status === 'eligible'
+}
 const statusEligible = async () => {
         const formData = new FormData();
             formData.append("tanggal", tanggal.value)
             formData.append("jam", jam.value)
-            formData.append("status_pengajuan", eligible.value ? "eligible" : "not_eligible")
+            formData.append(
+        "status_pengajuan",
+        eligible.value ? 'eligible' : 'not_eligible'
+    )
         try {
+            isLoading.value = true
             const res = await axios.post(
                 `http://localhost/ProjectLomba/backend/admin_donor_status.php?id=${editId.value}`,
                 formData,
@@ -85,11 +96,14 @@ const statusEligible = async () => {
             );
 
             if(res.data.status === "success"){
-                alert(res.data.message);
+                alertSuccess(res.data.message);
                 fetchDonor()
             } else {
-                alert(res.data.message);
+                alertError(res.data.message);
             }
+
+            isLoading.value = false
+            closeModal()
         } catch (err) {
             console.error("AXIOS ERROR:", err);
         }
@@ -162,20 +176,32 @@ onMounted(()=>{
                         <h1 class="text-xl mb-3">Pengajuan Donor</h1>
                         <div class="mb-3">
                             <label for="" class="font-medium mb-1">Status</label>
-                            <select v-model="eligible" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">
-                                <option value="" disabled>--Pilih Status--</option>
-                                <option value="not_eligible">Not Eligible</option>
-                                <option value="eligible">Eligible</option>
-                            </select>
+                            <div class="flex items-center gap-3" >
+                                <button
+                                @click="setEligible('eligible')"
+                                :class="eligible ? 'bg-green-100 text-green-500' : 'bg-gray-100 text-black'"
+                                class="w-full px-4 py-2 rounded cursor-pointer"
+                                >
+                                Eligible
+                                </button>
+
+                                <button
+                                @click="setEligible('not_eligible')"
+                                :class="!eligible ? 'bg-red-100 text-red-500' : 'bg-gray-100 text-black'"
+                                class="w-full px-4 py-2 rounded cursor-pointer"
+                                >
+                                Not Eligible
+                                </button>
+                            </div>
                         </div>
                         <div v-if="status_eligible === 'eligible'" class="grid grid-cols-2 gap-4">
                             <div class="mb-3">
                                 <label class="block mb-1 font-medium">Tanggal</label>
-                                <input type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
+                                <input v-model="tanggal" type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
                             </div>
                             <div class="mb-3">
                                 <label class="block mb-1 font-medium">Jam</label>
-                                <input type="time" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
+                                <input v-model="jam" type="time" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">
                             </div>
                         </div>
                         
@@ -190,9 +216,9 @@ onMounted(()=>{
                         </button>
 
                         <button 
-                            type="submit" @click="submitForm" :disabled="!eligible" :class="!eligible ? 'cursor-not-allowed' : 'cursor-pointer'" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-red-700"
+                            type="submit" @click="statusEligible" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-red-700 cursor-pointer"
                         >
-                            Simpan
+                            {{ isLoading ? 'Memuat...' : 'Simpan' }}
                         </button>
                     </div>
                 </div>
@@ -203,6 +229,7 @@ onMounted(()=>{
                     <thead>
                         <tr class="border-b border-neutral-300">
                             <th class="px-4 py-3 text-left ">No</th>
+                            <th class="px-4 py-3 text-left ">Aksi</th>
                             <th class="px-4 py-3 text-left ">Status</th>
                             <th class="px-4 py-3 text-left ">Tanggal</th>
                             <th class="px-4 py-3 text-left ">Nama Pendonor</th>
@@ -216,7 +243,7 @@ onMounted(()=>{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in paginatedData" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                        <tr v-for="(item, index) in paginatedData" :key="item.id_pengajuan_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left text-neutral-600">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-center text-neutral-600 flex items-center justify-center ">
                                 <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 rounded flex items-center justify-center  cursor-pointer">
@@ -228,6 +255,10 @@ onMounted(()=>{
                                     <option value="not_eligible">Not eligible</option>
                                 </select> -->
                             </td>
+                            <td class="px-4 py-3 text-left text-neutral-600"><p class=" w-fit px-4 rounded-full" :class="{
+                                                                                'text-green-500 bg-green-50': item.status_pengajuan === 'eligible' ,
+                                                                                'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
+                                                                                'text-red-500 bg-red-50': item.status_pengajuan === 'not_eligible'}">{{ item.status_pengajuan }}</p></td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.created_at }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.nama_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600">{{ item.tanggal_lahir }}</td>

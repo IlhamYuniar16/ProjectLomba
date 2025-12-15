@@ -106,6 +106,8 @@ const register = async () => {
       await alertError(res.data.status)
     }
 
+    loading.value = false
+
   } catch (err) {
     console.error(err)
     alert("Gagal terhubung server!")

@@ -111,17 +111,17 @@ const submitForm = async () => {
             }
         )
         if(res.data.status === "success"){
-                // nama_pasien.value = ''
-                // golongan_darah.value = ''
-                // nama_rumah_sakit.value = ''
-                // rhesus.value = ''
-                // jumlah_pendonor.value = ''
-                // jenis_donor_darah.value = ''
-                // narhub_email.value = ''
-                // narhub_nama.value = ''
-                // narhub_notel.value = ''
-                // kabupaten_list.value = ''
-                alertSuccess(res.data.message)
+            nama_pasien.value = ''
+            nama_rumah_sakit.value = ''
+            lokasi_pasien.value = ''
+            golongan_darah.value = ''
+            rhesus.value = ''
+            jumlah_pendonor.value = ''
+            jenis_donor_darah.value = ''
+            narhub_nama.value = ''
+            narhub_notel.value = ''
+            narhub_email.value = ''
+            alertSuccess(res.data.message)
             } else {
                 alertError(res.data.message)
             }
@@ -265,7 +265,7 @@ const submitDonor = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <input type="text" v-model="jumlah_pendonor" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Jumlah Pendonor">
+                            <input type="number" v-model="jumlah_pendonor" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Jumlah Pendonor">
                         </div>
     
                         <div class="flex">
@@ -319,7 +319,7 @@ const submitDonor = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <input type="text" v-model="narhub_email" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Alamat Surel/Email">
+                            <input type="email" v-model="narhub_email" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Alamat Surel/Email">
                         </div>
     
                     </div>
@@ -427,7 +427,7 @@ const submitDonor = async () => {
     
                     
                     <div class="flex items-center justify-center mt-8">
-                        <button type="submit" @click="submitDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Kirim Sekarang</button>
+                        <button type="button" @click="submitDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Kirim Sekarang</button>
                     </div>
                 </form>
             </div>

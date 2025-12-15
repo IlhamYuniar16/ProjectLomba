@@ -173,14 +173,14 @@ onMounted(()=>{
                         <tr v-for="(item, index) in paginatedData" :key="item.id"  class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ (currentPage - 1) * perPage + index + 1 }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.created_at }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_rumah_sakit }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.nama_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.lokasi_pasien }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.golongan_darah }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.rhesus }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jumlah_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jenis_donor_darah }}</td>
-                            <td class="px-4 py-3 text-left text-neutral-600 "  v-if="item.foto_formulir_rs && item.foto_formulir_rs !== ''"><a :href="`http://localhost/ProjectLomba/backend/${item.foto_formulir_rs}`" Download class="px-3 py-1 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600">Lihat</a></td>
+                            <td class="px-4 py-3 text-left text-neutral-600 "  v-if="item.foto_formulir_rs && item.foto_formulir_rs !== ''"><a :href="`http://localhost/ProjectLomba/backend/${item.foto_formulir_rs}`" target="_blank" Download class="px-3 py-1 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600">Lihat</a></td>
                             <td class="px-4 py-3 text-left text-neutral-600 "  v-else></td>
                             <td class="px-4 py-3 text-left text-neutral-600 "><p class="w-fit px-4 rounded-full"
                                                                                 :class="{

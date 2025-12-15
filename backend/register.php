@@ -50,17 +50,82 @@ try {
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'rizktc@gmail.com';
-    $mail->Password = 'thunmchajcrfkpir';
+    $mail->Username = 'jrssquad155@gmail.com';
+    $mail->Password = 'grjxbanodfewlnde';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port = 465;
 
-    $mail->setFrom('rizktc@gmail.com', "Chandra");
+    $mail->setFrom('jrssquad155@gmail.com', 'Yogyalife');
     $mail->addAddress($email);
     $mail->isHTML(true);
     $mail->Subject = 'Email Verification';
-    $mail->Body = "<h2>Verify your email:</h2>
-        <a href='http://localhost/ProjectLomba/backend/services/verify-email.php?token=$verify_token'>Klik disini</a>";
+    $mail->Body = '
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verifikasi Email - Yogyalife</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center" style="padding:30px 10px;">
+                <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background:#c62828;padding:20px;text-align:center;color:#ffffff;">
+                            <h1 style="margin:0;">Yogyalife</h1>
+                            <p style="margin:5px 0 0;font-size:14px;">
+                                Verifikasi Email
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding:30px;color:#333;">
+                            <h2 style="margin-top:0;color:#c62828;">
+                                Verifikasi Email Anda
+                            </h2>
+
+                            <p style="line-height:1.6;">
+                                Terima kasih telah mendaftar di <strong>Yogyalife</strong>.
+                                Untuk mengaktifkan akun Anda, silakan verifikasi alamat email
+                                dengan menekan tombol di bawah ini.
+                            </p>
+
+                            <div style="text-align:center;margin:30px 0;">
+                                <a href="http://localhost/ProjectLomba/backend/services/verify-email.php?token='.$verify_token.'"
+                                   style="background:#c62828;color:#ffffff;
+                                          padding:12px 24px;text-decoration:none;
+                                          border-radius:6px;font-weight:bold;
+                                          display:inline-block;">
+                                    Verifikasi Email
+                                </a>
+                            </div>
+
+                            <p style="font-size:14px;color:#666;line-height:1.6;">
+                                Jika Anda tidak merasa mendaftar di Yogyalife,
+                                abaikan email ini.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background:#f0f0f0;padding:15px;text-align:center;font-size:12px;color:#777;">
+                            © '.date("Y").' Yogyalife. Semua hak dilindungi.
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+';
     $mail->send();
 
     echo json_encode([

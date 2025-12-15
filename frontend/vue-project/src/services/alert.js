@@ -3,7 +3,7 @@ import Swal from "sweetalert2"
 export const alertSuccess = async(message)=> {
     return Swal.fire({
         icon: "success",
-        title: "Oke",
+        title: "Sukses!",
         text: message
     })
 }

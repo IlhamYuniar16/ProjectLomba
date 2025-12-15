@@ -5,6 +5,7 @@ import axios from 'axios'
 const isLogin = ref(false)
 const historyTab = ref('permohonanTab')
 const permohonan = ref([])
+const isLoading = ref(false)
 
 const fetchHistoryPermohonan = async () => {
   try {
@@ -20,7 +21,7 @@ console.log(permohonan.value)
       isLogin.value = false
       permohonan.value = []
     }
-  }
+  } 
 }
 
 const permohonan_batal = async (id) => {
@@ -58,7 +59,7 @@ const fetchHistoryDonor = async () => {
       isLogin.value = false
       donorData.value = []  
     }
-  }
+  } 
 }
 
 onMounted(()=>{
@@ -100,15 +101,16 @@ onMounted(()=>{
             <span class="hidden">{{ item.id }}</span>
             <div class="mb-4">
               <span
-                class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
-                :class="{
-                  'bg-green-100 text-green-600': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
-                  'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
-                  'bg-red-100 text-red-600': item.status_pengajuan === 'batal'
-                }">
+              class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full"
+              :class="{
+                'bg-green-100 text-green-600': item.status_pengajuan === 'diterima' || item.status_pengajuan === 'selesai',
+                'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
+                'bg-red-100 text-red-600': item.status_pengajuan === 'batal'
+              }">
                 {{ item.status_pengajuan }}
               </span>
             </div>
+            
 
             <div class="space-y-2 text-sm text-gray-700">
               <div class="flex justify-between">

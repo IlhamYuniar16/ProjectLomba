@@ -10,16 +10,15 @@ const isOpen = ref(false)
 const route = useRoute()
 
 const logout = async() => {
-
     const confirm = await alertConfirm("Apakah anda yakin ingin keluar?")
-
-    if(confirm) {
-        store.isLoggedIn = false
-        store.user = null
+  // Reset state user
+  if(confirm) {
+      store.isLoggedIn = false
+      store.user = null
     
-        // Redirect ke login
-        router.push('/masuk')
-    }
+      // Redirect ke login
+      router.push('/masuk')
+  }
 }
 
 const isActiveMenu = (path)=> {
@@ -78,7 +77,7 @@ watch(isOpen, (val) => {
                 <ul class="flex flex-col mt-8 overflow-x-hidden">
                     <RouterLink to="/admin/dashboard" class="flex items-center cursor-pointer group mb-5">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/dashboard')]" class="h-10 w-2 rounded-r-2xl"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/dashboard')]" class="w-full flex items-center transition-all duration-300">
+                        <div :title="isOpen ? 'Dashboard' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/dashboard')]" class="w-full flex items-center transition-all duration-300">
                             <FolderOpenIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
 
                             <p :class="isOpen ? 'hidden' : ''" class="">Dashboard</p>
@@ -87,7 +86,7 @@ watch(isOpen, (val) => {
 
                     <RouterLink to="/admin/darah-darurat" class="flex items-center cursor-pointer group mb-3">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/darah-darurat')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/darah-darurat')]" class="w-full flex items-center transition-all duration-300">
+                        <div :title="isOpen ? 'Darah Darurat' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/darah-darurat')]" class="w-full flex items-center transition-all duration-300">
                             <HeartIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
 
                             <p :class="isOpen ? 'hidden' : ''">Darah Darurat</p>
@@ -96,7 +95,7 @@ watch(isOpen, (val) => {
 
                     <RouterLink to="/admin/permohonan-admin" class="flex items-center cursor-pointer group mb-3">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/permohonan-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/permohonan-admin')]" class="w-full flex items-center transition-all duration-300">
+                        <div :title="isOpen ? 'Permohonan' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/permohonan-admin')]" class="w-full flex items-center transition-all duration-300">
                             <DocumentTextIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
 
                             <p :class="isOpen ? 'hidden' : ''">Permohonan</p>
@@ -105,8 +104,9 @@ watch(isOpen, (val) => {
 
                     <RouterLink to="/admin/donor-admin" class="flex items-center cursor-pointer group mb-3">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/donor-admin')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/donor-admin')]" class="w-full flex items-center transition-all duration-300">
-                            <ArchiveBoxArrowDownIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/>
+                        <div :title="isOpen ? 'Donor' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/donor-admin')]" class="w-full flex items-center transition-all duration-300">
+                            <!-- <ArchiveBoxArrowDownIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6"/> -->
+                             <i :class="isOpen ? 'mr-0' : 'mr-3'" class="fa-solid fa-droplet text-xl "></i>
 
                             <p :class="isOpen ? 'hidden' : ''">Donor</p>
                         </div>
@@ -116,7 +116,7 @@ watch(isOpen, (val) => {
 
                     <RouterLink to="/admin/laporan-donor" class="flex items-center cursor-pointer group mb-5">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-donor')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-donor')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
+                        <div :title="isOpen ? 'Laporan Donor' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-donor')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
                             <BeakerIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
                             <p :class="isOpen ? 'hidden' : ''">Donor</p>
@@ -125,7 +125,7 @@ watch(isOpen, (val) => {
 
                     <RouterLink to="/admin/laporan-permohonan" class="flex items-center cursor-pointer group mb-5">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/laporan-permohonan')]" class="h-10 w-2 rounded-r-2xl transition-all duration-300"></div>
-                        <div :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-permohonan')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
+                        <div :title="isOpen ? 'Laporan Permohonan' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/laporan-permohonan')]" class="w-full flex items-center group-hover:text-primary transition-all duration-300">
                             <ClipboardDocumentListIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
 
                             <p :class="isOpen ? 'hidden' : ''" >Permohonan</p>

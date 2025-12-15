@@ -19,29 +19,26 @@ if(!$status_pengajuan){
     exit;
 }
 
-$query_permohonan = "UPDATE pengajuan_donor SET status_pengajuan = '$status_pengajuan' WHERE id = '$id'";
+$query_permohonan = "UPDATE pengajuan_donor SET status_pengajuan = '$status_pengajuan' WHERE id_pengajuan_donor  = '$id'";
 $run_query_permohonan = mysqli_query($db, $query_permohonan);
 
 if(!$run_query_permohonan){
-    echo json_encode(["status"=>"error","message"=>"Gagal mendaftar: ".mysqli_error($db)]);
+    echo json_encode(["status"=>"error","message"=>"Gagal edit: ".mysqli_error($db)]);
     exit;
 }
-
-
-if ($status_pengajuan === "eligible") {
-
-    $q = mysqli_query(
+if($status_pengajuan === 'eligible') {
+$q = mysqli_query(
         $db,
-        "SELECT u.email
+        "SELECT u.email, pd.rumah_sakit
         FROM pengajuan_donor pd
         JOIN data_pendonor dp ON pd.id_pendonor = dp.id
         JOIN users u ON dp.id_user = u.id
-        WHERE pd.id_pengajuan_donor = '$id'
-"
+        WHERE pd.id_pengajuan_donor = '$id'"
     );
 
     $row = mysqli_fetch_assoc($q);
     $email = $row['email'] ?? '';
+    $lokasi = $row['rumah_sakit'] ?? '';
 
     if ($email) {
         $mail = new PHPMailer(true);
@@ -49,24 +46,109 @@ if ($status_pengajuan === "eligible") {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'rizktc@gmail.com';
-            $mail->Password = 'thunmchajcrfkpir';
+           $mail->Username = 'jrssquad155@gmail.com';
+            $mail->Password = 'grjxbanodfewlnde';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 465;
 
-            $mail->setFrom('rizktc@gmail.com', 'Yogyalife');
+            $mail->setFrom('jrssquad155@gmail.com', 'Yogyalife');
             $mail->addAddress($email);
             $mail->isHTML(true);
-            $mail->Subject = 'Undangan Donor Darah Yogyalife';
-            $mail->Body = "
-                <h3>Pengajuan Anda Diterima</h3>
-                <p>Tanggal: <b>$tanggal</b></p>
-                <p>Jam: <b>$jam</b></p>
-            ";
+            $mail->Subject = 'Surat Undangan Donor Darah Yogyalife';
+            $mail->Body = '
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Undangan Donor Darah</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f8;font-family:Arial,Helvetica,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center" style="padding:30px 10px;">
+                <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background:#c62828;padding:20px;text-align:center;color:#ffffff;">
+                            <h1 style="margin:0;font-size:24px;">Yogyalife</h1>
+                            <p style="margin:5px 0 0;font-size:14px;">
+                                Undangan Donor Darah
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding:30px;color:#333333;">
+                            <h2 style="margin-top:0;color:#c62828;">
+                                Pengajuan Donor Darah Anda Diterima
+                            </h2>
+
+                            <p style="line-height:1.6;">
+                                Kami mengundang Anda untuk ikut serta dalam kegiatan 
+                                <strong>Donor Darah</strong> yang akan diselenggarakan oleh 
+                                <strong>Yogyalife</strong>.
+                            </p>
+
+                            <p style="line-height:1.6;">
+                                Setetes darah Anda dapat menjadi harapan bagi mereka yang membutuhkan.
+                                Setiap donor yang Anda lakukan berarti telah membantu menyelamatkan nyawa.
+                            </p>
+
+                            <table cellpadding="0" cellspacing="0" style="margin-top:20px;">
+                                <tr>
+                                    <td style="padding:6px 0;"><strong>Tanggal</strong></td>
+                                    <td style="padding:6px 10px;">:</td>
+                                    <td style="padding:6px 0;">'.$tanggal.'</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0;"><strong>Jam</strong></td>
+                                    <td style="padding:6px 10px;">:</td>
+                                    <td style="padding:6px 0;">'.$jam.'</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0;"><strong>Lokasi</strong></td>
+                                    <td style="padding:6px 10px;">:</td>
+                                    <td style="padding:6px 0;">'.$lokasi.'</td>
+                                </tr>
+                            </table>
+
+                            <p style="margin-top:25px;line-height:1.6;">
+                                Mohon datang tepat waktu dan pastikan kondisi kesehatan Anda dalam keadaan baik.
+                            </p>
+
+                            <p style="margin-top:30px;">
+                                Terima kasih atas partisipasi dan kepedulian Anda.
+                            </p>
+
+                            <p style="margin-top:10px;">
+                                Hormat kami,<br>
+                                <strong>Tim Yogyalife</strong>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background:#f0f0f0;padding:15px;text-align:center;font-size:12px;color:#777;">
+                            © '.date("Y").' Yogyalife. Semua hak dilindungi.
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+';
             $mail->send();
         } catch (Exception $e) {}
     }
+
 }
+
 
 echo json_encode([
     "status"=>"success",

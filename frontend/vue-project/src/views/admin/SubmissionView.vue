@@ -1,11 +1,10 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon, FunnelIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid';
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios'
 import {alertSuccess, alertError, alertConfirm} from "../../services/alert.js"
 
 const permohonan = ref([])
-const pilihStatus = ref('pending')
 // PAGGINATION
 const currentPage = ref(1)       
 const perPage = ref(12)            
@@ -43,20 +42,6 @@ const fetchAdminPermohonan = async () => {
 
 
 // EDIT
-const status_pengajuan = ref('')
-const editId = ref(null)
-const isEdit = ref(false)
-
-const openEdit = (item)=> {
-    isEdit.value = true
-    editId.value = item.id
-
-    status_pengajuan.value = item.status_pengajuan
-    openModal()
-}
-
-const pilih = [{id: 1, nama: 'pending'}, {id: 2, nama: 'diterima'}, {id: 3, nama: 'selesai'}]
-
 const submitForm = async (id, status) => {
     const formData = new FormData();
     formData.append("status_pengajuan", status);
@@ -71,7 +56,7 @@ const submitForm = async (id, status) => {
         );
 
         if (res.data.status === "success") {
-            alert(res.data.message);
+            alertSuccess("Status berhasil diperbarui!");
             fetchAdminPermohonan();
         } else {
             alert(res.data.message);
