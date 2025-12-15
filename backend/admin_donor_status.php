@@ -26,7 +26,7 @@ $format_tanggal = date('d-m-Y', strtotime($tanggal));
 $jam = $_POST['jam'] ?? '';
 $status_pengajuan = $_POST['status_pengajuan'] ?? '';
 
-if($status_pengajuan === 'diterima') {
+if($status_pengajuan === 'eligible') {
     if(!$status_pengajuan || !$tanggal || !$jam){
         echo json_encode(["status"=>"error","message"=>"Semua field wajib diisi!"]);
         exit;
