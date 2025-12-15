@@ -96,8 +96,10 @@ const fetchHistoryDonor = async () => {
 }
 
 onMounted(()=>{
-  fetchHistoryDonor()
-  fetchHistoryPermohonan()
+  setInterval(() => {
+    fetchHistoryDonor()
+    fetchHistoryPermohonan()
+  }, 1000)
 })
 
 const urgent = ref([])
@@ -195,16 +197,16 @@ onMounted(()=>{
     </section>
 
     <section class="flex flex-col md:flex-row gap-6 md:gap-10 justify-center items-center mt-20 px-6 md:px-16 lg:px-24 xl:px-32">
-        <routerLink to="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
+        <a href="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icondarah.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Donorkan</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
-        </routerLink>
-        <routerLink to="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
+        </a>
+        <a href="/permohonan" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icondarah.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Permohonan</span>
             <p class="text-bgColor text-center text-sm px-4">Cari info pendonor sekarang yuk, sebelum terlambat mendonorkan</p>
-        </routerLink>
+        </a>
         <routerLink to="/hubungi" class="bg-primary opacity-80 shadow-md rounded-lg min-w-[200px] md:min-w-[250px] flex flex-col py-5 justify-center items-center hover:opacity-100 transition">
             <img src="../assets/img/icontelepon.png" class="w-20 mb-4" alt="">
             <span class="text-bgColor text-2xl mb-2">Hubungi</span>
@@ -371,7 +373,7 @@ onMounted(()=>{
               </button>
             </div> -->
           <!-- </div> -->
-          <router-link to="/history" class="text-primary underline">Lihat Semua</router-link>
+          <a href="/history" class="text-primary underline">Lihat Semua</a>
         </div>
         </div>
     </section>

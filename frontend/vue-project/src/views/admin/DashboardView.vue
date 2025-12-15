@@ -14,7 +14,6 @@ import {
 
 } from 'chart.js'
 
-// register chart components
 Chart.register(
   BarController,
   BarElement,

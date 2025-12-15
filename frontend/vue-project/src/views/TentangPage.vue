@@ -47,7 +47,7 @@
                         <span>Informatika</span>
                     </div>
                     <div class="bg-bgColor">
-                        <img src="../assets/img/zaki.jpg" class="w-70 object-cover h-45" alt="">
+                        <img src="../assets/img/zaki.jpg" class="md:w-70 object-cover w-full h-100 md:h-45" alt="">
                         <h1 class="font-bold pt-5">Zaki</h1>
                         <span>Informatika</span>
                     </div>
