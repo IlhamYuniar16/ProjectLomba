@@ -21,12 +21,22 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
 
 $id = $_GET['id'];
 $tanggal = $_POST['tanggal'] ?? '';
+$format_tanggal = date('d-m-Y', strtotime($tanggal));
+
 $jam = $_POST['jam'] ?? '';
 $status_pengajuan = $_POST['status_pengajuan'] ?? '';
 
-if(!$status_pengajuan || !$tanggal || !$jam){
-    echo json_encode(["status"=>"error","message"=>"Semua field wajib diisi!"]);
-    exit;
+if($status_pengajuan === 'diterima') {
+    if(!$status_pengajuan || !$tanggal || !$jam){
+        echo json_encode(["status"=>"error","message"=>"Semua field wajib diisi!"]);
+        exit;
+    } else {
+        if(!$status_pengajuan) {
+            echo json_encode(["status"=>"error","message"=>"Semua field wajib diisi!"]);
+            exit;
+        }
+    }
+
 }
 
 $query_permohonan = "UPDATE pengajuan_donor SET status_pengajuan = '$status_pengajuan' WHERE id_pengajuan_donor  = '$id'";
@@ -110,7 +120,7 @@ $q = mysqli_query(
                                 <tr>
                                     <td style="padding:6px 0;"><strong>Tanggal</strong></td>
                                     <td style="padding:6px 10px;">:</td>
-                                    <td style="padding:6px 0;">'.$tanggal.'</td>
+                                    <td style="padding:6px 0;">'.$format_tanggal.'</td>
                                 </tr>
                                 <tr>
                                     <td style="padding:6px 0;"><strong>Jam</strong></td>
