@@ -17,7 +17,7 @@ $query_dashboard_total_terpenuhi = "SELECT COUNT(*) AS total_terpenuhi FROM perm
 $run_dashboard_total_terpenuhi = mysqli_query($db, $query_dashboard_total_terpenuhi);
 $row_total_terpenuhi = mysqli_fetch_assoc($run_dashboard_total_terpenuhi);
 
-$query_dashboard_total_darah = "SELECT COALESCE(SUM(stok_darah), 0) AS stok_darah FROM rumah_sakit";
+$query_dashboard_total_darah = "SELECT COALESCE(SUM(stok_darah), 0) AS stok_darah FROM unit_pmi";
 $run_dashboard_total_darah = mysqli_query($db, $query_dashboard_total_darah);
 $row_total_darah = mysqli_fetch_assoc($run_dashboard_total_darah);
 

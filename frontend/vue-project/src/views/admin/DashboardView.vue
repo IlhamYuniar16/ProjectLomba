@@ -309,7 +309,7 @@ onMounted(()=>{
                                 <th class="px-4 py-3 text-left ">Jenis Kelamin</th>
                                 <th class="px-4 py-3 text-left ">Tipe Darah</th>
                                 <th class="px-4 py-3 text-left ">Rhesus</th>
-                                <th class="px-4 py-3 text-left ">Rumah Sakit</th>
+                                <th class="px-4 py-3 text-left ">Unit PMI</th>
                                 <th class="px-4 py-3 text-left ">Jenis Donor</th>
                                 <th class="px-4 py-3 text-left ">Catatan Kesehatan</th>
                             </tr>
@@ -333,7 +333,7 @@ onMounted(()=>{
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.jenis_kelamin }}</td>
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.tipe_darah }}</td>
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.rhesus }}</td>
-                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.rumah_sakit }}</td>
+                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.unit_pmi }}</td>
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.jenis_donor }}</td>
                                 
                                 <td class="px-4 py-3 text-left text-neutral-600 max-w-md">{{ item.catatan_kesehatan }}</td>

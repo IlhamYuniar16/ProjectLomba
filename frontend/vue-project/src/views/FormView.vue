@@ -52,6 +52,18 @@ const getRS = async () => {
     
 }
 
+const pmi_list = ref([])
+
+const getPMI = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/get_pmi.php')
+        pmi_list.value = res.data
+    } catch(err) {
+        console.error(err)
+    }
+    
+}
+
 const kabupaten_list = ref([])
 const lokasi_pasien = ref('')
 
@@ -130,11 +142,6 @@ const submitForm = async () => {
         }
 };
 
-onMounted(async () => {
-    await checkLogin()
-    getRS()
-    getKab()
-});
 const nama_pendonor = ref('');
 const tanggal_lahir = ref('')
 const jenis_kelamin = ref('')
@@ -142,7 +149,7 @@ const tipe_darah = ref('')
 const rhesus_donor = ref('')
 const jenis_donor = ref('')
 const catatan_kesehatan = ref('')
-const rumah_sakit = ref('')
+const unit_pmi = ref('')
 
 const submitDonor = async () => {
     const formDonor = new FormData();
@@ -151,10 +158,10 @@ const submitDonor = async () => {
     formDonor.append("jenis_kelamin", jenis_kelamin.value);
     formDonor.append("tipe_darah", tipe_darah.value);
     formDonor.append("rhesus", rhesus_donor.value);
-    formDonor.append("rumah_sakit", rumah_sakit.value);
+    formDonor.append("unit_pmi", unit_pmi.value);
     formDonor.append("jenis_donor", jenis_donor.value);
     formDonor.append("catatan_kesehatan", catatan_kesehatan.value);
-
+    
     try {
         const res = await axios.post(
             "http://localhost/ProjectLomba/backend/home_donor.php",
@@ -172,17 +179,23 @@ const submitDonor = async () => {
             rhesus_donor.value = ''
             jenis_donor.value = ''
             catatan_kesehatan.value = ''
-            rumah_sakit.value = ''
+            unit_pmi.value = ''
             alertSuccess(res.data.message);
         } else {
             alertError(res.data.message);
         }
-
+        
     } catch (err) {
         console.error("AXIOS ERROR:", err);
     }
 };
 
+onMounted(async () => {
+    await checkLogin()
+    getRS()
+    getKab()
+    getPMI()
+});
 
 </script>
 
@@ -396,9 +409,9 @@ const submitDonor = async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select v-model="rumah_sakit" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">
-                                <option value="">--Rumah Sakit Lokasi Donor Darah--</option>
-                                <option v-for="item in rs_list" :key="item.id_rs" :value="item.nama_rs">{{ item.nama_rs }}</option>
+                            <select v-model="unit_pmi" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="">--Unit PMI Lokasi Donor Darah--</option>
+                                <option v-for="item in pmi_list" :key="item.id" :value="item.unit_pmi">{{ item.unit_pmi }}</option>
                             </select>
                         </div>
 

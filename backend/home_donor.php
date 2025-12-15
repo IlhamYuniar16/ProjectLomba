@@ -16,10 +16,10 @@ $tipe_darah = $_POST['tipe_darah'] ?? '';
 $rhesus = $_POST['rhesus'] ?? '';
 $catatan_kesehatan = $_POST['catatan_kesehatan'] ?? '';
 $jenis_donor = $_POST['jenis_donor'] ?? '';
-$rumah_sakit = $_POST['rumah_sakit'] ?? '';
+$unit_pmi = $_POST['unit_pmi'] ?? '';
 
 if (!$nama_pendonor || !$tanggal_lahir || !$jenis_kelamin || !$tipe_darah || 
-    !$rhesus || !$catatan_kesehatan || !$jenis_donor || !$rumah_sakit) {
+    !$rhesus || !$catatan_kesehatan || !$jenis_donor || !$unit_pmi) {
     echo json_encode(["status" => "error", "message" => "Semua field wajib diisi!"]);
     exit;
 }
@@ -33,12 +33,12 @@ mysqli_query($db, "INSERT INTO data_pendonor
 $pendonor_id = mysqli_insert_id($db);
 
 mysqli_query($db, "INSERT INTO pengajuan_donor 
-    (id_pendonor, jenis_donor, rumah_sakit)
-    VALUES ($pendonor_id, '$jenis_donor', '$rumah_sakit')");
+    (id_pendonor, jenis_donor, unit_pmi)
+    VALUES ($pendonor_id, '$jenis_donor', '$unit_pmi')");
 
-mysqli_query($db, "UPDATE rumah_sakit 
+mysqli_query($db, "UPDATE unit_pmi 
                            SET stok_darah = stok_darah + 1
-                           WHERE nama_rs = '$rumah_sakit'");
+                           WHERE unit_pmi = '$unit_pmi'");
 
 mysqli_commit($db);
 

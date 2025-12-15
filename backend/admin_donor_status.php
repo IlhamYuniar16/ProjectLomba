@@ -39,7 +39,7 @@ if(!$run_query_permohonan){
 if($status_pengajuan === 'eligible') {
 $q = mysqli_query(
         $db,
-        "SELECT u.email, pd.rumah_sakit
+        "SELECT u.email, pd.unit_pmi
         FROM pengajuan_donor pd
         JOIN data_pendonor dp ON pd.id_pendonor = dp.id
         JOIN users u ON dp.id_user = u.id
@@ -48,7 +48,7 @@ $q = mysqli_query(
 
     $row = mysqli_fetch_assoc($q);
     $email = $row['email'] ?? '';
-    $lokasi = $row['rumah_sakit'] ?? '';
+    $lokasi = $row['unit_pmi'] ?? '';
 
     if ($email) {
         $mail = new PHPMailer(true);
