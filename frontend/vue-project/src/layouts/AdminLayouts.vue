@@ -3,18 +3,23 @@ import { ref, onMounted, watch } from 'vue';
 import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon, DocumentTextIcon, ArrowDownIcon, ArchiveBoxIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
 import { store } from '../stores/stores'
+import { alertConfirm } from '@/services/alert';
 
 const router = useRouter()
 const isOpen = ref(false)
 const route = useRoute()
 
-const logout = () => {
-  // Reset state user
-  store.isLoggedIn = false
-  store.user = null
+const logout = async() => {
 
-  // Redirect ke login
-  router.push('/masuk')
+    const confirm = await alertConfirm("Apakah anda yakin ingin keluar?")
+
+    if(confirm) {
+        store.isLoggedIn = false
+        store.user = null
+    
+        // Redirect ke login
+        router.push('/masuk')
+    }
 }
 
 const isActiveMenu = (path)=> {

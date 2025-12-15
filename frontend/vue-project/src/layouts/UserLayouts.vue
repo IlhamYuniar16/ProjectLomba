@@ -41,10 +41,9 @@ const isActiveMenuMobile = (path)=> {
 
 
 const router = useRouter()
+
 const logoutUser = () => {
   logout(router)
-
-  
 }
 
 </script>
@@ -64,7 +63,7 @@ const logoutUser = () => {
             </main>
             <div class="flex md:hidden">
               <button v-if="openNavbar" @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg></button>
-              <button v-else="" @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
+              <button v-else @click="openNavbar = !openNavbar" class="md:hidden block"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-primary"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
             </div>
         </main>
         <main class="bg-bgColor md:block hidden">

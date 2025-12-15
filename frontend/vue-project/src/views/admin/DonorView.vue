@@ -4,7 +4,6 @@ import { ref, onMounted, watch, computed } from 'vue';
 import axios from 'axios'
 
 const donor = ref([])
-const pilihStatus = ref('pending')
 // PAGGINATION
 const currentPage = ref(1)       
 const perPage = ref(12)            
@@ -12,17 +11,24 @@ const totalPages = computed(() => Math.ceil(donor.value.length / perPage.value))
 const showModal = ref(false)
 const editId = ref(null)
 const isEdit = ref(false)
-const eligible = ref(false)
+const eligible = ref('')
+
 
 const openEdit = (item)=> {
     isEdit.value = true
-    editId.value = item.id
     openModal()
 }
 
 const openModal = () => {
     showModal.value = true;
 }
+
+const resetForm = () => {
+    eligible.value = false
+    tanggal.value = ''
+    jam.value = ''
+}
+
 
 const closeModal = () => {
     showModal.value = false;
@@ -60,16 +66,17 @@ const fetchDonor = async () => {
     }
 }
 
-const status_eligible = ref('')
+const tanggal = ref('')
+const jam = ref('')
 
-
-
-const submitForm = async () => {
+const statusEligible = async () => {
         const formData = new FormData();
-        formData.append("status_eligible", status_eligible.value);
+            formData.append("tanggal", tanggal.value)
+            formData.append("jam", jam.value)
+            formData.append("status_pengajuan", eligible.value ? "eligible" : "not_eligible")
         try {
             const res = await axios.post(
-                `http://localhost/ProjectLomba/backend/admin_permohonan_status.php?id=${editId.value}`,
+                `http://localhost/ProjectLomba/backend/admin_donor_status.php?id=${editId.value}`,
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
@@ -79,7 +86,7 @@ const submitForm = async () => {
 
             if(res.data.status === "success"){
                 alert(res.data.message);
-                fetchAdminPermohonan()
+                fetchDonor()
             } else {
                 alert(res.data.message);
             }
@@ -145,7 +152,6 @@ onMounted(()=>{
                         </div>
                     </div>
                 </div>
-
             </div> -->
 
             <div v-if="showModal" class="fixed inset-0 bg-black/35 flex items-center justify-center z-50 overflow-y-auto">
@@ -156,12 +162,13 @@ onMounted(()=>{
                         <h1 class="text-xl mb-3">Pengajuan Donor</h1>
                         <div class="mb-3">
                             <label for="" class="font-medium mb-1">Status</label>
-                            <div class="flex items-center gap-3">
-                                <button @click="eligible = true" :class="eligible ? 'bg-green-100 text-green-500' : 'bg-gray-100 text-black '" class="w-full px-4 py-2 rounded cursor-pointer">Eligible</button>
-                                <button @click="eligible = false" :class="!eligible ? 'bg-red-100 text-red-500' : 'bg-gray-100 text-black'" class="w-full px-4 py-2 rounded cursor-pointer">Not Eligible</button>
-                            </div>
+                            <select v-model="eligible" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">
+                                <option value="" disabled>--Pilih Status--</option>
+                                <option value="not_eligible">Not Eligible</option>
+                                <option value="eligible">Eligible</option>
+                            </select>
                         </div>
-                        <div v-if="eligible">
+                        <div v-if="status_eligible === 'eligible'" class="grid grid-cols-2 gap-4">
                             <div class="mb-3">
                                 <label class="block mb-1 font-medium">Tanggal</label>
                                 <input type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">

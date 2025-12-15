@@ -1,5 +1,6 @@
 <script setup>
 import { AdjustmentsHorizontalIcon, CheckIcon, XMarkIcon } from '@heroicons/vue/24/solid';
+import {ArchiveBoxIcon} from '@heroicons/vue/24/outline';
 import { ref, onMounted } from 'vue';
 import axios from 'axios'
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js'
@@ -18,8 +19,8 @@ onMounted(() => {
         {
           data: [45, 30],
           backgroundColor: [
-            '#22c55e', 
-            '#ef4444',
+            '#3b82f6', 
+            '#EC4899',
           ],
           borderWidth: 0,
         },
@@ -48,10 +49,10 @@ onMounted(() => {
         {
           data: [45, 30, 25, 40],
           backgroundColor: [
-            '#22c55e', 
-            '#facc15', 
-            '#ef4444', 
-            '#ef4f',
+            '#EF4444', 
+            '#FBBF24', 
+            '#9333EA', 
+            '#3B82F6',
           ],
           borderWidth: 0,
         },
@@ -101,7 +102,7 @@ onMounted(() => {
         {
           label: 'Pendapatan',
           data: [12, 19, 8, 15, 22, 18],
-          backgroundColor: '#3b82f6', // blue
+          backgroundColor: '#3b82f6', 
           borderRadius: 8,
         },
       ],
@@ -214,27 +215,27 @@ onMounted(()=>{
                     </div>
                 </div>
                 <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-12 h-12 bg-red-50">
-                        <XMarkIcon class="size-9 text-red-500"/>
+                    <div class="flex items-center justify-center rounded w-12 h-12 bg-blue-50">
+                      <ArchiveBoxIcon class="size-9 text-blue-500"/>
                     </div>
                     <div class="flex flex-col">
-                        <p>Total Batal</p>
-                        <h1 class="text-3xl">{{ total_batal }}</h1>
+                      <p>Total Stok Darah</p>
+                      <h1 class="text-3xl">{{ total_batal }}</h1>
                     </div>
-                </div>
-                <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
+                  </div>
+                  <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
                     <div class="flex items-center justify-center rounded w-12 h-12 bg-red-50">
-                        <XMarkIcon class="size-9 text-red-500"/>
+                      <XMarkIcon class="size-9 text-red-500"/>
                     </div>
                     <div class="flex flex-col">
-                        <p>Total Stok Darah</p>
+                      <p>Total Batal</p>
                         <h1 class="text-3xl">{{ total_batal }}</h1>
                     </div>
                 </div>
             </div>
 
             <main class="grid md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-5">
-                <div class="w-full bg-white rounded-xl shadow p-6">
+                <div class="w-full bg-secondary rounded-xl shadow p-6">
                     <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
                       Permintaan Darah
                     </h2>
@@ -243,7 +244,7 @@ onMounted(()=>{
                       <canvas ref="chartCanvas2"></canvas>
                     </div>
                 </div>
-                <div class="w-full flex flex-col items-center bg-white rounded-xl shadow p-6">
+                <div class="w-full flex flex-col items-center bg-secondary rounded-xl shadow p-6">
                   <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
                     Jumlah Pendonor
                   </h2>
@@ -252,7 +253,7 @@ onMounted(()=>{
                     <canvas ref="chartCanvas"></canvas>
                   </div>
               </div>
-                <div class="w-full flex flex-col items-center bg-white rounded-xl shadow p-6">
+                <div class="w-full flex flex-col items-center bg-secondary rounded-xl shadow p-6">
                   <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
                     Golongan yang didonorkan
                   </h2>
@@ -281,7 +282,7 @@ onMounted(()=>{
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item, index) in donor.slice(0, 4    )" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                            <tr v-for="(item) in donor.slice(0, 4)" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                                 <!-- <td class="px-4 py-3 text-left text-neutral-600">{{ (currentPage - 1) * perPage + index + 1 }}</td> -->
                                 <!-- <td class="px-4 py-3 text-center text-neutral-600 flex items-center justify-center ">
                                     <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 rounded flex items-center justify-center  cursor-pointer">
