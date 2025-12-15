@@ -9,12 +9,22 @@ use PHPMailer\PHPMailer\PHPMailer;
 require '../vendor/autoload.php';
 include 'db/db.php';
 
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+  http_response_code(403);
+  echo json_encode([
+    'status' => 'forbidden',
+    'message' => 'Akses ditolak'
+  ]);
+  exit;
+}
+
+
 $id = $_GET['id'];
 $tanggal = $_POST['tanggal'] ?? '';
 $jam = $_POST['jam'] ?? '';
 $status_pengajuan = $_POST['status_pengajuan'] ?? '';
 
-if(!$status_pengajuan){
+if(!$status_pengajuan || !$tanggal || !$jam){
     echo json_encode(["status"=>"error","message"=>"Semua field wajib diisi!"]);
     exit;
 }

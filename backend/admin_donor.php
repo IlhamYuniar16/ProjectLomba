@@ -10,7 +10,7 @@ include 'db/db.php';
 
 $query_donor = "SELECT * FROM pengajuan_donor pd 
                 LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id 
-                WHERE 1=1 ORDER BY pd.id_pengajuan_donor DESC";
+                WHERE 1=1 ORDER BY pd.id_pengajuan_donor AND pd.status_pengajuan = 'pending' DESC";
 
 $result = mysqli_query($db, $query_donor);
 $data = [];

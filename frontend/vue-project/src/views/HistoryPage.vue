@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { store } from '@/stores/stores';
 
 const isLogin = ref(false)
 const historyTab = ref('permohonanTab')
 const permohonan = ref([])
-const isLoading = ref(false)
 
 const fetchHistoryPermohonan = async () => {
   try {
@@ -93,7 +93,7 @@ onMounted(()=>{
             </div>
         </main>
         <main v-if="historyTab === 'permohonanTab'"  class="my-20 md:mx-0 mx-5">
-          <div v-if="!isLogin" class="text-center text-gray-500">Silahkan login untuk melihat riwayat permohonan</div>
+          <div v-if="!store.isLoggedIn" class="text-center text-gray-500">Silahkan login untuk melihat riwayat permohonan</div>
           <div v-else-if="permohonan.length === 0" class="text-center text-gray-500">Belum ada permohonan</div>
           <div v-else class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             <div v-for="(item, index) in permohonan" :key="index"
@@ -159,7 +159,7 @@ onMounted(()=>{
           
         </main>
         <main v-if="historyTab === 'donor'" class="my-20 md:mx-0 mx-5">
-          <div v-if="!isLogin" class="text-center text-gray-500">Silahkan login untuk melihat riwayat donor darah</div>
+          <div v-if="!store.isLoggedIn" class="text-center text-gray-500">Silahkan login untuk melihat riwayat donor darah</div>
           <div v-else-if="donorData.length === 0" class="text-center text-gray-500">Belum ada donor</div>
           <div v-else class="container max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             <div v-for="(item, index) in donorData" :key="index" class="bg-white w-full rounded-2xl max-w-md mx-auto shadow-md p-6 flex flex-col justify-between">
@@ -169,7 +169,7 @@ onMounted(()=>{
                 :class="{
                   'bg-green-100 text-green-600': item.status_pengajuan === 'eligible' || item.status_pengajuan === 'selesai',
                   'bg-yellow-100 text-yellow-600': item.status_pengajuan === 'pending',
-                  'bg-red-100 text-red-600': item.status_pengajuan === 'not eligible'
+                  'bg-red-100 text-red-600': item.status_pengajuan === 'not_eligible'
                 }">
                 {{ item.status_pengajuan }}
               </span>

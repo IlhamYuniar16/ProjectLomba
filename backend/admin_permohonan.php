@@ -8,7 +8,7 @@ header("Access-Control-Allow-Credentials: true");
 session_start();
 include 'db/db.php';
 
-$query = "SELECT * FROM permohonan_pasien ORDER BY id DESC";
+$query = "SELECT * FROM permohonan_pasien ORDER BY id AND status_pengajuan = 'pending' DESC";
 
 
 $result = mysqli_query($db, $query);

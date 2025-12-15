@@ -5,73 +5,6 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios'
 import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js'
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend)
-Chart.register(DoughnutController, ArcElement, Tooltip, Legend)
-
-const chartCanvas = ref(null)
-const chartCanvas1 = ref(null)
-
-onMounted(() => {
-  new Chart(chartCanvas.value, {
-    type: 'doughnut',
-    data: {
-      labels: ['Laki-Laki', 'Perempuan'],
-      datasets: [
-        {
-          data: [45, 30],
-          backgroundColor: [
-            '#3b82f6', 
-            '#EC4899',
-          ],
-          borderWidth: 0,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      cutout: '70%', 
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            usePointStyle: true,
-          },
-        },
-      },
-    },
-  })
-})
-onMounted(() => {
-  new Chart(chartCanvas1.value, {
-    type: 'doughnut',
-    data: {
-      labels: ['A', 'B', 'AB', 'O'],
-      datasets: [
-        {
-          data: [45, 30, 25, 40],
-          backgroundColor: [
-            '#EF4444', 
-            '#FBBF24', 
-            '#9333EA', 
-            '#3B82F6',
-          ],
-          borderWidth: 0,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      cutout: '70%', 
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            usePointStyle: true,
-          },
-        },
-      },
-    },
-  })
-})
 
 import {
   BarController,
@@ -91,17 +24,31 @@ Chart.register(
   Legend
 )
 
+// CHART 
+const chartCanvas = ref(null)
+const chartCanvas1 = ref(null)
 const chartCanvas2 = ref(null)
 
-onMounted(() => {
-  new Chart(chartCanvas2.value, {
+let lokasiChart = null
+const renderlokasiChart = () => {
+  if (lokasiChart) {
+    lokasiChart.destroy()
+  }
+  lokasiChart = new Chart(chartCanvas2.value, {
     type: 'bar',
     data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+      labels: ['K.Progo', 'Bantul', 'G.Kidul', 'Sleman', 'Yogyakarta', 'DIYogyakarta'],
       datasets: [
         {
-          label: 'Pendapatan',
-          data: [12, 19, 8, 15, 22, 18],
+          label: 'Permintaan Darah',
+          data: [
+            lokasiPasien.value.kulon_progo,
+            lokasiPasien.value.bantul,
+            lokasiPasien.value.gunung_kidul,
+            lokasiPasien.value.sleman,
+            lokasiPasien.value.yogyakarta,
+            lokasiPasien.value.diyogyakarta
+          ],
           backgroundColor: '#3b82f6', 
           borderRadius: 8,
         },
@@ -129,65 +76,151 @@ onMounted(() => {
       },
     },
   })
-})
-const donor = ref([])
-const fetchDonor = async () => {
-    try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/admin_donor.php')
-        donor.value = res.data.data
-    }catch(err){
-        console.log(err)
-    }
 }
 
-onMounted(()=>{
-    fetchDonor()
-    fetchAdminPermohonan()
-})
-const permohonan = ref([])
-const fetchAdminPermohonan = async () => {
-    try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/admin_permohonan.php')
-        permohonan.value = res.data.data
-    } catch(err) {
-        console.log(err)
-    }
+let kelaminChart = null
+const renderKelaminChart = () => {
+  if (kelaminChart) {
+    kelaminChart.destroy()
+  }
+  kelaminChart = new Chart(chartCanvas.value, {
+    type: 'doughnut',
+    data: {
+      labels: ['Laki-Laki', 'Perempuan'],
+      datasets: [
+        {
+          data: [
+            jenisKelamin.value.Lakilaki,
+            jenisKelamin.value.Perempuan,
+          ],
+          backgroundColor: [
+            '#3b82f6', 
+            '#EC4899',
+          ],
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      cutout: '70%', 
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+          },
+        },
+      },
+    },
+  })
 }
+
+let golonganChart = null
+const renderGolonganChart = () => {
+  if (golonganChart) {
+    golonganChart.destroy()
+  }
+
+  golonganChart = new Chart(chartCanvas1.value, {
+    type: 'doughnut',
+    data: {
+      labels: ['A', 'B', 'AB', 'O'],
+      datasets: [
+        {
+          data: [
+            golonganDarah.value.A,
+            golonganDarah.value.B,
+            golonganDarah.value.AB,
+            golonganDarah.value.O
+          ],
+          backgroundColor: [
+            '#EF4444',
+            '#FBBF24',
+            '#9333EA',
+            '#3B82F6'
+          ],
+          borderWidth: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      cutout: '70%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true
+          }
+        }
+      }
+    }
+  })
+}
+
 
 const total_permintaan = ref(0)
-const getDarah = async () => {
-    try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total_darah.php')
-        total_permintaan.value = res.data?.data?.total_permintaan || 0
-    } catch(err) {
-        console.error(err)
-    }
-}
-
 const total_terpenuhi = ref(0)
-const getTerpenuhi = async () => {
-    try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total_terpenuhi.php')
-        total_terpenuhi.value = res.data?.data?.total_terpenuhi || 0
-    } catch(err) {
-        console.error(err)
-    }
-}
-
+const stok_darah = ref(0)
 const total_batal = ref(0)
-const getBatal = async () => {
+const lokasiPasien = ref({
+  kulon_progo: 0,
+  bantul: 0,
+  gunung_kidul: 0,
+  sleman: 0,
+  yogyakarta: 0,
+  diyogyakarta: 0
+})
+const golonganDarah = ref({
+  A: 0,
+  B: 0,
+  AB: 0,
+  O: 0
+})
+const pendonor = ref([])
+const permohonan = ref([])
+const jenisKelamin = ref({
+  Lakilaki: 0,
+  Perempuan: 0
+})
+const getTotal = async () => {
     try {
-        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total_batal.php')
+        const res = await axios.get('http://localhost/ProjectLomba/backend/dashboard_total.php')
+        total_permintaan.value = res.data?.data?.total_permintaan || 0
+        total_terpenuhi.value = res.data?.data?.total_terpenuhi || 0
+        stok_darah.value = res.data?.data?.stok_darah || 0
         total_batal.value = res.data?.data?.total_batal || 0
+        lokasiPasien.value = res.data?.data?.lokasi_pasien || {
+          kulon_progo: 0,
+          bantul: 0,
+          gunung_kidul: 0,
+          sleman: 0,
+          yogyakarta: 0,
+          diyogyakarta: 0
+        }
+        jenisKelamin.value = res.data?.data?.jenis_kelamin || {
+          Lakilaki: 0,
+          Perempuan: 0
+        }
+        golonganDarah.value = res.data?.data?.golongan_darah || {
+          A: 0,
+          B: 0,
+          AB: 0,
+          O: 0
+        }
+        pendonor.value = res.data.data.pendonor || []
+        permohonan.value = res.data.data.permohonan || []
+        renderlokasiChart()
+        renderKelaminChart()
+        renderGolonganChart()
     } catch(err) {
         console.error(err)
     }
 }
 
 onMounted(()=>{
-    getDarah()
-    getTerpenuhi()
-    getBatal()
+  getTotal()
 })
 </script>
 
@@ -195,9 +228,9 @@ onMounted(()=>{
     <section class="bg-white p-6 min-h-screen">
         <h1 class="text-2xl font-semibold">Dashboard</h1>
         <main>
-            <div class="grid mb-7 md:grid-cols-4 grid-rows-3 md:grid-rows-1 gap-10 mt-5">
+            <div class="grid mb-5 md:grid-cols-4 grid-rows-3 md:grid-rows-1 gap-5 mt-5">
                 <div class="flex w-full items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-12 h-12 bg-green-50">
+                    <div class="flex items-center justify-center rounded w-10 h-10 bg-green-50">
                         <AdjustmentsHorizontalIcon class="size-9 text-green-500"/>
                     </div>
                     <div class="flex flex-col">
@@ -206,7 +239,7 @@ onMounted(()=>{
                     </div>
                 </div>
                 <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-12 h-12 bg-cyan-50">
+                    <div class="flex items-center justify-center rounded w-10 h-10 bg-cyan-50">
                         <CheckIcon class="size-9 text-cyan-500"/>
                     </div>
                     <div class="flex flex-col">
@@ -215,16 +248,16 @@ onMounted(()=>{
                     </div>
                 </div>
                 <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-12 h-12 bg-blue-50">
+                    <div class="flex items-center justify-center rounded w-10 h-10 bg-blue-50">
                       <ArchiveBoxIcon class="size-9 text-blue-500"/>
                     </div>
                     <div class="flex flex-col">
                       <p>Total Stok Darah</p>
-                      <h1 class="text-3xl">{{ total_batal }}</h1>
+                      <h1 class="text-3xl">{{ stok_darah }}</h1>
                     </div>
                   </div>
                   <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-12 h-12 bg-red-50">
+                    <div class="flex items-center justify-center rounded w-10 h-10 bg-red-50">
                       <XMarkIcon class="size-9 text-red-500"/>
                     </div>
                     <div class="flex flex-col">
@@ -264,8 +297,9 @@ onMounted(()=>{
               </div>
             </main>
             <main class="flex gap-5 items-center">
-                <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">
-                    <table class="w-full mt-5 min-w-max ">
+              <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">
+                  <h2 class="text-lg font-semibold text-gray-700 text-center">Pendonor Terbaru</h2>
+                    <table class="w-full min-w-max ">
                         <thead>
                             <tr class="border-b border-neutral-300">
                                 <!-- <th class="px-4 py-3 text-left ">No</th> -->
@@ -282,7 +316,7 @@ onMounted(()=>{
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item) in donor.slice(0, 4)" :key="item.id_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
+                            <tr v-for="(item) in pendonor.slice(0, 4)" :key="item.id_pengajuan_donor" class="border-b border-gray-200 text-neutral-800 hover:bg-gray-200 transition">
                                 <!-- <td class="px-4 py-3 text-left text-neutral-600">{{ (currentPage - 1) * perPage + index + 1 }}</td> -->
                                 <!-- <td class="px-4 py-3 text-center text-neutral-600 flex items-center justify-center ">
                                     <div @click="openEdit(item)" class="w-6 h-6 bg-blue-50 rounded flex items-center justify-center  cursor-pointer">
@@ -309,7 +343,8 @@ onMounted(()=>{
                     </table>
                 </div>
                 <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">
-                <table class="w-full mt-5 min-w-max ">
+                  <h2 class="text-lg font-semibold text-gray-700 text-center">Permohonan Terbaru</h2>
+                <table class="w-full min-w-max ">
                     <thead>
                         <tr class="border-b border-neutral-300">
                             <!-- <th class="px-4 py-3 text-left ">Aksi</th> -->

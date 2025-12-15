@@ -12,6 +12,7 @@ import TentangPage from "@/views/TentangPage.vue";
 import HistoryPage from "@/views/HistoryPage.vue";
 import SubmissionView from "@/views/admin/SubmissionView.vue";
 import DonorView from "@/views/admin/DonorView.vue";
+import { store } from '@/stores/stores';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,7 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: AdminLayouts,
+      meta: { requiresAuth: true, requiresAdmin: true },
       children: [
         {
           path: "dashboard",
@@ -97,5 +99,21 @@ const router = createRouter({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+
+  // 🔐 Belum login
+  if (to.meta.requiresAuth && !store.isLoggedIn) {
+    return next('/masuk')
+  }
+
+  // 🔐 Bukan admin
+  if (to.meta.requiresAdmin && store.user.role !== 'admin') {
+    return next('/') // atau /403
+  }
+
+  next()
+})
+
 
 export default router;

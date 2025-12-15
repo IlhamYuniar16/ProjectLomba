@@ -8,13 +8,5 @@ session_start();
 
 include 'db/db.php';
 
-if(!isset($_SESSION['user'])){
-    echo json_encode(["status"=>"error","message"=>"Belum login"]);
-    exit;
-}
 
-echo json_encode([
-    "status" => "success",
-    "user" => $_SESSION['user']
-]);
 ?>

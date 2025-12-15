@@ -131,7 +131,7 @@ onMounted(()=>{
                         <tr class="border-b border-neutral-300">
                             <!-- <th class="px-4 py-3 text-left ">Aksi</th> -->
                             <th class="px-4 py-3 text-left ">No</th>
-                            <th class="px-4 py-3 text-left ">Status Urgent</th>
+                            <th class="px-4 py-3 text-left ">Status</th>
                             <th class="px-4 py-3 text-left ">Nama Pasien</th>
                             <th class="px-4 py-3 text-left ">Rumah Sakit</th>
                             <th class="px-4 py-3 text-left ">Kabupaten</th>
@@ -139,7 +139,7 @@ onMounted(()=>{
                             <th class="px-4 py-3 text-left ">Rhesus</th>
                             <th class="px-4 py-3 text-left ">Jumlah Pendonor</th>
                             <th class="px-4 py-3 text-left ">Jenis Pendonor</th>
-                            <th class="px-4 py-3 text-left ">Status Permohonan</th>
+                            <th class="px-4 py-3 text-left ">Status Urgent</th>
                         </tr>
                     </thead>
                     <tbody>

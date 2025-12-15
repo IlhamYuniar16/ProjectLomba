@@ -14,15 +14,21 @@ if (savedUser) {
   store.user = JSON.parse(savedUser)
 }
 
+export const isAdmin = () => {
+  return store.isLoggedIn && store.user?.role === 'admin'
+}
+
 
 export const logout = (router) => {
-  fetch('http://localhost/ProjectLomba/backend/logout.php', { credentials: 'include' })
-    .then(() => {
-      store.isLoggedIn = false
-      store.user = {}
-      store.permohonan = []
-      store.donorData = []
-      localStorage.removeItem('user')
-      router.push('/masuk')
-    })
+  fetch('http://localhost/ProjectLomba/backend/logout.php', {
+    credentials: 'include'
+  }).then(() => {
+    store.isLoggedIn = false
+    store.user = {}
+    store.permohonan = []
+    store.donorData = []
+    localStorage.removeItem('user')
+    router.push('/masuk')
+  })
 }
+

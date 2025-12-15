@@ -13,15 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 session_start();
 include 'db/db.php';
 
-
-if (!isset($_SESSION['user'])) {
-    echo json_encode([
-        "status" => "unauthorized",
-        "data" => []
-    ]);
-    exit;
-}
-
 $id_user = $_SESSION['user']['id'];
 $id = $_GET['id'] ?? null;
 $status_pengajuan = $_POST['status_pengajuan'] ?? null;

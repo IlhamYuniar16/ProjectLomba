@@ -194,7 +194,7 @@ onMounted(()=>{
                                 </button>
                             </div>
                         </div>
-                        <div v-if="status_eligible === 'eligible'" class="grid grid-cols-2 gap-4">
+                        <div v-if="eligible === true" class="grid grid-cols-2 gap-4">
                             <div class="mb-3">
                                 <label class="block mb-1 font-medium">Tanggal</label>
                                 <input v-model="tanggal" type="date" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Masukkan nama pasien">

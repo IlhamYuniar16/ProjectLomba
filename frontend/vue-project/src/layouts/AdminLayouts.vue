@@ -2,22 +2,20 @@
 import { ref, onMounted, watch } from 'vue';
 import {ArrowLeftIcon, ArrowLeftStartOnRectangleIcon, BeakerIcon, ClipboardDocumentListIcon, FolderOpenIcon, HeartIcon, DocumentTextIcon, ArrowDownIcon, ArchiveBoxIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/24/solid';
 import { useRoute, useRouter } from 'vue-router';
-import { store } from '../stores/stores'
+import { store, logout } from '../stores/stores'
 import { alertConfirm } from '@/services/alert';
 
 const router = useRouter()
 const isOpen = ref(false)
 const route = useRoute()
 
-const logout = async() => {
+const logoutAdmin = async() => {
     const confirm = await alertConfirm("Apakah anda yakin ingin keluar?")
   // Reset state user
   if(confirm) {
       store.isLoggedIn = false
       store.user = null
-    
-      // Redirect ke login
-      router.push('/masuk')
+      logout(router)
   }
 }
 
@@ -74,7 +72,7 @@ watch(isOpen, (val) => {
                     <ArrowLeftIcon :class="isOpen ? 'rotate-180' : ''" class="size-5 text-white cursor-pointer transition-all duration-300" />
                 </div>
 
-                <ul class="flex flex-col mt-8 overflow-x-hidden">
+                <ul class="flex flex-col mt-8 overflow-x-hidden" >
                     <RouterLink to="/admin/dashboard" class="flex items-center cursor-pointer group mb-5">
                         <div :class="[isOpen ? 'pl-2' : '', isHandleBorder('/admin/dashboard')]" class="h-10 w-2 rounded-r-2xl"></div>
                         <div :title="isOpen ? 'Dashboard' : ''" :class="[isOpen ? 'justify-center' : 'px-6', isActiveMenu('/admin/dashboard')]" class="w-full flex items-center transition-all duration-300">
@@ -134,7 +132,7 @@ watch(isOpen, (val) => {
                 </ul>
 
                 <ul class="mt-auto cursor-pointer text-primary font-semibold">
-                    <li @click="logout" class="flex items-center cursor-pointer group mb-5">
+                    <li @click="logoutAdmin" v-if="store.isLoggedIn" class="flex items-center cursor-pointer group mb-5">
                         <div :class="isOpen ? 'pl-2' : ''" class="h-10 w-2 "></div>
                         <div :class="isOpen ? 'justify-center' : 'px-6'" class="w-full flex items-center text-primary transition-all duration-300">
                             <ArrowLeftStartOnRectangleIcon :class="isOpen ? 'mr-0' : 'mr-3'" class="size-6 "/>
