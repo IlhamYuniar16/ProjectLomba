@@ -52,7 +52,7 @@
                         <span>Informatika</span>
                     </div>
                     <div class="bg-bgColor">
-                        <img src="../assets/img/profilgithub.png" class="md:w-70 w-full md:h-45 object-cover" alt="">
+                        <img src="../assets/img/ilham.jpg" class="md:w-70 w-full md:h-45 object-cover" alt="">
                         <h1 class="font-bold pt-5">Ilham</h1>
                         <span>Informatika</span>
                     </div>

@@ -164,7 +164,7 @@ onMounted(()=>{
                                         'text-blue-500 bg-blue-50': item.status_pengajuan === 'diterima',
                                         'text-green-500 bg-green-50': item.status_pengajuan === 'selesai',
                                         'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
-                                        'text-red-500 bg-red-50': item.status_pengajuan === 'batal',
+                                        'hidden': item.status_pengajuan === 'batal',
                                     }">
                                     <option value="pending">pending</option>
                                     <option value="diterima">diterima</option>
