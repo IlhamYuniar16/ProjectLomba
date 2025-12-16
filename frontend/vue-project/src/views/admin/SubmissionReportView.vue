@@ -166,7 +166,11 @@ onMounted(()=>{
                             <th class="px-4 py-3 text-left ">Jenis Donor</th>
                             <th class="px-4 py-3 text-left ">Foto Formulir</th>
                             <th class="px-4 py-3 text-left ">Status</th>
+                            <th class="px-4 py-3 text-left ">Nama Narahubung</th>
+                            <th class="px-4 py-3 text-left ">No.Telp Narahubung</th>
+                            <th class="px-4 py-3 text-left ">Email Narahubung</th>
                             <th class="px-4 py-3 text-left ">Status Urgent</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -188,6 +192,9 @@ onMounted(()=>{
                                                                                 'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
                                                                                 'text-red-500 bg-red-50': item.status_pengajuan === 'batal'}">
                                                                                 {{ item.status_pengajuan }}</p></td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.narhub_nama }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.narhub_notel }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.narhub_email }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.status_urgent }}</td>
                         </tr>
                     </tbody>

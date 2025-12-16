@@ -22,7 +22,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
 $id = $_GET['id'];
 $tanggal = $_POST['tanggal'] ?? '';
 $format_tanggal = date('d-m-Y', strtotime($tanggal));
-
 $jam = $_POST['jam'] ?? '';
 $status_pengajuan = $_POST['status_pengajuan'] ?? '';
 
@@ -49,7 +48,7 @@ if(!$run_query_permohonan){
 if($status_pengajuan === 'eligible') {
 $q = mysqli_query(
         $db,
-        "SELECT u.email, pd.unit_pmi
+        "SELECT u.email, pd.unit_pmi, dp.nama_pendonor
         FROM pengajuan_donor pd
         JOIN data_pendonor dp ON pd.id_pendonor = dp.id
         JOIN users u ON dp.id_user = u.id
@@ -59,7 +58,7 @@ $q = mysqli_query(
     $row = mysqli_fetch_assoc($q);
     $email = $row['email'] ?? '';
     $lokasi = $row['unit_pmi'] ?? '';
-
+    $nama_pendonor = $row['nama_pendonor'] ?? '';
     if ($email) {
         $mail = new PHPMailer(true);
         try {
@@ -117,6 +116,11 @@ $q = mysqli_query(
                             </p>
 
                             <table cellpadding="0" cellspacing="0" style="margin-top:20px;">
+                                <tr>
+                                    <td style="padding:6px 0;"><strong>Nama Pendonor</strong></td>
+                                    <td style="padding:6px 10px;">:</td>
+                                    <td style="padding:6px 0;">'.$nama_pendonor.'</td>
+                                </tr>
                                 <tr>
                                     <td style="padding:6px 0;"><strong>Tanggal</strong></td>
                                     <td style="padding:6px 10px;">:</td>

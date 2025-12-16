@@ -405,7 +405,7 @@ onMounted(async () => {
                         </div>
 
                         <div class="flex">
-                            <label for="" class="mr-1">Rumah Sakit</label>
+                            <label for="" class="mr-1">Unit PMI</label>
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">

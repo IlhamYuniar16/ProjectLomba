@@ -139,6 +139,9 @@ onMounted(()=>{
                             <th class="px-4 py-3 text-left ">Rhesus</th>
                             <th class="px-4 py-3 text-left ">Jumlah Pendonor</th>
                             <th class="px-4 py-3 text-left ">Jenis Pendonor</th>
+                            <th class="px-4 py-3 text-left ">Nama Narahubung</th>
+                            <th class="px-4 py-3 text-left ">No.Telp Narahubung</th>
+                            <th class="px-4 py-3 text-left ">Email Narahubung</th>
                             <th class="px-4 py-3 text-left ">Status Urgent</th>
                         </tr>
                     </thead>
@@ -164,12 +167,12 @@ onMounted(()=>{
                                         'text-blue-500 bg-blue-50': item.status_pengajuan === 'diterima',
                                         'text-green-500 bg-green-50': item.status_pengajuan === 'selesai',
                                         'text-yellow-500 bg-yellow-50': item.status_pengajuan === 'pending',
-                                        'hidden': item.status_pengajuan === 'batal',
+                                        'text-red-500 bg-red-50': item.status_pengajuan === 'batal',
                                     }">
                                     <option value="pending">pending</option>
                                     <option value="diterima">diterima</option>
                                     <option value="selesai">selesai</option>
-                                    <option value="selesai" disabled select>batal</option>
+                                    <option value="batal" disabled select>batal</option>
                                 </select>
 
                                 <!-- <p class=" w-fit px-4 rounded-full" :class="{
@@ -185,6 +188,9 @@ onMounted(()=>{
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.rhesus }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jumlah_pendonor }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.jenis_donor_darah }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.narhub_nama }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.narhub_notel }}</td>
+                            <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.narhub_email }}</td>
                             <td class="px-4 py-3 text-left text-neutral-600 ">{{ item.status_urgent }}</td>
                             
                         </tr>

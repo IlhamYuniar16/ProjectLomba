@@ -16,11 +16,8 @@ const eligible = ref(true)
 const isLoading = ref(false)
 
 const openEdit = (item)=> {
-        console.log('ITEM DARI TABLE:', item)
-    console.log('STATUS:', item.status_pengajuan)
     isEdit.value = true
     editId.value = item.id_pengajuan_donor
-    console.log('STATUS:', item.id_pengajuan_donor)
     openModal()
 }
 
@@ -218,7 +215,7 @@ onMounted(()=>{
                         <button 
                             type="submit" @click="statusEligible" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-red-700 cursor-pointer"
                         >
-                            {{ isLoading ? 'Memuat...' : 'Simpan' }}
+                            {{ isLoading ? 'Memuat...' : 'Kirim' }}
                         </button>
                     </div>
                 </div>

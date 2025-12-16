@@ -53,7 +53,7 @@ $query_chart_kebutuhan_kab = "
     SUM(CASE WHEN lokasi_pasien = 'Sleman' THEN 1 ELSE 0 END) AS sleman,
     SUM(CASE WHEN lokasi_pasien = 'Kota Yogyakarta' THEN 1 ELSE 0 END) AS yogyakarta,
     SUM(CASE WHEN lokasi_pasien = 'DI Yogyakarta' THEN 1 ELSE 0 END) AS diyogyakarta
-    FROM permohonan_pasien
+    FROM permohonan_pasien WHERE status_pengajuan = 'diterima'
 ";
 $row_chart_kebutuhan_kab = mysqli_fetch_assoc(mysqli_query($db,$query_chart_kebutuhan_kab));
 
