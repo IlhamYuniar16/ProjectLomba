@@ -227,7 +227,7 @@ onMounted(()=>{
     <section class="bg-white p-6 min-h-screen">
         <h1 class="text-2xl font-semibold">Dashboard</h1>
         <main>
-            <div class="grid mb-5 md:grid-cols-4 grid-rows-3 md:grid-rows-1 gap-5 mt-5">
+            <div class="grid mb-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-3 md:grid-rows-1 gap-5 mt-5">
                 <div class="flex w-full items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
                     <div class="flex items-center justify-center rounded w-10 h-10 bg-green-50">
                         <AdjustmentsHorizontalIcon class="size-9 text-green-500"/>
@@ -247,26 +247,26 @@ onMounted(()=>{
                     </div>
                 </div>
                 <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-10 h-10 bg-blue-50">
-                      <ArchiveBoxIcon class="size-9 text-blue-500"/>
-                    </div>
-                    <div class="flex flex-col">
-                      <p>Total Stok Darah</p>
-                      <h1 class="text-3xl">{{ stok_darah }}</h1>
-                    </div>
+                  <div class="flex items-center justify-center rounded w-10 h-10 bg-blue-50">
+                    <ArchiveBoxIcon class="size-9 text-blue-500"/>
                   </div>
-                  <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
-                    <div class="flex items-center justify-center rounded w-10 h-10 bg-red-50">
-                      <XMarkIcon class="size-9 text-red-500"/>
-                    </div>
-                    <div class="flex flex-col">
-                      <p>Total Batal</p>
-                        <h1 class="text-3xl">{{ total_batal }}</h1>
-                    </div>
+                  <div class="flex flex-col">
+                    <p>Total Stok Darah</p>
+                    <h1 class="text-3xl">{{ stok_darah }}</h1>
+                  </div>
                 </div>
+                <div class="flex items-center gap-8 bg-secondary rounded-2xl p-8 shadow-md">
+                  <div class="flex items-center justify-center rounded w-10 h-10 bg-red-50">
+                    <XMarkIcon class="size-9 text-red-500"/>
+                  </div>
+                  <div class="flex flex-col">
+                    <p>Total Batal</p>
+                      <h1 class="text-3xl">{{ total_batal }}</h1>
+                  </div>
+              </div>
             </div>
 
-            <main class="grid md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-5">
+            <main class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 <div class="w-full bg-secondary rounded-xl shadow p-6">
                     <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
                       Permintaan Darah
@@ -277,14 +277,14 @@ onMounted(()=>{
                     </div>
                 </div>
                 <div class="w-full flex flex-col items-center bg-secondary rounded-xl shadow p-6">
-                  <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
-                    Jumlah Pendonor
-                  </h2>
-              
-                  <div class="relative h-64">
-                    <canvas ref="chartCanvas"></canvas>
-                  </div>
-              </div>
+                    <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
+                      Jumlah Pendonor
+                    </h2>
+                
+                    <div class="relative h-64">
+                      <canvas ref="chartCanvas"></canvas>
+                    </div>
+                </div>
                 <div class="w-full flex flex-col items-center bg-secondary rounded-xl shadow p-6">
                   <h2 class="text-lg font-semibold text-gray-700 mb-4 text-center">
                     Golongan yang didonorkan
@@ -295,7 +295,8 @@ onMounted(()=>{
                   </div>
               </div>
             </main>
-            <main class="flex gap-5 items-center">
+
+            <main class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-5">
               <div class="overflow-x-auto bg-secondary rounded-xl mt-5 p-4">
                   <h2 class="text-lg font-semibold text-gray-700 text-center">Pendonor Terbaru</h2>
                     <table class="w-full min-w-max ">

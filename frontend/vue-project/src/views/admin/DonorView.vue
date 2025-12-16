@@ -26,7 +26,6 @@ const openModal = () => {
 }
 
 const resetForm = () => {
-    eligible.value = false
     tanggal.value = ''
     jam.value = ''
 }
