@@ -9,7 +9,7 @@ session_start();
 include 'db/db.php';
 
 // QUERY CARD
-$query_dashboard_total_permintaan = "SELECT COUNT(*) AS total_permintaan FROM permohonan_pasien WHERE status_pengajuan = 'diterima'";
+$query_dashboard_total_permintaan = "SELECT COALESCE(SUM(jumlah_pendonor), 0) AS total_permintaan FROM permohonan_pasien WHERE status_pengajuan = 'diterima'";
 $run_dashboard_total_permintaan = mysqli_query($db, $query_dashboard_total_permintaan);
 $row_total_permintaan = mysqli_fetch_assoc($run_dashboard_total_permintaan);
 
