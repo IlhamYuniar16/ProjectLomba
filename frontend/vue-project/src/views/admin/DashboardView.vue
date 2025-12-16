@@ -272,7 +272,7 @@ onMounted(()=>{
                       Permintaan Darah
                     </h2>
                 
-                    <div class="relative h-64">
+                    <div class="relative h-64 flex items-center justify-center">
                       <canvas ref="chartCanvas2"></canvas>
                     </div>
                 </div>
