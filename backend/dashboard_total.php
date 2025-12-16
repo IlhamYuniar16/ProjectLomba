@@ -28,20 +28,22 @@ $row_total_batal = mysqli_fetch_assoc($run_dashboard_total_batal);
 // QUERY CHART
 $query_chart_tipe_darah = "
     SELECT 
-    SUM(CASE WHEN tipe_darah = 'A' THEN 1 ELSE 0 END) AS A,
-    SUM(CASE WHEN tipe_darah = 'B' THEN 1 ELSE 0 END) AS B,
-    SUM(CASE WHEN tipe_darah = 'AB' THEN 1 ELSE 0 END) AS AB,
-    SUM(CASE WHEN tipe_darah = 'O' THEN 1 ELSE 0 END) AS O
-    FROM data_pendonor
+    pd.status_pengajuan,
+    SUM(CASE WHEN dp.tipe_darah = 'A' THEN 1 ELSE 0 END) AS A,
+    SUM(CASE WHEN dp.tipe_darah = 'B' THEN 1 ELSE 0 END) AS B,
+    SUM(CASE WHEN dp.tipe_darah = 'AB' THEN 1 ELSE 0 END) AS AB,
+    SUM(CASE WHEN dp.tipe_darah = 'O' THEN 1 ELSE 0 END) AS O
+    FROM pengajuan_donor pd JOIN data_pendonor dp ON dp.id = pd.id_pengajuan_donor WHERE pd.status_pengajuan = 'eligible'
 ";
 $row_chart_tipe_darah = mysqli_fetch_assoc(mysqli_query($db, $query_chart_tipe_darah));
 
 
 $query_chart_jenis_kelamin = "
     SELECT 
-    SUM(CASE WHEN jenis_kelamin = 'laki-laki' THEN 1 ELSE 0 END) AS Lakilaki,
-    SUM(CASE WHEN jenis_kelamin = 'perempuan' THEN 1 ELSE 0 END) AS Perempuan
-    FROM data_pendonor
+    pd.status_pengajuan,
+    SUM(CASE WHEN dp.jenis_kelamin = 'laki-laki' THEN 1 ELSE 0 END) AS Lakilaki,
+    SUM(CASE WHEN dp.jenis_kelamin = 'perempuan' THEN 1 ELSE 0 END) AS Perempuan
+    FROM pengajuan_donor pd JOIN data_pendonor dp ON dp.id = pd.id_pengajuan_donor WHERE pd.status_pengajuan = 'eligible'
 ";
 $row_chart_jenis_kelamin = mysqli_fetch_assoc(mysqli_query($db,$query_chart_jenis_kelamin));
 
