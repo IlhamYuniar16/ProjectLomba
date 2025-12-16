@@ -78,7 +78,7 @@ import { ref } from "vue";
 const name = ref("");
 const email = ref("");
 const message = ref("");
-const phoneNumber = "62899181829";
+const phoneNumber = "6282221002987";
 
 const sendToWhatsApp = () => {
   if (!name.value || !email.value || !message.value) {
@@ -87,7 +87,7 @@ const sendToWhatsApp = () => {
   }
 
   const text = `
-Halo Yogyalife 👋
+Halo Yogyalife,
 
 Nama: ${name.value}
 Email: ${email.value}
