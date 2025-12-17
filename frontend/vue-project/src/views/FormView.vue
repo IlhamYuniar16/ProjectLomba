@@ -428,7 +428,15 @@ onMounted(async () => {
                             </select>
                         </div>
 
-                        <p class="col-span-3 mb-5 lg:mt-10 font-semibold">Pertanyaan Singkat Kebiasaan</p>
+                        <div class="flex">
+                            <label for="" class="mr-1">Catatan Kesehatan</label>
+                            <span class="text-primary">*</span>
+                        </div>
+                        <div class="col-span-2 mb-5 lg:mb-0">
+                            <textarea v-model="catatan_kesehatan" rows="5" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Catatan Kesehatan"></textarea>
+                        </div>
+
+                        <p class="col-span-3 mb-5 lg:mt-10 font-semibold">Pertanyaan Singkat</p>
 
                         <div class="flex">
                             <label for="" class="mr-1">Merokok?</label>
@@ -468,11 +476,11 @@ onMounted(async () => {
                         </div>
 
                         <div class="flex">
-                            <label for="" class="mr-1">Catatan Kesehatan</label>
+                            <label for="" class="mr-1">Berat Badan?</label>
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <textarea v-model="catatan_kesehatan" rows="5" class="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none" placeholder="Catatan Kesehatan"></textarea>
+                            <input type="number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" placeholder="Berat Badan">
                         </div>
     
                     </div>
