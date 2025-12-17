@@ -180,6 +180,45 @@ onMounted(()=>{
                             <option value="Trombosit">Trombosit</option>
                         </select>
                     </div>
+                    
+                    <p class="col-span-3 mb-5 lg:mt-10 font-semibold">Pertanyaan Singkat Kebiasaan</p>
+
+                    <div class="flex">
+                        <label for="" class="mr-1">Merokok?</label>
+                        <span class="text-primary">*</span>
+                    </div>
+                    <div class="col-span-2 mb-5 lg:mb-0">
+                        <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                            <option value="">--Pilih--</option>
+                            <option value="Perokok">Ya</option>
+                            <option value="Tidak Perokok">Tidak</option>
+                        </select>
+                    </div>
+
+                    <div class="flex">
+                        <label for="" class="mr-1">Alkohol?</label>
+                        <span class="text-primary">*</span>
+                    </div>
+                    <div class="col-span-2 mb-5 lg:mb-0">
+                        <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                            <option value="">--Pilih--</option>
+                            <option value="Alkohol">Ya</option>
+                            <option value="Tidak Alkohol">Tidak</option>
+                        </select>
+                    </div>
+
+                    <div class="flex">
+                        <label for="" class="mr-1">Olahraga?</label>
+                        <span class="text-primary">*</span>
+                    </div>
+                    <div class="col-span-2 mb-5 lg:mb-0">
+                        <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                            <option value="">--Pilih--</option>
+                            <option value="Sering">Sering</option>
+                            <option value="Jarang">Jarang</option>
+                            <option value="Tidak Pernah">TIdak Pernah</option>
+                        </select>
+                    </div>
 
                     <div class="flex">
                         <label for="" class="mr-1">Catatan Kesehatan</label>
@@ -248,7 +287,7 @@ onMounted(()=>{
                     <span>:</span>
                     <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{ detailPasien.jenis_donor_darah }}</span>
                 </div>
-
+                
             </div>
             <div class="flex items-center justify-center mt-8">
               <button @click="openForm" type="button" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-110 transition-all duration-300">Donorkan</button>
