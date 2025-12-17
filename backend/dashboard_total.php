@@ -33,7 +33,7 @@ $query_chart_tipe_darah = "
     SUM(CASE WHEN dp.tipe_darah = 'B' THEN 1 ELSE 0 END) AS B,
     SUM(CASE WHEN dp.tipe_darah = 'AB' THEN 1 ELSE 0 END) AS AB,
     SUM(CASE WHEN dp.tipe_darah = 'O' THEN 1 ELSE 0 END) AS O
-    FROM pengajuan_donor pd JOIN data_pendonor dp ON dp.id = pd.id_pengajuan_donor WHERE pd.status_pengajuan = 'eligible'
+    FROM pengajuan_donor pd JOIN data_pendonor dp ON dp.id = pd.id_pendonor WHERE pd.status_pengajuan = 'eligible'
 ";
 $row_chart_tipe_darah = mysqli_fetch_assoc(mysqli_query($db, $query_chart_tipe_darah));
 
@@ -43,19 +43,20 @@ $query_chart_jenis_kelamin = "
     pd.status_pengajuan,
     SUM(CASE WHEN dp.jenis_kelamin = 'laki-laki' THEN 1 ELSE 0 END) AS Lakilaki,
     SUM(CASE WHEN dp.jenis_kelamin = 'perempuan' THEN 1 ELSE 0 END) AS Perempuan
-    FROM pengajuan_donor pd JOIN data_pendonor dp ON dp.id = pd.id_pengajuan_donor WHERE pd.status_pengajuan = 'eligible'
+    FROM pengajuan_donor pd JOIN data_pendonor dp ON dp.id = pd.id_pendonor WHERE pd.status_pengajuan = 'eligible'
 ";
 $row_chart_jenis_kelamin = mysqli_fetch_assoc(mysqli_query($db,$query_chart_jenis_kelamin));
 
 $query_chart_kebutuhan_kab = "
     SELECT 
-    SUM(CASE WHEN lokasi_pasien = 'Kulon Progo' THEN 1 ELSE 0 END) AS kulon_progo,
-    SUM(CASE WHEN lokasi_pasien = 'Bantul' THEN 1 ELSE 0 END) AS bantul,
-    SUM(CASE WHEN lokasi_pasien = 'Gunung Kidul' THEN 1 ELSE 0 END) AS gunung_kidul,
-    SUM(CASE WHEN lokasi_pasien = 'Sleman' THEN 1 ELSE 0 END) AS sleman,
-    SUM(CASE WHEN lokasi_pasien = 'Kota Yogyakarta' THEN 1 ELSE 0 END) AS yogyakarta,
-    SUM(CASE WHEN lokasi_pasien = 'DI Yogyakarta' THEN 1 ELSE 0 END) AS diyogyakarta
-    FROM permohonan_pasien WHERE status_pengajuan = 'diterima'
+    COALESCE(SUM(CASE WHEN lokasi_pasien = 'Kulon Progo' THEN jumlah_pendonor END), 0) AS kulon_progo,
+    COALESCE(SUM(CASE WHEN lokasi_pasien = 'Bantul' THEN jumlah_pendonor END), 0) AS bantul,
+    COALESCE(SUM(CASE WHEN lokasi_pasien = 'Gunung Kidul' THEN jumlah_pendonor END), 0) AS gunung_kidul,
+    COALESCE(SUM(CASE WHEN lokasi_pasien = 'Sleman' THEN jumlah_pendonor END), 0) AS sleman,
+    COALESCE(SUM(CASE WHEN lokasi_pasien = 'Kota Yogyakarta' THEN jumlah_pendonor END), 0) AS yogyakarta,
+    COALESCE(SUM(CASE WHEN lokasi_pasien = 'DI Yogyakarta' THEN jumlah_pendonor END), 0) AS diyogyakarta
+    FROM permohonan_pasien
+    WHERE status_pengajuan = 'diterima';
 ";
 $row_chart_kebutuhan_kab = mysqli_fetch_assoc(mysqli_query($db,$query_chart_kebutuhan_kab));
 

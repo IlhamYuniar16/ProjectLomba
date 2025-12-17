@@ -44,7 +44,24 @@ if(!$run_query_permohonan){
     echo json_encode(["status"=>"error","message"=>"Gagal edit: ".mysqli_error($db)]);
     exit;
 }
+
+$get = mysqli_query($db, "
+    SELECT pd.unit_pmi, up.stok_darah
+    FROM pengajuan_donor pd
+    JOIN unit_pmi up ON up.unit_pmi = pd.unit_pmi
+    WHERE pd.id_pengajuan_donor = '$id'
+");
+
+$data = mysqli_fetch_assoc($get);
+$unit_pmi = $data['unit_pmi'];
+$stok_darah = (int)$data['stok_darah'];
+
 if($status_pengajuan === 'eligible') {
+    $stok_baru = $stok_darah + 1;
+    $query_stok_darah = "UPDATE unit_pmi SET stok_darah = '$stok_baru' WHERE unit_pmi = '$unit_pmi'";
+    $run_query_stok_darah = mysqli_query($db, $query_stok_darah);
+ 
+
 $q = mysqli_query(
         $db,
         "SELECT u.email, pd.unit_pmi, dp.nama_pendonor
@@ -170,6 +187,10 @@ $q = mysqli_query(
         } catch (Exception $e) {}
     }
 
+} else {
+    $stok_baru = max(0, $stok_darah - 1);
+    $query_stok_darah = "UPDATE unit_pmi SET stok_darah = '$stok_baru' WHERE unit_pmi = '$unit_pmi'";
+    $run_query_stok_darah = mysqli_query($db, $query_stok_darah);
 }
 
 

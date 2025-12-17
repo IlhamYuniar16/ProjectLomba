@@ -208,11 +208,13 @@ const getTotal = async () => {
           AB: 0,
           O: 0
         }
-        pendonor.value = res.data.data.pendonor || []
-        permohonan.value = res.data.data.permohonan || []
+        pendonor.value = res.data.data.pendonor ?? []
+        permohonan.value = res.data.data.permohonan ?? []
         renderlokasiChart()
         renderKelaminChart()
         renderGolonganChart()
+        console.log(res.data)
+
     } catch(err) {
         console.error(err)
     }
@@ -313,6 +315,11 @@ onMounted(()=>{
                                 <th class="px-4 py-3 text-left ">Unit PMI</th>
                                 <th class="px-4 py-3 text-left ">Jenis Donor</th>
                                 <th class="px-4 py-3 text-left ">Catatan Kesehatan</th>
+                                <th class="px-4 py-3 text-left ">Perokok</th>
+                                <th class="px-4 py-3 text-left ">Alohol</th>
+                                <th class="px-4 py-3 text-left ">Olahraga</th>
+                                <th class="px-4 py-3 text-left ">Berat Badan</th>
+                                <th class="px-4 py-3 text-left ">Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -336,8 +343,12 @@ onMounted(()=>{
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.rhesus }}</td>
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.unit_pmi }}</td>
                                 <td class="px-4 py-3 text-left text-neutral-600">{{ item.jenis_donor }}</td>
-                                
                                 <td class="px-4 py-3 text-left text-neutral-600 max-w-md">{{ item.catatan_kesehatan }}</td>
+                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.merokok }}</td>
+                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.alkohol }}</td>
+                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.olahraga }}</td>
+                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.berat_badan }}</td>
+                                <td class="px-4 py-3 text-left text-neutral-600">{{ item.keterangan }}</td>
                             </tr>
                         </tbody>
                     </table>

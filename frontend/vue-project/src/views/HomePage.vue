@@ -268,7 +268,7 @@ onMounted(()=>{
                 <input type="text" v-model="searchQuery" class="outline-none w-full" placeholder="Cari nama pasien">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
                 </div>
-                <div v-for="(item) in filteredUrgent" :key="item.id" class="bg-bgColor flex justify-between items-center p-4 border rounded">
+                <RouterLink v-for="(item) in filteredUrgent" :key="item.id" :to="`/detail-kebutuhan/${item.id}`" class="bg-bgColor flex justify-between items-center p-4 border rounded">
                     <div class="flex items-center gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -282,7 +282,7 @@ onMounted(()=>{
                         <span class="text-red-500 font-semibold">URGENT</span>
                         <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
                     </div>
-                </div>
+                </RouterLink>
             </div>
             <div v-if="active === 'History'" class="container max-w-4xl mx-auto grid grid-cols-1 gap-5">
               <div v-for="(item, index) in permohonan.slice(0, 5)" :key="index" class="bg-white w-full rounded-2xl mx-auto shadow-md p-6 flex flex-col justify-between">

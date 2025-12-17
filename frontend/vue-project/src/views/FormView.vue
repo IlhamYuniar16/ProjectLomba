@@ -1,6 +1,6 @@
 <script setup>
 import { store } from '@/stores/stores';
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 import { alertError, alertSuccess } from '@/services/alert';
@@ -150,6 +150,10 @@ const rhesus_donor = ref('')
 const jenis_donor = ref('')
 const catatan_kesehatan = ref('')
 const unit_pmi = ref('')
+const merokok = ref('')
+const alkohol = ref('')
+const olahraga = ref('')
+const berat_badan = ref('')
 
 const submitDonor = async () => {
     const formDonor = new FormData();
@@ -161,7 +165,10 @@ const submitDonor = async () => {
     formDonor.append("unit_pmi", unit_pmi.value);
     formDonor.append("jenis_donor", jenis_donor.value);
     formDonor.append("catatan_kesehatan", catatan_kesehatan.value);
-    
+    formDonor.append("merokok", merokok.value);
+    formDonor.append("alkohol", alkohol.value);
+    formDonor.append("olahraga", olahraga.value);
+    formDonor.append("berat_badan", berat_badan.value);
     try {
         const res = await axios.post(
             "http://localhost/ProjectLomba/backend/home_donor.php",
@@ -180,6 +187,10 @@ const submitDonor = async () => {
             jenis_donor.value = ''
             catatan_kesehatan.value = ''
             unit_pmi.value = ''
+            merokok.value = ''
+            alkohol.value = ''
+            olahraga.value = ''
+            berat_badan.value = ''
             alertSuccess(res.data.message);
         } else {
             alertError(res.data.message);
@@ -443,7 +454,7 @@ onMounted(async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                            <select v-model="merokok" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
                                 <option value="">--Pilih--</option>
                                 <option value="Perokok">Ya</option>
                                 <option value="Tidak Perokok">Tidak</option>
@@ -455,7 +466,7 @@ onMounted(async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                            <select v-model="alkohol" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
                                 <option value="">--Pilih--</option>
                                 <option value="Alkohol">Ya</option>
                                 <option value="Tidak Alkohol">Tidak</option>
@@ -467,11 +478,11 @@ onMounted(async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                            <select v-model="olahraga" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
                                 <option value="">--Pilih--</option>
                                 <option value="Sering">Sering</option>
                                 <option value="Jarang">Jarang</option>
-                                <option value="Tidak Pernah">TIdak Pernah</option>
+                                <option value="Tidak Pernah">Tidak Pernah</option>
                             </select>
                         </div>
 
@@ -480,7 +491,7 @@ onMounted(async () => {
                             <span class="text-primary">*</span>
                         </div>
                         <div class="col-span-2 mb-5 lg:mb-0">
-                            <input type="number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" placeholder="Berat Badan">
+                            <input v-model="berat_badan" type="number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" placeholder="Berat Badan">
                         </div>
     
                     </div>

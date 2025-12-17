@@ -17,9 +17,13 @@ $rhesus = $_POST['rhesus'] ?? '';
 $catatan_kesehatan = $_POST['catatan_kesehatan'] ?? '';
 $jenis_donor = $_POST['jenis_donor'] ?? '';
 $unit_pmi = $_POST['unit_pmi'] ?? '';
+$merokok = $_POST['merokok'] ?? '';
+$alkohol = $_POST['alkohol'] ?? '';
+$olahraga = $_POST['olahraga'] ?? '';
+$berat_badan = $_POST['berat_badan'] ?? '';
 
 if (!$nama_pendonor || !$tanggal_lahir || !$jenis_kelamin || !$tipe_darah || 
-    !$rhesus || !$catatan_kesehatan || !$jenis_donor || !$unit_pmi) {
+    !$rhesus || !$catatan_kesehatan || !$jenis_donor || !$unit_pmi || !$merokok || !$alkohol || !$olahraga || !$berat_badan) {
     echo json_encode(["status" => "error", "message" => "Semua field wajib diisi!"]);
     exit;
 }
@@ -27,8 +31,8 @@ if (!$nama_pendonor || !$tanggal_lahir || !$jenis_kelamin || !$tipe_darah ||
 mysqli_begin_transaction($db);
 
 mysqli_query($db, "INSERT INTO data_pendonor 
-    (id_user, nama_pendonor, tanggal_lahir, jenis_kelamin, tipe_darah, rhesus, catatan_kesehatan)
-    VALUES ('$id_user', '$nama_pendonor', '$tanggal_lahir', '$jenis_kelamin', '$tipe_darah', '$rhesus', '$catatan_kesehatan')");
+    (id_user, nama_pendonor, tanggal_lahir, jenis_kelamin, tipe_darah, rhesus, catatan_kesehatan, merokok, alkohol, olahraga, berat_badan)
+    VALUES ('$id_user', '$nama_pendonor', '$tanggal_lahir', '$jenis_kelamin', '$tipe_darah', '$rhesus', '$catatan_kesehatan', '$merokok', '$alkohol', '$olahraga', '$berat_badan')");
 
 $pendonor_id = mysqli_insert_id($db);
 

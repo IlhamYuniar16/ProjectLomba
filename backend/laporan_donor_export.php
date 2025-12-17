@@ -15,17 +15,17 @@ if($laporan == "donor") {
     $date = date("d-M-Y_H-i-s");
     header("Content-Disposition: attachment; filename=Laporan-donor-$date.xls");
 
-    $query = "SELECT pd.*, dp.nama_pendonor, dp.tanggal_lahir, dp.jenis_kelamin, dp.tipe_darah, dp.rhesus, dp.catatan_kesehatan 
+    $query = "SELECT pd.*, dp.nama_pendonor, dp.tanggal_lahir, dp.jenis_kelamin, dp.tipe_darah, dp.rhesus, dp.catatan_kesehatan, dp.merokok, dp.alkohol, dp.olahraga, dp.berat_badan, dp.keterangan
             FROM pengajuan_donor pd 
             LEFT JOIN data_pendonor dp ON pd.id_pendonor = dp.id
             ORDER BY pd.id_pengajuan_donor DESC";
     $result = mysqli_query($db, $query);
 
-echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhesus\tUnit PMI\tStatus Pengajuan\tCatatan Kesehatan\n";
+echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhesus\tUnit PMI\tCatatan Kesehatan\tPerkokok\tAlkohol\tOlahraga\tBerat Badan\tKeterangan\tStatus Pengajuan\n";
 
     $no = 1;
     while($row = mysqli_fetch_assoc($result)) {
-         echo $no."\t".
+         echo $no++."\t".
          $row['created_at']."\t".
          $row['nama_pendonor']."\t".
          $row['tanggal_lahir']."\t".
@@ -33,9 +33,14 @@ echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhes
          $row['tipe_darah']."\t".
          $row['rhesus']."\t".
          $row['unit_pmi']."\t".
-         $row['status_pengajuan']."\t".
-         $row['catatan_kesehatan']."\n";
-         $no++;
+         $row['catatan_kesehatan']."\t".
+         $row['merokok']."\t".
+         $row['alkohol']."\t".
+         $row['olahraga']."\t".
+         $row['berat_badan']."\t".
+         $row['keterangan']."\t".
+         $row['status_pengajuan']."\n";
+
 }
 } elseif($laporan == "permohonan") {
     $date = date("d-M-Y_H-i-s");
@@ -47,7 +52,7 @@ echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhes
 
     $no = 1;
     while($row = mysqli_fetch_assoc($result)) {
-        echo $no."\t".
+        echo $no++."\t".
             $row['created_at']."\t".
             $row['nama_pasien']."\t".
             $row['nama_rumah_sakit']."\t".
@@ -58,7 +63,6 @@ echo "No\tTanggal\tNama Pendonor\tTanggal Lahir\tJenis Kelamin\tTipe Darah\tRhes
             $row['jenis_donor_darah']."\t".
             $row['status_urgent']."\t".
             $row['status_pengajuan']."\n";
-            $no++;
     }
 }
 ?>

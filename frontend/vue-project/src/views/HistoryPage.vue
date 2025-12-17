@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { store } from '@/stores/stores';
+import { alertError, alertSuccess } from '@/services/alert';
 
 const isLogin = ref(false)
 const historyTab = ref('permohonanTab')
@@ -34,11 +35,11 @@ const permohonan_batal = async (id) => {
       formData,
       { withCredentials: true }
     )
-    alert(res.data.message)
+    alertSuccess(res.data.message)
     fetchHistoryPermohonan()
   } catch (err) {
     console.error(err)
-    alert('Terjadi kesalahan')
+    alertError('Terjadi kesalahan')
   }
 }
 

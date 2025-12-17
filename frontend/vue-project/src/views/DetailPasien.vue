@@ -1,11 +1,43 @@
 <script setup>
+import { alertError, alertSuccess } from '@/services/alert';
+import { store } from '@/stores/stores';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const isLogin = ref(true)
+        const checkLogin = async () => {
+        try {
+            const res = await axios.get(
+                "http://localhost/ProjectLomba/backend/check_login.php",
+                { withCredentials: true }
+            );
+
+            if (!res.data.isLogin) {
+                localStorage.removeItem('user')
+                store.isLoggedIn = false
+                store.user = {}
+                router.push('/masuk');
+                alertError("Silahkan login terlebih dahulu!")
+            }
+
+            isLogin.value = res.data.isLogin;
+        } catch (err) {
+            localStorage.removeItem('user')
+            store.isLoggedIn = false
+            store.user = {}
+            router.push('/masuk');
+        }
+
+    };
+    
+
+
 
 const showForm = ref(false);
 const route = useRoute()
-const detailPasien = ref([])
+const detailPasien = ref({})
 
 const openForm = () => {
     showForm.value = true;
@@ -27,15 +59,83 @@ const getPasien = async () => {
         const res = await axios.get(`http://localhost/ProjectLomba/backend/krisis_pasien_detail.php?id=${id}`,
       { withCredentials: true })
         detailPasien.value = res.data.data[0]
-        console.log(detailPasien.value)
     } catch(err) {
         console.error(err)
     }
     
 }
 
-onMounted(()=>{
+const pmi_list = ref([])
+const getPMI = async () => {
+    try {
+        const res = await axios.get('http://localhost/ProjectLomba/backend/get_pmi.php')
+        pmi_list.value = res.data
+    } catch(err) {
+        console.error(err)
+    }
+    
+}
+
+
+const nama_pendonor = ref('');
+const tanggal_lahir = ref('')
+const jenis_kelamin = ref('')
+const tipe_darah = ref('')
+const rhesus_donor = ref('')
+const jenis_donor = ref('')
+const catatan_kesehatan = ref('')
+const unit_pmi = ref('')
+const merokok = ref('')
+const alkohol = ref('')
+const olahraga = ref('')
+const berat_badan = ref('')
+
+
+const postDonor = async () => {
+    const formDonor = new FormData();
+    formDonor.append("nama_pendonor", nama_pendonor.value);
+    formDonor.append("tanggal_lahir", tanggal_lahir.value);
+    formDonor.append("jenis_kelamin", jenis_kelamin.value);
+    formDonor.append("tipe_darah", tipe_darah.value);
+    formDonor.append("rhesus", rhesus_donor.value);
+    formDonor.append("unit_pmi", unit_pmi.value);
+    formDonor.append("jenis_donor", jenis_donor.value);
+    formDonor.append("catatan_kesehatan", catatan_kesehatan.value);
+    formDonor.append("merokok", merokok.value);
+    formDonor.append("alkohol", alkohol.value);
+    formDonor.append("olahraga", olahraga.value);
+    formDonor.append("berat_badan", berat_badan.value);
+    
+    try {
+        const id = route.params.id
+        const res = await axios.post(
+            `http://localhost/ProjectLomba/backend/krisis_pasien_donor.php?id=${id}`,
+            formDonor,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+                withCredentials: true
+            }            
+        )
+        
+        if(res.data.status === "success") {
+            alertSuccess(res.data.message)
+            closeForm()
+            getPasien()
+        } else {
+            alertError(res.data.message)
+        }
+        } catch(err) {
+        console.error(err)
+    }  
+}
+
+
+
+
+onMounted(async ()=>{
+    await checkLogin()
     getPasien()
+    getPMI()
 })
 
 </script>
@@ -196,7 +296,7 @@ onMounted(()=>{
                         <span class="text-primary">*</span>
                     </div>
                     <div class="col-span-2 mb-5 lg:mb-0">
-                        <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                        <select v-model="merokok" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
                             <option value="">--Pilih--</option>
                             <option value="Perokok">Ya</option>
                             <option value="Tidak Perokok">Tidak</option>
@@ -208,7 +308,7 @@ onMounted(()=>{
                         <span class="text-primary">*</span>
                     </div>
                     <div class="col-span-2 mb-5 lg:mb-0">
-                        <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                        <select v-model="alkohol" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
                             <option value="">--Pilih--</option>
                             <option value="Alkohol">Ya</option>
                             <option value="Tidak Alkohol">Tidak</option>
@@ -220,11 +320,11 @@ onMounted(()=>{
                         <span class="text-primary">*</span>
                     </div>
                     <div class="col-span-2 mb-5 lg:mb-0">
-                        <select class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
+                        <select v-model="olahraga" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" >
                             <option value="">--Pilih--</option>
                             <option value="Sering">Sering</option>
                             <option value="Jarang">Jarang</option>
-                            <option value="Tidak Pernah">TIdak Pernah</option>
+                            <option value="Tidak Pernah">Tidak Pernah</option>
                         </select>
                     </div>
 
@@ -233,7 +333,7 @@ onMounted(()=>{
                         <span class="text-primary">*</span>
                     </div>
                     <div class="col-span-2 mb-5 lg:mb-0">
-                        <input type="number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" placeholder="Berat Badan">
+                        <input v-model="berat_badan" type="number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg outline-none" placeholder="Berat Badan">
                     </div>
 
                     
@@ -242,7 +342,7 @@ onMounted(()=>{
                 
                 <div class="flex items-center gap-3 justify-center mt-8">
                     <button @click="closeForm" type="button" class="bg-gray-300 px-8 py-4 text-black rounded-full cursor-pointer hover:scale-90 transition-all duration-300">Batal</button>
-                    <button type="button" @click="submitDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-90 transition-all duration-300">Kirim Sekarang</button>
+                    <button type="button" @click="postDonor" class="bg-primary px-8 py-4 text-white rounded-full cursor-pointer hover:scale-90 transition-all duration-300">Kirim Sekarang</button>
                 </div>
             </form>
         </div>
