@@ -18,12 +18,12 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
   exit;
 }
 
-
 $id = $_GET['id'];
 $tanggal = $_POST['tanggal'] ?? '';
 $format_tanggal = date('d-m-Y', strtotime($tanggal));
 $jam = $_POST['jam'] ?? '';
 $status_pengajuan = $_POST['status_pengajuan'] ?? '';
+
 
 if($status_pengajuan === 'eligible') {
     if(!$status_pengajuan || !$tanggal || !$jam){
@@ -35,7 +35,6 @@ if($status_pengajuan === 'eligible') {
             exit;
         }
     }
-
 }
 
 $query_permohonan = "UPDATE pengajuan_donor SET status_pengajuan = '$status_pengajuan' WHERE id_pengajuan_donor  = '$id'";

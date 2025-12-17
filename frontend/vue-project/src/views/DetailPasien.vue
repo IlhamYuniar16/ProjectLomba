@@ -1,8 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const showForm = ref(false);
-
+const route = useRoute()
+const detailPasien = ref([])
 
 const openForm = () => {
     showForm.value = true;
@@ -17,6 +20,24 @@ const resetForm = ()=> {
     
 }
 
+const getPasien = async () => {
+    try {
+        const id = route.params.id
+        
+        const res = await axios.get(`http://localhost/ProjectLomba/backend/krisis_pasien_detail.php?id=${id}`,
+      { withCredentials: true })
+        detailPasien.value = res.data.data[0]
+        console.log(detailPasien.value)
+    } catch(err) {
+        console.error(err)
+    }
+    
+}
+
+onMounted(()=>{
+    getPasien()
+})
+
 </script>
 
 <template>
@@ -25,13 +46,13 @@ const resetForm = ()=> {
         <div v-if="showForm" class="bg-white mt-5 p-8 rounded-2xl">
             <div class="bg-gray-50 border border-gray-300 mb-10 p-10 rounded-2xl">
                 <h2 class="text-xl font-semibold mb-5">Informasi Kebutuhan Pasien</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-2 items-center">
+                <div  class="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-2 items-center">
                     <div class="flex">
                         <h1 for="" class="mr-1 font-semibold text-sm">Nama Pasien</h1>
                     </div>
                     <div class="flex items-center col-span-2 mb-5 lg:mb-0 gap-2">
                         <span>:</span>
-                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">Ilham</span>
+                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">{{detailPasien.nama_pasien}}</span>
                     </div>
 
                     <div class="flex">
@@ -39,7 +60,7 @@ const resetForm = ()=> {
                     </div>
                     <div class="flex items-center col-span-2 mb-5 lg:mb-0 gap-2">
                         <span>:</span>
-                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">Sleman</span>
+                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">{{ detailPasien.lokasi_pasien }}</span>
                     </div>
 
                     <div class="flex">
@@ -47,7 +68,7 @@ const resetForm = ()=> {
                     </div>
                     <div class="flex items-center col-span-2 mb-5 lg:mb-0 gap-2">
                         <span>:</span>
-                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">Rs Ajfafadf</span>
+                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">{{detailPasien.nama_rumah_sakit}}</span>
                     </div>
 
                     <div class="flex">
@@ -55,7 +76,7 @@ const resetForm = ()=> {
                     </div>
                     <div class="flex items-center col-span-2 mb-5 lg:mb-0 gap-2">
                         <span>:</span>
-                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">3</span>
+                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">{{ detailPasien.jumlah_pendonor }}</span>
                     </div>
 
                     <div class="flex">
@@ -63,7 +84,7 @@ const resetForm = ()=> {
                     </div>
                     <div class="flex items-center col-span-2 mb-5 lg:mb-0 gap-2">
                         <span>:</span>
-                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">A +</span>
+                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">{{detailPasien.golongan_darah}} {{ detailPasien.rhesus }}</span>
                     </div>
 
                     <div class="flex">
@@ -71,7 +92,7 @@ const resetForm = ()=> {
                     </div>
                     <div class="flex items-center col-span-2 mb-5 lg:mb-0 gap-2">
                         <span>:</span>
-                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">Trombosit</span>
+                        <span type="text" class="flex w-full text-sm rounded-lg outline-none">{{ detailPasien.jenis_donor_darah }}</span>
                     </div>
 
                 </div>
@@ -185,7 +206,7 @@ const resetForm = ()=> {
                 </div>
                 <div class="flex items-center gap-3 col-span-2 mb-5 lg:mb-0">
                     <span>:</span>
-                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">Ilham</span>
+                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{detailPasien.nama_pasien}}</span>
                 </div>
 
                 <div class="flex">
@@ -193,7 +214,7 @@ const resetForm = ()=> {
                 </div>
                 <div class="flex items-center gap-3 col-span-2 mb-5 lg:mb-0">
                     <span>:</span>
-                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">Sleman</span>
+                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{detailPasien.lokasi_pasien}}</span>
                 </div>
 
                 <div class="flex">
@@ -201,7 +222,7 @@ const resetForm = ()=> {
                 </div>
                 <div class="flex items-center gap-3 col-span-2 mb-5 lg:mb-0">
                     <span>:</span>
-                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">Rs Ajfafadf</span>
+                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{detailPasien.nama_rumah_sakit}}</span>
                 </div>
 
                 <div class="flex">
@@ -209,7 +230,7 @@ const resetForm = ()=> {
                 </div>
                 <div class="flex items-center gap-3 col-span-2 mb-5 lg:mb-0">
                     <span>:</span>
-                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">3</span>
+                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{ detailPasien.jumlah_pendonor }}</span>
                 </div>
 
                 <div class="flex">
@@ -217,7 +238,7 @@ const resetForm = ()=> {
                 </div>
                 <div class="flex items-center gap-3 col-span-2 mb-5 lg:mb-0">
                     <span>:</span>
-                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">A +</span>
+                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{detailPasien.golongan_darah}} {{ detailPasien.rhesus }}</span>
                 </div>
 
                 <div class="flex">
@@ -225,7 +246,7 @@ const resetForm = ()=> {
                 </div>
                 <div class="flex items-center gap-3 col-span-2 mb-5 lg:mb-0">
                     <span>:</span>
-                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">Trombosit</span>
+                    <span type="text" class="flex w-full p-3 bg-gray-100 border border-gray-300 rounded-lg outline-none">{{ detailPasien.jenis_donor_darah }}</span>
                 </div>
 
             </div>

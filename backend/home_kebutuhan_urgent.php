@@ -8,7 +8,7 @@ session_start();
 
 include 'db/db.php';
 $search = $_GET['search'] ?? '';
-$query_dashboard_kebutuhan_urgent = "SELECT id, nama_pasien, lokasi_pasien, golongan_darah, status_urgent FROM permohonan_pasien WHERE status_urgent='Urgent'";
+$query_dashboard_kebutuhan_urgent = "SELECT id, nama_pasien, lokasi_pasien, golongan_darah, status_urgent FROM permohonan_pasien WHERE status_urgent='Urgent' AND status_pengajuan = 'diterima'";
 if($search) {
     $search = mysqli_real_escape_string($db, $search);
     $query_dashboard_kebutuhan_urgent .= " AND nama_pasien LIKE '%$search%'";

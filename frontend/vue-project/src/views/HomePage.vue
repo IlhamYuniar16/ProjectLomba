@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { store, logout } from '../stores/stores'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import axios from 'axios'
 import img1 from '../assets/img/iklan.png'
 import img2 from '../assets/img/iklan2.png'
@@ -248,7 +248,7 @@ onMounted(()=>{
 
     <section class="container mx-auto mt-6 px-4 md:px-0 flex flex-col gap-2">
         <div  class="flex flex-col gap-3 w-full max-w-md mx-auto overflow-y-scroll h-100 no-scrollbar">
-            <div v-if="active === 'Kebutuhan'" v-for="(item) in urgent" :key="item.id" class="bg-bgColor  flex justify-between items-center p-4 border rounded">
+            <RouterLink v-if="active === 'Kebutuhan'" v-for="(item) in urgent" :key="item.id" :to="`/detail-kebutuhan/${item.id}`" class="bg-bgColor  flex justify-between items-center p-4 border rounded">
                 <div class="flex items-center gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -262,7 +262,7 @@ onMounted(()=>{
                     <span class="text-red-500 font-semibold">URGENT</span>
                     <span class="bg-primary text-bgColor py-1 px-3 rounded-full font-bold">{{ item.golongan_darah }}</span>
                 </div>
-            </div>
+            </RouterLink>
             <div v-if="active === 'Pencarian'"  class="flex flex-col gap-3 w-full max-w-md mx-auto overflow-y-scroll h-100 no-scrollbar">
                 <div  class="flex border max-w-md px-3 py-3 rounded-2xl">
                 <input type="text" v-model="searchQuery" class="outline-none w-full" placeholder="Cari nama pasien">
