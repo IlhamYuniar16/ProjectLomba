@@ -13,6 +13,7 @@ import HistoryPage from "@/views/HistoryPage.vue";
 import SubmissionView from "@/views/admin/SubmissionView.vue";
 import DonorView from "@/views/admin/DonorView.vue";
 import { store } from '@/stores/stores';
+import DetailPasien from "@/views/DetailPasien.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,11 @@ const router = createRouter({
           path: "history",
           name: "history",
           component: HistoryPage,
+        },
+        {
+          path: "detail-kebutuhan/:id",
+          name: "detail-kebutuhan",
+          component: DetailPasien,
         },
       ],
     },
